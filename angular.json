@@ -9,7 +9,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sunbird-cb-training-plan-ai": {
+    "cbp-ai-ui": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -19,7 +19,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sunbird-cb-training-plan-ai",
+            "outputPath": "dist/cbp-ai-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -84,18 +84,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "sunbird-cb-training-plan-ai:build"
+            "browserTarget": "cbp-ai-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "sunbird-cb-training-plan-ai:build:production"
+              "browserTarget": "cbp-ai-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sunbird-cb-training-plan-ai:build"
+            "browserTarget": "cbp-ai-ui:build"
           }
         },
         "test": {
@@ -119,11 +119,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "sunbird-cb-training-plan-ai:serve"
+            "devServerTarget": "cbp-ai-ui:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "sunbird-cb-training-plan-ai:serve:production"
+              "devServerTarget": "cbp-ai-ui:serve:production"
             }
           }
         }

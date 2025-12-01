@@ -16,7 +16,7 @@
   FROM httpd:alpine
    
   # Copy build artifacts from Node stage to Apache web root
-  COPY --from=build /app/dist/sunbird-cb-training-plan-ai /usr/local/apache2/htdocs
+  COPY --from=build /app/dist/cbp-ai-ui /usr/local/apache2/htdocs
    
   # Copy .htaccess and custom 404 page
   COPY ./.htaccess /usr/local/apache2/htdocs
