@@ -49,6 +49,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-/src/assets
+
 package-lock.json
 .vscode/
