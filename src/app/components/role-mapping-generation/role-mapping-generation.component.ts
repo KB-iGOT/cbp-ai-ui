@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { HEADER_DATA } from 'src/app/modules/shared/constant/app.constant';
 import { EventService } from 'src/app/modules/shared/services/event.service';
@@ -18,7 +18,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './role-mapping-generation.component.html',
   styleUrls: ['./role-mapping-generation.component.scss']
 })
-export class RoleMappingGenerationComponent implements OnInit, OnChanges{
+export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDestroy{
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
   headerData = HEADER_DATA;
   @Input() loginStatusFlag = false
@@ -114,14 +114,13 @@ apiLoading= false
     this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
     if(this.cbpFinalObj && this.cbpFinalObj?.ministry && this.cbpFinalObj?.ministry?.sbOrgType) {
       
-
+      
       this.editMinistryForm()
       // this.getMinistryData()
     } else {
       if( this.login) {
         this.getMinistryData()
       }
-      
       this.roleMappingForm = this.fb.group({
         ministryType: ['ministry', Validators.required],
         ministry: [null, Validators.required],
@@ -159,15 +158,29 @@ apiLoading= false
   async editMinistryForm() {
     if(this.cbpFinalObj?.ministry.sbOrgType === 'ministry') {
       this.selectedMinistryType = this.cbpFinalObj?.ministry.sbOrgType
-
       await this.getMinistryData()
-
-
+      if(this.cbpFinalObj?.ministry?.sbOrgType) {
+        await this.sharedService.getCenterBasedDepartment(this.cbpFinalObj?.ministry?.identifier).subscribe((res)=>{
+          if(res?.length) {
+            this.departmentData = res
+          this.filteredDepartmentList = res
+          } else {
+            this.snackBar.open('No Department Found for Selected Ministry', 'X', {
+              duration: 3000,
+              panelClass: ['snackbar-error']
+            });
+            this.sharedService.cbpPlanFinalObj['department_name'] =  ''
+            this.sharedService.cbpPlanFinalObj['departments'] =  ''
+            localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+          }
+        })
+      }
+     
       this.roleMappingForm = this.fb.group({
         ministryType: [this.selectedMinistryType, Validators.required],
         ministry: [this.cbpFinalObj?.ministry?.identifier, Validators.required],
         sectors: [[]],
-        departments: [[]], // shown only if ministryType == 'state'
+        departments: [this.cbpFinalObj?.departments], // shown only if ministryType == 'state'
         additionalDetails: ['']
       });
 
@@ -370,18 +383,22 @@ apiLoading= false
     })
   }
 
-  onMinistryTypeChange(event) {
+  async onMinistryTypeChange(event) {
     console.log('event', event)
+    
     if(this.login) {
-      this.getMinistryData()
+      await this.getMinistryData()
     }
     
     this.sharedService.cbpPlanFinalObj['ministryType'] =  event.value
+    this.sharedService.cbpPlanFinalObj['role_mapping_generation'] =  []
     this.selectedMinistryType = event.value
+    
     localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
     this.ministryData = []
     if(event?.value === 'state') {
       this.roleMappingForm.get('sectors')?.setValue([]);
+      this.roleMappingForm.get('departments')?.setValue([]);
       this.ministryFullData.forEach((item)=>{
         if(item?.type === 'state') {
           this.ministryData.push(item)
@@ -389,12 +406,18 @@ apiLoading= false
       })
     } else if(event?.value === 'ministry') {
       this.roleMappingForm.get('sectors')?.setValue([]);
+      this.roleMappingForm.get('departments')?.setValue([]);
       this.ministryFullData.forEach((item)=>{
         if(item?.type === 'central') {
           this.ministryData.push(item)
         }
       })
     }
+    this.sharedService.cbpPlanFinalObj['ministry'] =  ''
+    this.sharedService.cbpPlanFinalObj['department_name'] =  ''
+    this.sharedService.cbpPlanFinalObj['departments'] =  ''
+    localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+    // this.roleMappingForm.reset()
     if(!this.sharedService.cbpPlanFinalObj?.ministry) {
       this.roleMappingForm.setErrors({ invalid: true });
       setTimeout(()=>{
@@ -406,17 +429,35 @@ apiLoading= false
   onMinistryChange(event: any) {
     const selectedMinistryId = event.value;
     console.log('Selected Ministry ID:', selectedMinistryId);
-
+    this.departmentData = []
     // You can access the selected object if needed
     const selectedMinistry = this.ministryData.find(item => item.identifier === selectedMinistryId);
     this.selectedMinistryObj = selectedMinistry
     console.log('Selected Ministry:', selectedMinistry);``
     this.sharedService.cbpPlanFinalObj['ministry'] =  selectedMinistry
+    this.sharedService.cbpPlanFinalObj['role_mapping_generation'] =  []
     localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
     if(selectedMinistryId && this.selectedMinistryType === 'state') {
       this.sharedService.getDepartmentList(selectedMinistryId).subscribe((res)=>{
         this.departmentData = res
         this.filteredDepartmentList = res
+      })
+    }  
+    if(selectedMinistryId && this.selectedMinistryType === 'ministry') {
+      this.sharedService.getCenterBasedDepartment(selectedMinistryId).subscribe((res)=>{
+        if(res?.length) {
+          this.departmentData = res
+        this.filteredDepartmentList = res
+        } else {
+          this.snackBar.open('No Department Found for Selected Ministry', 'X', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+          this.sharedService.cbpPlanFinalObj['department_name'] =  ''
+          this.sharedService.cbpPlanFinalObj['departments'] =  ''
+          localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+        }
+        
       })
     }
   }
@@ -533,10 +574,12 @@ apiLoading= false
 
   
 
-  loginStatus(event) {
+  loginStatus(event) {    
     if(event) {
       this.login = true
       this.loginSuccess.emit(true)
+      this.selectedMinistryType = 'ministry'
+      
       this.getMinistryData()
     } else {
       this.login = false
@@ -608,7 +651,7 @@ apiLoading= false
       state_center_name: selectedMinistry?.orgName
     };
   
-    if (this.selectedMinistryType === 'state') {
+    if (this.selectedMinistryType === 'state' || currentFormValues.departments) {
       const departmentName = this.departmentData.find(
         d => d.identifier === currentFormValues.departments
       );
@@ -682,7 +725,7 @@ apiLoading= false
         "state_center_id":formData.ministry,
         "instruction": formData.additionalDetails
       }
-      if(this.selectedMinistryType === 'state') {
+      if(this.selectedMinistryType === 'state' || formData.departments ) {
         req['department_id'] = formData.departments ? formData.departments : ''
         this.sharedService.cbpPlanFinalObj['departments'] =  formData.departments ? formData.departments : ''
 
@@ -956,6 +999,11 @@ apiLoading= false
       this.filteredDepartmentList = this.departmentData
     }
     
+  }
+
+  ngOnDestroy() {
+    this.selectedMinistryId = ''
+    this.roleMappingForm.reset()
   }
 
 
