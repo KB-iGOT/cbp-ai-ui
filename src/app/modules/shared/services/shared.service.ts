@@ -14,7 +14,7 @@ const API_END_POINTS = {
   NLW_FORM_READ: 'apis/v1/static/form/v1/read',
   FETCH_TENDERS: 'api/v1/content/v1/search',
   GET_STATE_CENTER: 'cbp-tpc-ai/api/v1/state-center',
-  GET_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/generate',
+  GET_ROLE_MAPPING: 'cbp-tpc-ai/api/v2/role-mapping/generate',
   DELETE_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/delete',
   GET_DEPARTMENT: 'cbp-tpc-ai/api/v1/department/state-center',
   GET_ROLE_MAPPING_BY_STATE_CENTER: 'cbp-tpc-ai/api/v1/role-mapping/state-center',
@@ -44,7 +44,8 @@ const API_END_POINTS = {
   GET_USER_RECOMMENED_COURSES: 'cbp-tpc-ai/api/v1/course-recommendations',
   DOWNLOAD_PDF: 'cbp-tpc-ai/api/v1/cbp-plan/download',
   CENTER_BASED_MINISTRY: 'cbp-tpc-ai/api/v1/department/state-center',
-  DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/course-recommendations/report/download'
+  DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/course-recommendations/report/download',
+  DELETE_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/cbp-plan',
 }
 
 
@@ -356,7 +357,7 @@ export class SharedService {
 
   getRoleMappingByStateCenterAndDepartment(state_center_id, department_id) {
     const headers = this.headers
-    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}/department/${department_id}`, { headers })
+    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}/department/${department_id}?load_cbp_plans=true`, { headers })
       .pipe(map((response: any) => {
         return response
       }))
@@ -705,7 +706,26 @@ export class SharedService {
       URL.revokeObjectURL(downloadUrl);
     });
   }
+  deleteRecommendedCourse(roleMappingId: string, courseIdentifier: string) {
+  const headers = this.headers;
 
+  return this.http.delete<any>(
+    `${this.baseUrl}${API_END_POINTS.DELETE_COURSE_RECOMMENDATION}/${roleMappingId}/course/${courseIdentifier}`,
+    { headers }
+  );
+}
+
+  getCbpPlansWithSelectedCourses(): any[] {
+    const source = this.cbpPlanFinalObj;
+
+    return source?.role_mapping_generation
+      ?.flatMap((role: any) => role.cbp_plans || [])
+      ?.filter(
+        (plan: any) =>
+          Array.isArray(plan.selected_courses) &&
+          plan.selected_courses.length > 0
+      ) || [];
+  }
 
 }
 
