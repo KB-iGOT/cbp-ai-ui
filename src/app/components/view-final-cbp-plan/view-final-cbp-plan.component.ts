@@ -916,13 +916,13 @@ getCompetenciesByType(type: string, course: any): any[] {
       this.generateExcel(this.jsonData, fileName );
     }
 
-    downloadPdfFromBE() {
+    downloadPdfFromBE(context : string) {
       this.loading = true
     //  this.sharedService.downloadPdf(this.sharedService?.cbpPlanFinalObj.ministry.identifier)
       if(!this.sharedService?.cbpPlanFinalObj.departments) {
-        this.sharedService.downloadPdf(this.sharedService?.cbpPlanFinalObj.ministry.identifier)  
+        this.sharedService.downloadPdf(this.sharedService?.cbpPlanFinalObj.ministry.identifier, context)  
       } else {
-        this.sharedService.downloadPdfForDepartment(this.sharedService?.cbpPlanFinalObj.ministry.identifier, this.sharedService?.cbpPlanFinalObj.departments)  
+        this.sharedService.downloadPdfForDepartment(this.sharedService?.cbpPlanFinalObj.ministry.identifier, this.sharedService?.cbpPlanFinalObj.departments, context)  
       }
       
       setTimeout(()=>{

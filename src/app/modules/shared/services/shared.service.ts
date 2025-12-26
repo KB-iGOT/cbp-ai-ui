@@ -42,9 +42,10 @@ const API_END_POINTS = {
   DELETE_SUMMARY: 'cbp-tpc-ai/api/v1/files',
   GET_USER_PROFILE: 'cbp-tpc-ai/api/v1/users/me',
   GET_USER_RECOMMENED_COURSES: 'cbp-tpc-ai/api/v1/course-recommendations',
-  DOWNLOAD_PDF: 'cbp-tpc-ai/api/v1/cbp-plan/download',
+  DOWNLOAD_PDF: 'cbp-tpc-ai/api/v1/reports/cbp-plan/download',
+  DOWNLOAD_PDF_ACBP: 'cbp-tpc-ai/api/v1/reports/acbp-plan/download',
   CENTER_BASED_MINISTRY: 'cbp-tpc-ai/api/v1/department/state-center',
-  DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/course-recommendations/report/download',
+  DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/reports/course-recommendations/download',
   DELETE_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/cbp-plan',
 }
 
@@ -595,8 +596,12 @@ export class SharedService {
       }))
   }
 
-  downloadPdf(state_center_id: string) {
-    const url = `${this.baseUrl}${API_END_POINTS.DOWNLOAD_PDF}?state_center_id=${state_center_id}`;
+  downloadPdf(state_center_id: string, context : string) {
+    const endpoint =
+    context === 'acbp'
+      ? API_END_POINTS.DOWNLOAD_PDF_ACBP
+      : API_END_POINTS.DOWNLOAD_PDF;
+    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}`;
     const headers = this.headers
 
     return this.http.get(url, {
@@ -629,8 +634,12 @@ export class SharedService {
     });
   }
 
-  downloadPdfForDepartment(state_center_id, department_id: string) {
-    const url = `${this.baseUrl}${API_END_POINTS.DOWNLOAD_PDF}?state_center_id=${state_center_id}&department_id=${department_id}`;
+  downloadPdfForDepartment(state_center_id, department_id: string, context?: string) {
+    const endpoint =
+    context === 'acbp'
+      ? API_END_POINTS.DOWNLOAD_PDF_ACBP
+      : API_END_POINTS.DOWNLOAD_PDF;
+    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}&department_id=${department_id}`;
     const headers = this.headers
 
     return this.http.get(url, {
