@@ -154,10 +154,6 @@ apiLoading= false
 
 
   }
-  getOrgType(): string {
-    const cbp = JSON.parse(localStorage.getItem('cbpPlanFinalObj') || '{}');
-    return cbp?.ministry?.sbOrgType || cbp?.org_type || '';
-  }
   async editMinistryForm() {
     if(this.cbpFinalObj?.ministry.sbOrgType === 'ministry') {
       this.selectedMinistryType = this.cbpFinalObj?.ministry.sbOrgType
@@ -646,13 +642,12 @@ apiLoading= false
       }
     });
 
-    const orgType = this.getOrgType();
+  
     // Build request body for polling API
     let req: any = {
       state_center_id: currentFormValues.ministry,
       instruction: currentFormValues.additionalDetails,
-      state_center_name: selectedMinistry?.orgName,
-       org_type: orgType
+      state_center_name: selectedMinistry?.orgName
     };
   
     if (this.selectedMinistryType === 'state' || currentFormValues.departments) {

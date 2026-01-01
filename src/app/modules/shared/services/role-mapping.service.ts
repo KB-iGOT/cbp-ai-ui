@@ -202,7 +202,6 @@ export class RoleMappingService {
     if (reqBody.instruction) formData.append('instruction', reqBody.instruction);
   
     // Add sector_name parameter as required by the API
-    formData.append('org_type', reqBody.org_type || '');
     formData.append('sector_name', 'Government');
     console.log('files------------', files)
     // Handle single or multiple files
