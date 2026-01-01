@@ -154,7 +154,6 @@ apiLoading= false
 
 
   }
-
   async editMinistryForm() {
     if(this.cbpFinalObj?.ministry.sbOrgType === 'ministry') {
       this.selectedMinistryType = this.cbpFinalObj?.ministry.sbOrgType

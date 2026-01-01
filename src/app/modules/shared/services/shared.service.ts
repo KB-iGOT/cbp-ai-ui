@@ -278,9 +278,16 @@ export class SharedService {
 
   generateRoleMapping(reqBody, files?: File | File[]) {
     console.log('reqBody--', reqBody);
-    console.log('files---', files)
-    const formData = new FormData();
-
+    console.log('files---', files);
+    const cbpData: any = JSON.parse(localStorage.getItem('cbpPlanFinalObj') || '{}');
+    const orgType =
+      cbpData?.ministry?.sbOrgType ||
+      cbpData?.org_type ||
+      '';
+        const formData = new FormData();
+    if (orgType) {
+      formData.append('org_type', orgType);
+    }
     // Add required fields
     if (reqBody.state_center_id) {
       formData.append('state_center_id', reqBody.state_center_id);
