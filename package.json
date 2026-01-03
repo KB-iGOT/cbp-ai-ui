@@ -42,7 +42,8 @@
     "tslib": "^2.0.0",
     "typed.js": "^2.0.16",
     "xlsx": "^0.18.5",
-    "zone.js": "~0.13.3"
+    "zone.js": "~0.13.3",
+    "ngx-markdown": "^20.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",
