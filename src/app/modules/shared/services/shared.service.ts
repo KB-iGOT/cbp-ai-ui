@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 //Injectable
 import { HostListener, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { InitService } from './init.service';
 // import configuration from '../../../../assets/jsonfiles/configurations.json'
@@ -14,7 +14,7 @@ const API_END_POINTS = {
   NLW_FORM_READ: 'apis/v1/static/form/v1/read',
   FETCH_TENDERS: 'api/v1/content/v1/search',
   GET_STATE_CENTER: 'cbp-tpc-ai/api/v1/state-center',
-  GET_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/generate',
+  GET_ROLE_MAPPING: 'cbp-tpc-ai/api/v3/role-mapping/generate',
   DELETE_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/delete',
   GET_DEPARTMENT: 'cbp-tpc-ai/api/v1/department/state-center',
   GET_ROLE_MAPPING_BY_STATE_CENTER: 'cbp-tpc-ai/api/v1/role-mapping/state-center',
@@ -27,7 +27,7 @@ const API_END_POINTS = {
   IGOT_SUGGESTED_COURSE: 'api/v1/content/v1/search',
   SAVE_COURSE_SUGGESTED_COURSE: 'cbp-tpc-ai/api/v1/course/suggestions/save',
   SUGGESTED_COURSE_LIST: 'cbp-tpc-ai/api/v1/course/suggestions',
-  ADD_DESIGNATION: 'cbp-tpc-ai/api/v1/role-mapping/add-designation',
+  ADD_DESIGNATION: 'cbp-tpc-ai/api/v2/role-mapping/add-designation',
   LOGIN: 'cbp-tpc-ai/api/v1/auth/login',
   LOGOUT: 'cbp-tpc-ai/api/v1/auth/logout',
   DELETE_ROLE_MAPPING_BY_STATE_CENTER: 'cbp-tpc-ai/api/v1/role-mapping',
@@ -42,9 +42,11 @@ const API_END_POINTS = {
   DELETE_SUMMARY: 'cbp-tpc-ai/api/v1/files',
   GET_USER_PROFILE: 'cbp-tpc-ai/api/v1/users/me',
   GET_USER_RECOMMENED_COURSES: 'cbp-tpc-ai/api/v1/course-recommendations',
-  DOWNLOAD_PDF: 'cbp-tpc-ai/api/v1/cbp-plan/download',
+  DOWNLOAD_PDF: 'cbp-tpc-ai/api/v1/reports/cbp-plan/download',
+  DOWNLOAD_PDF_ACBP: 'cbp-tpc-ai/api/v1/reports/acbp-plan/download',
   CENTER_BASED_MINISTRY: 'cbp-tpc-ai/api/v1/department/state-center',
-  DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/course-recommendations/report/download'
+  DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/reports/course-recommendations/download',
+  DELETE_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/cbp-plan',
 }
 
 
@@ -60,6 +62,9 @@ export class SharedService {
   configDetails: any
   screenWidth: number;
   headers: any
+  summaryTriggerExecuted = new Subject()
+  loginSuccess = new Subject()
+  checkRoleMappingFormValidation = new Subject()
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.screenWidth = event.target.innerWidth;
@@ -302,6 +307,15 @@ export class SharedService {
       formData.append('instruction', reqBody.instruction);
     }
 
+    const cbpData: any = JSON.parse(localStorage.getItem('cbpPlanFinalObj') || '{}');
+    const orgType =
+      cbpData?.ministry?.sbOrgType ||
+      cbpData?.org_type ||
+      '';
+    if (orgType) {
+      formData.append('org_type', orgType);
+    }
+
     // Handle multiple or single file
     if (files) {
       if (Array.isArray(files)) {
@@ -348,7 +362,7 @@ export class SharedService {
 
   getRoleMappingByStateCenter(state_center_id) {
     const headers = this.headers
-    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}`, { headers })
+    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}?load_cbp_plans=true`, { headers })
       .pipe(map((response: any) => {
         return response
       }))
@@ -356,7 +370,7 @@ export class SharedService {
 
   getRoleMappingByStateCenterAndDepartment(state_center_id, department_id) {
     const headers = this.headers
-    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}/department/${department_id}`, { headers })
+    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}/department/${department_id}?load_cbp_plans=true`, { headers })
       .pipe(map((response: any) => {
         return response
       }))
@@ -594,8 +608,12 @@ export class SharedService {
       }))
   }
 
-  downloadPdf(state_center_id: string) {
-    const url = `${this.baseUrl}${API_END_POINTS.DOWNLOAD_PDF}?state_center_id=${state_center_id}`;
+  downloadPdf(state_center_id: string, context : string) {
+    const endpoint =
+    context === 'acbp'
+      ? API_END_POINTS.DOWNLOAD_PDF_ACBP
+      : API_END_POINTS.DOWNLOAD_PDF;
+    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}`;
     const headers = this.headers
 
     return this.http.get(url, {
@@ -628,8 +646,12 @@ export class SharedService {
     });
   }
 
-  downloadPdfForDepartment(state_center_id, department_id: string) {
-    const url = `${this.baseUrl}${API_END_POINTS.DOWNLOAD_PDF}?state_center_id=${state_center_id}&department_id=${department_id}`;
+  downloadPdfForDepartment(state_center_id, department_id: string, context?: string) {
+    const endpoint =
+    context === 'acbp'
+      ? API_END_POINTS.DOWNLOAD_PDF_ACBP
+      : API_END_POINTS.DOWNLOAD_PDF;
+    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}&department_id=${department_id}`;
     const headers = this.headers
 
     return this.http.get(url, {
@@ -704,6 +726,144 @@ export class SharedService {
 
       URL.revokeObjectURL(downloadUrl);
     });
+  }
+
+  uploadDocument(reqBody, file?: File) {
+    const storageData:any = JSON.parse(localStorage.getItem('loginData'))
+    //  console.log('storageData--', storageData)
+      this.headers = new HttpHeaders({
+        'Authorization': `Bearer ${storageData?.access_token}`
+      });
+      const headers = this.headers
+      
+      // Add required fields
+      // if (reqBody.state_center_id) {
+      //   formData.append('state_center_id', reqBody.state_center_id);
+      // }
+      
+      // if (reqBody.department_id) {
+      //   formData.append('department_id', reqBody.department_id);
+      // }
+      
+     
+      
+      // if(reqBody.documentName) {
+      //   formData.append('document_name', reqBody.documentName);
+      // }
+      // Add file if provided
+      // if (file) {
+      //   formData.append('file', file);
+      // }
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.UPLOAD_DOCUMENT}`, reqBody, { headers })
+    .pipe(map((response: any) => {
+      return response
+    }))
+  }
+
+  getUploadedDocuments(reqBody) {
+    const headers = this.headers;
+    let params = new HttpParams();
+
+    Object.entries(reqBody).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        params = params.set(key, value.toString());
+      }
+    });
+
+    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_DOCUMENTS}`, {
+      headers,
+      params
+    }).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  deleteFile(fileId) {
+    const headers = this.headers
+    return this.http.delete<any>(`${this.baseUrl}${API_END_POINTS.DELETE_FILE}/${fileId}`, {headers})
+    .pipe(map((response: any) => {
+      return response
+    }))
+  }
+
+  triggerFileSummary(fileId) {
+    const storageData:any = JSON.parse(localStorage.getItem('loginData'))
+    // console.log('storageData--', storageData)
+     this.headers = new HttpHeaders({
+       'Authorization': `Bearer ${storageData?.access_token}`
+     });
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.DELETE_FILE}/${fileId}/summary`, {}, {headers})
+    .pipe(map((response: any) => {
+      return response
+    }))
+  }
+
+  downloadFile(fileId: string): Observable<Blob> {
+    const headers = this.headers;
+  
+    return this.http.get(`${this.baseUrl}${API_END_POINTS.DOWNLOAD_FILE}/${fileId}/download`, {
+      headers,
+      responseType: 'blob'
+    });
+  }
+
+  deleteSummary(fileId) {
+    const headers = this.headers
+    return this.http.delete<any>(`${this.baseUrl}${API_END_POINTS.DELETE_SUMMARY}/${fileId}/summary`, {headers})
+    .pipe(map((response: any) => {
+      return response
+    }))
+  }
+
+  deleteRecommendedCourse(roleMappingId: string, courseIdentifier: string) {
+    const headers = this.headers;
+  
+    return this.http.delete<any>(
+      `${this.baseUrl}${API_END_POINTS.DELETE_COURSE_RECOMMENDATION}/${roleMappingId}/course/${courseIdentifier}`,
+      { headers }
+    );
+  }
+
+  getCbpPlansWithSelectedCourses(): any[] {
+    const source = this.cbpPlanFinalObj;
+
+    return source?.role_mapping_generation
+      ?.flatMap((role: any) => role.cbp_plans || [])
+      ?.filter(
+        (plan: any) =>
+          Array.isArray(plan.selected_courses) &&
+          plan.selected_courses.length > 0
+      ) || [];
+  }
+
+  getAdditionalParameterforSuggestedCourses(identifiers) {
+    const headers = this.headers
+    let reqBody = {
+      "request": {
+        "filters": {
+          "identifier":identifiers,
+          
+          "status": [
+            "Live"
+          ]
+        },
+        "fields": [
+          "language",
+          "identifier",
+          "avgRating"
+        ],
+        "limit": 1000,
+        "offset": 0,
+        "sort_by": {}
+      }
+    }
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.SUGGESTED_COURSE_LIST}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
   }
 
 
