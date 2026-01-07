@@ -921,6 +921,9 @@ gap: 8px;
 border: none;
 }
 
+
+
+
 .custom-textarea {
     color: #000;
     font-family: Lato;
@@ -2050,3 +2053,9 @@ background: #f8f9fa;
   background-color: transparent !important;
 }
 
+
+:host ::ng-deep .search-and-buttons-container {
+   .mat-option-text {
+    color:#fff !important
+  }
+}
