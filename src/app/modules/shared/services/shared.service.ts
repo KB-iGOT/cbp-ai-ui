@@ -537,11 +537,11 @@ export class SharedService {
     } else {
       url = `${this.baseUrl}${API_END_POINTS.DELETE_ROLE_MAPPING_BY_STATE_CENTER}?state_center_id=${state_center_id}`
     }
-
+    
     return this.http.delete<any>(url, { headers })
-    .pipe(map((response: any) => {
-      return response
-    }))
+      .pipe(map((response: any) => {
+        return response
+      }))
   }
 
   addUserCourse(reqBody) {

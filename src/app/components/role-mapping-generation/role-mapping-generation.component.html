@@ -157,9 +157,12 @@
                     <p>Disclaimer: Please do not upload any confidential documents. </p>
                 </div>
             </div> -->
+            <div class="mt-2" *ngIf="documents?.length < 1 && !(roleMappingForm?.invalid)">
+               <p><span style="font-size: .875rem;font-weight: bold;">Note: </span><span class="error">Please Upload atleast 1 Document.</span></p>
+            </div>
             <div class="mt-4" >
-                <input [disabled]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading"
-                    [ngClass]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading ? 'btn-disable':'btn-active'" 
+                <input [disabled]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1"
+                    [ngClass]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1 ? 'btn-disable':'btn-active'" 
                     type="button" 
                     [value]="loading ? 'Generating CBP Plan...' : 'Generate CBP Plan'"
                     (click)="onGenerateRoleMapping()" />
