@@ -1171,7 +1171,11 @@ private destroy$ = new Subject<void>();
     const formData = this.roleMappingForm.value;
      
     this.sharedService.cbpPlanFinalObj['departments'] =  formData.departments ? formData.departments : ''
-    this.cbpFinalObj['departments'] = formData.departments ? formData.departments : ''
+    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
+    if(this.cbpFinalObj && this.cbpFinalObj?.ministry && this.cbpFinalObj?.ministry?.sbOrgType) {
+      this.cbpFinalObj['departments'] = formData.departments ? formData.departments : ''
+    }
+    
     const selectedMinistry = this.ministryData.find(item => item.identifier === formData.ministry);
     
    
