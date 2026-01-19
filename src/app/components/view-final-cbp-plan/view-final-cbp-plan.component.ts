@@ -190,7 +190,7 @@ export class ViewFinalCbpPlanComponent {
               const latestPlan = cbpPlans.length
                 ? cbpPlans[cbpPlans.length - 1]
                 : null;
-
+               console.log('latestPlan', latestPlan)
               let obj: any = {
                 designation: res[i].designation_name,
                 wing: res[i].wing_division_section,
@@ -803,6 +803,7 @@ getCompetenciesByType(type: string, course: any): any[] {
     
   generateExcel(jsonArray: any[], filename: string = "final.xlsx") {
     console.log('jsonArray', jsonArray)
+    
     if (!jsonArray || jsonArray.length === 0) return;
 
     // -------- MAIN HEADER FROM FIRST OBJECT ---------
@@ -811,32 +812,59 @@ getCompetenciesByType(type: string, course: any): any[] {
     if (firstObj.department_name) title += " / " + firstObj.department_name;
 
     // -------- COLUMN HEADERS ---------
-    const headers = [
-      "Designation",
-      "Role & Responsibilities",
-      "Activities",
-      "Behavioral Competencies",
-      "Functional Competencies",
-      "Domain Competencies"
-    ];
+   const headers = [
+  "Designation",
+  "Role & Responsibilities",
+  "Activities",
+  "Behavioral Competencies",
+  "Functional Competencies",
+  "Domain Competencies",
+  'courseDetails'
+];
 
     // -------- DATA ROWS ---------
-    const dataRows = jsonArray.map(json => ({
-      "Designation": `${json.designation_name} : Wing/Division - ${json.wing_division_section}`,
-      "Role & Responsibilities": (json.role_responsibilities || [])
-        .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
-      "Activities": (json.activities || [])
-        .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
+   const dataRows = jsonArray.map(json => {
+  const courses =
+    json?.cbp_plans?.length
+      ? json.cbp_plans[json.cbp_plans.length - 1]?.selected_courses || []
+      : [];
+
+  const courseDetails = courses.map((c: any, i: number) => {
+    const competencies = (c.competencies || [])
+      .map((cc: any) =>
+        `${cc.competencyAreaName} → ${cc.competencyThemeName} → ${cc.competencySubThemeName}`
+      )
+      .join(" | ");
+
+    return (
+      `${i + 1}. Course Name: ${c.course}\n` +
+      `   Identifier: ${c.identifier}\n` +
+      `   Duration (mins): ${Math.round(+c.duration / 60)}\n` +
+      `   Relevancy: ${c.relevancy}%\n` +
+      `   Rationale: ${c.rationale}\n` +
+      `   Organisation: ${(c.organisation || []).join(", ")}\n` +
+      `   Competencies: ${competencies}`
+    );
+  }).join("\n\n");
+  return {
+    "Designation": `${json.designation_name} : Wing/Division - ${json.wing_division_section}`,
+    "Role & Responsibilities": (json.role_responsibilities || [])
+      .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
+    "Activities": (json.activities || [])
+      .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
       "Behavioral Competencies": (json.competencies || [])
         .filter((c: any) => c.type === "Behavioral")
         .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
       "Functional Competencies": (json.competencies || [])
         .filter((c: any) => c.type === "Functional")
         .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
-      "Domain Competencies": (json.competencies || [])
+         "Domain Competencies": (json.competencies || [])
         .filter((c: any) => c.type === "Domain")
         .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
-    }));
+      "Course Details": courseDetails
+  };
+});
+
 
     // -------- CREATE WORKSHEET ---------
     const ws = XLSX.utils.aoa_to_sheet([]);
