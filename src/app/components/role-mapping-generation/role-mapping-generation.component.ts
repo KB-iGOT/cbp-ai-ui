@@ -96,6 +96,7 @@ filteredDepartmentList = [];
 originalMinistryData = []
 apiLoading= false
 firstApiResponse:any = null
+documents = []
 private destroy$ = new Subject<void>();
   constructor(
     private eventSvc: EventService,
@@ -171,6 +172,31 @@ private destroy$ = new Subject<void>();
 
 
 
+  }
+
+  getUploadedDocuments() {
+    const formData = this.roleMappingForm.value;
+    this.loading = true
+    let reqBody = {
+      state_center_id: formData.ministry,
+      include_summary: true, 
+      skip:0,
+      limit:200
+    }
+    if(formData?.departments ) {
+      reqBody['department_id'] = formData?.departments
+    }
+    this.loading = true
+    
+    this.sharedService.getUploadedDocuments(reqBody).subscribe( (res)=>{
+      if(res && res?.items && res?.items?.length) {
+        this.loading = false
+        this.documents = res?.items
+      } else {
+        this.documents = []
+        this.loading = false
+      }
+    })
   }
 
   async editMinistryForm() {
@@ -294,6 +320,7 @@ private destroy$ = new Subject<void>();
       }
     }
     this.originalFormValues = this.roleMappingForm.getRawValue();
+    this.getUploadedDocuments()
   }
 
   ngOnChanges() {
@@ -380,9 +407,11 @@ private destroy$ = new Subject<void>();
                   // Success handling
                   console.log('Success:', res);
                   this.loading = false
+                  this.firstApiResponse = []
                   this.generateFinalRoleMapping()
                 },
                 error: (error) => {
+                  this.firstApiResponse = []
                   this.snackBar.open(error?.error?.detail, 'X', {
                     duration: 3000,
                     panelClass: ['snackbar-error']
@@ -508,6 +537,8 @@ private destroy$ = new Subject<void>();
         
       })
     }
+
+    this.getUploadedDocuments()
   }
 
   searchData() {
@@ -751,6 +782,7 @@ private destroy$ = new Subject<void>();
                 // Success handling
                 console.log('Success:', res);
                 this.loading = false
+                this.firstApiResponse = []
                 this.generateFinalRoleMapping()
               },
               error: (error) => {
@@ -758,11 +790,12 @@ private destroy$ = new Subject<void>();
                   duration: 3000,
                   panelClass: ['snackbar-error']
                 });
+                this.firstApiResponse = []
                 this.loading = false
                // this.generateFinalRoleMapping()
               }
             });
-          } else {
+          } else if(result === 'button') {
             this.loading = false
             // this.generateFinalRoleMapping()
             // this.router.navigate(['/']);
@@ -785,6 +818,8 @@ private destroy$ = new Subject<void>();
             });
            // window.location.reload()
             
+          } else {
+            this.loading = false
           }
         });
       }
@@ -1136,11 +1171,20 @@ private destroy$ = new Subject<void>();
     const formData = this.roleMappingForm.value;
      
     this.sharedService.cbpPlanFinalObj['departments'] =  formData.departments ? formData.departments : ''
-
+    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
+    if(this.cbpFinalObj && this.cbpFinalObj?.ministry && this.cbpFinalObj?.ministry?.sbOrgType) {
+      this.cbpFinalObj['departments'] = formData.departments ? formData.departments : ''
+    }
+    
+    const selectedMinistry = this.ministryData.find(item => item.identifier === formData.ministry);
+    
+   
+    this.sharedService.cbpPlanFinalObj['ministry'] =  selectedMinistry
 
       const departmentName = this.departmentData.find(u => u.identifier=== formData.departments);
       this.sharedService.cbpPlanFinalObj['department_name'] =  departmentName?.orgName
       localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+      this.getUploadedDocuments()
   }
 
 
