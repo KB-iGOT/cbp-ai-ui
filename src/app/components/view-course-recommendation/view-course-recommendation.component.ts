@@ -65,7 +65,27 @@ export class ViewCourseRecommendationComponent {
           })
         }
         this.filterdCourses = allCourses
+        let identifiersArr = []
         console.log('this.filterdCourses', this.filterdCourses)
+        this.filterdCourses.map((item)=>{
+          identifiersArr.push(item?.identifier)
+        })
+        this.sharedService.getAdditionalParameterforSuggestedCourses(identifiersArr).subscribe((response)=>{
+          if(response && response.result && response.result.content && response.result.content.length) {
+            for(let i=0; i < response.result.content.length;i++) {
+              for(let j=0; j<this.filterdCourses.length;j++) {
+                if(this.filterdCourses[j]['identifier'] === response.result.content[i]['identifier'] ) {
+                  this.filterdCourses[j]['language'] = response.result.content[i]['language']
+                  this.filterdCourses[j]['avgRating'] = response.result.content[i]['avgRating']
+                  this.filterdCourses[j]['course'] = response.result.content[i]['name']
+                  break;
+                }
+              }
+              
+            }
+          }
+          
+        })
         this.updateCompetencyCounts()
         // this.getSuggestedCourse()
         // this.getUserCourse()
