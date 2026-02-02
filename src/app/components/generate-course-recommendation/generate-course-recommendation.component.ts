@@ -699,7 +699,7 @@ export class GenerateCourseRecommendationComponent {
             if(this.fullCourseList[j]['identifier'] === response.result.content[i]['identifier'] ) {
               this.fullCourseList[j]['language'] = response.result.content[i]['language']
               this.fullCourseList[j]['avgRating'] = response.result.content[i]['avgRating']
-              this.fullCourseList[j]['name'] = response.result.content[i]['name']
+              this.fullCourseList[j]['course'] = response.result.content[i]['name']
               break;
             }
           }
