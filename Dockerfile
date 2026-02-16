@@ -3,14 +3,14 @@ FROM node:22.6.0 AS build
 
 WORKDIR /app
 
-# Use built-in node user
+# Create directory and set ownership in one layer
+RUN mkdir -p /app && chown -R node:node /app
+
 USER node
 
-# Copy package files
 COPY --chown=node:node package*.json ./
 RUN npm install --force
 
-# Copy source
 COPY --chown=node:node . .
 RUN npm run build
 
