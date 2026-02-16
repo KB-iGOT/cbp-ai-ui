@@ -16,27 +16,29 @@ RUN npm run build
 
 
 # ---------- Stage 2: Serve with Apache ----------
+# ---------- Stage 2: Serve with Apache ----------
 FROM httpd:alpine
 
-# Create non-root node user (alpine uses adduser)
+# Create non-root user
 RUN addgroup -S node && adduser -S node -G node
 
-# Change Apache to listen on 8080 (non-root port)
+# Change Apache to use port 8080
 RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf
+
+# Set ServerName to suppress warning
+RUN echo "ServerName localhost" >> /usr/local/apache2/conf/httpd.conf
+
+# Fix permissions for required Apache directories
+RUN chown -R node:node /usr/local/apache2/htdocs \
+    /usr/local/apache2/logs \
+    /usr/local/apache2/conf
 
 # Copy build artifacts
 COPY --from=build /app/dist/cbp-ai-ui /usr/local/apache2/htdocs
 
-# Copy .htaccess and custom 404 page
+# Copy extra files
 COPY ./.htaccess /usr/local/apache2/htdocs
 COPY src/404.html /usr/local/apache2/htdocs/404.html
-
-# Enable mod_rewrite and configure custom 404
-RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
-    echo 'ErrorDocument 404 /404.html' >> /usr/local/apache2/conf/httpd.conf
-
-# Fix ownership
-RUN chown -R node:node /usr/local/apache2/htdocs
 
 # Switch to non-root
 USER node
