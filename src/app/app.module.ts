@@ -58,6 +58,8 @@ import { UploadDialogComponent } from './modules/upload-document-page/upload-dia
 import { InitialScreenComponent } from './modules/initial-screen/initial-screen.component';
 import { ProgressDialogComponent } from './modules/upload-document-page/progress-dialog/progress-dialog.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { UpdateDesignationHierarchyComponent } from './components/update-designation-hierarchy/update-designation-hierarchy.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 const appInitializer = (initSvc: InitService) => async () => {
   try {
     await initSvc.init()
@@ -90,7 +92,8 @@ const appInitializer = (initSvc: InitService) => async () => {
     UploadDocumentPageComponent,
     UploadDialogComponent,
     InitialScreenComponent,
-    ProgressDialogComponent
+    ProgressDialogComponent,
+    UpdateDesignationHierarchyComponent
   ],
   imports: [
     BrowserModule,
@@ -116,7 +119,8 @@ const appInitializer = (initSvc: InitService) => async () => {
     MatMenuModule,
     MatTooltipModule,
     MatTabsModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    DragDropModule
   ],
   providers: [
     {

@@ -7,6 +7,7 @@ import html2canvas from 'html2canvas';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as XLSX from 'xlsx';
 import { DeleteRoleMappingPopupComponent } from '../delete-role-mapping-popup/delete-role-mapping-popup.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-view-final-cbp-plan',
   templateUrl: './view-final-cbp-plan.component.html',
@@ -19,11 +20,26 @@ export class ViewFinalCbpPlanComponent {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     public sharedService: SharedService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fb: FormBuilder
   ) {
+    this.filterForm = this.fb.group({
+      language: [null]
+    });
     this.openedFrom = data?.openedFrom;
     this.getMappingData()
   }
+  filterForm!: FormGroup;
+  languages = [{ "code": "en", label: "English" },
+  { "code": "hi", label: "Hindi" },
+  { "code": "te", label: "Telugu" },
+  { "code": "kn", label: "Kannada" },
+  { "code": "mr", label: "Marathi" },
+  { "code": "ta", label: "Tamil" },
+  { "code": "gu", label: "Gujarati" },
+  { "code": "ml", label: "Malayalam" },
+  { "code": "bn", label: "Bengali" },];
+  filteredLanguages = [...this.languages];
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
   loading = false
   designationData: any = []
@@ -150,7 +166,7 @@ export class ViewFinalCbpPlanComponent {
     if (this.sharedService?.cbpPlanFinalObj.ministry.sbOrgType === 'ministry') {
       this.loading = true
       let state_center_id = this.sharedService?.cbpPlanFinalObj.ministry.identifier
-      if(this.sharedService?.cbpPlanFinalObj.departments?.length) {
+      if (this.sharedService?.cbpPlanFinalObj.departments?.length) {
         let department_id = this.sharedService?.cbpPlanFinalObj.departments
         this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
           next: (res) => {
@@ -168,7 +184,7 @@ export class ViewFinalCbpPlanComponent {
                 competenciesObj.total++;
                 this.totalCompetencieObj.total++
                 if (c.type.toLowerCase() === 'behavioral') {
-  
+
                   behavioralCompetencies.push(`${c.theme} - ${c.sub_theme}`)
                   competenciesObj.behavioral++;
                   this.totalCompetencieObj.behavioral++
@@ -182,7 +198,7 @@ export class ViewFinalCbpPlanComponent {
                   domainCompetencies.push(`${c.theme} - ${c.sub_theme}`)
                   competenciesObj.domain++;
                   this.totalCompetencieObj.domain++
-  
+
                 }
               });
               const cbpPlans = res[i]?.cbp_plans || [];
@@ -190,7 +206,7 @@ export class ViewFinalCbpPlanComponent {
               const latestPlan = cbpPlans.length
                 ? cbpPlans[cbpPlans.length - 1]
                 : null;
-               console.log('latestPlan', latestPlan)
+              console.log('latestPlan', latestPlan)
               let obj: any = {
                 designation: res[i].designation_name,
                 wing: res[i].wing_division_section,
@@ -220,8 +236,8 @@ export class ViewFinalCbpPlanComponent {
                 // ],
                 // completionRate: { behavioral: 85, functional: 78, domain: 92 }
               }
-  
-  
+
+
               this.designationData.push(obj)
             }
             this.cdr.detectChanges();
@@ -256,7 +272,7 @@ export class ViewFinalCbpPlanComponent {
                 competenciesObj.total++;
                 this.totalCompetencieObj.total++
                 if (c.type.toLowerCase() === 'behavioral') {
-  
+
                   behavioralCompetencies.push(`${c.theme} - ${c.sub_theme}`)
                   competenciesObj.behavioral++;
                   this.totalCompetencieObj.behavioral++
@@ -270,7 +286,7 @@ export class ViewFinalCbpPlanComponent {
                   domainCompetencies.push(`${c.theme} - ${c.sub_theme}`)
                   competenciesObj.domain++;
                   this.totalCompetencieObj.domain++
-  
+
                 }
               });
               const cbpPlans = res[i]?.cbp_plans || [];
@@ -308,8 +324,8 @@ export class ViewFinalCbpPlanComponent {
                 // ],
                 // completionRate: { behavioral: 85, functional: 78, domain: 92 }
               }
-  
-  
+
+
               this.designationData.push(obj)
             }
             console.log('this.designationData', this.designationData)
@@ -318,9 +334,9 @@ export class ViewFinalCbpPlanComponent {
             setTimeout(() => {
               this.scrollToTop()
             }, 1000);
-  
+
           },
-  
+
           error: (error) => {
             this.loading = false
             this.snackBar.open(error?.error?.detail, 'X', {
@@ -330,9 +346,9 @@ export class ViewFinalCbpPlanComponent {
           }
         });
       }
-     
 
-      
+
+
     }
     if (this.sharedService?.cbpPlanFinalObj.ministry.sbOrgType === 'state') {
       this.loading = true
@@ -502,45 +518,45 @@ export class ViewFinalCbpPlanComponent {
 
 
   }
-getCompetenciesByType(type: string, course: any): any[] {
-  if (!course) {
-    return [];
-  }
-
-  let competencies: any[] = [];
-
-  // AI Recommended / Public / User Added
-  if (Array.isArray(course.competencies)) {
-    competencies = course.competencies;
-  }
-  // Manually Suggested - iGOT (v6)
-  else if (Array.isArray(course.competencies_v6)) {
-    competencies = course.competencies_v6;
-  }
-
-  if (!competencies.length) {
-    return [];
-  }
-
-  const normalizedType = type.toLowerCase().trim();
-
-  return competencies.filter(c => {
-    if (!c?.competencyAreaName) {
-      return false;
+  getCompetenciesByType(type: string, course: any): any[] {
+    if (!course) {
+      return [];
     }
 
-    const area = c.competencyAreaName.toLowerCase().trim();
+    let competencies: any[] = [];
 
-    // handle behavioural / behavioral
-    if (normalizedType === 'behavioural' || normalizedType === 'behavioral') {
-      return area === 'behavioural' || area === 'behavioral';
+    // AI Recommended / Public / User Added
+    if (Array.isArray(course.competencies)) {
+      competencies = course.competencies;
+    }
+    // Manually Suggested - iGOT (v6)
+    else if (Array.isArray(course.competencies_v6)) {
+      competencies = course.competencies_v6;
     }
 
-    return area === normalizedType;
-  });
-}
+    if (!competencies.length) {
+      return [];
+    }
 
-    getDisplayedCompetencies(type: string, index: number): any[] {
+    const normalizedType = type.toLowerCase().trim();
+
+    return competencies.filter(c => {
+      if (!c?.competencyAreaName) {
+        return false;
+      }
+
+      const area = c.competencyAreaName.toLowerCase().trim();
+
+      // handle behavioural / behavioral
+      if (normalizedType === 'behavioural' || normalizedType === 'behavioral') {
+        return area === 'behavioural' || area === 'behavioral';
+      }
+
+      return area === normalizedType;
+    });
+  }
+
+  getDisplayedCompetencies(type: string, index: number): any[] {
     const competencies = this.getCompetenciesByType(type, index);
     const key = `${index}-${type}`;
 
@@ -564,25 +580,25 @@ getCompetenciesByType(type: string, course: any): any[] {
   hasMoreThanTwo(type: string, index: number): boolean {
     return this.getCompetenciesByType(type, index).length > 2;
   }
-    getRemainingCount(type: string, index: number): number {
-      const totalCount = this.getCompetenciesByType(type, index).length;
-      return totalCount - 2;
-    }
-    updateCompetencyCounts() {
-   // const comps = this.competenciesArray.value;
-    this.competenciesCount = {total: 0, public_courses: 0, igot: 0};
+  getRemainingCount(type: string, index: number): number {
+    const totalCount = this.getCompetenciesByType(type, index).length;
+    return totalCount - 2;
+  }
+  updateCompetencyCounts() {
+    // const comps = this.competenciesArray.value;
+    this.competenciesCount = { total: 0, public_courses: 0, igot: 0 };
     this.filterdCourses.forEach(c => {
       this.competenciesCount.total++;
       if (c.is_public) this.competenciesCount.public_courses++;
       if (!c.is_public) this.competenciesCount.igot++;
     });
   }
-   
+
   confirmDeleteCourse(item: any, index: number) {
     const roleMappingId = this.recommended_course_id;
     const courseIdentifier =
       item?.course_identifier || item?.id || item?.identifier;
-  
+
     if (!roleMappingId || !courseIdentifier) {
       this.snackBar.open('Unable to delete course', 'X', {
         duration: 3000,
@@ -590,21 +606,21 @@ getCompetenciesByType(type: string, course: any): any[] {
       });
       return;
     }
-  
+
     this.loading = true;
-  
+
     this.sharedService
       .deleteRecommendedCourse(roleMappingId, courseIdentifier)
       .subscribe({
         next: () => {
           // Remove from UI
           this.filterdCourses.splice(index, 1);
-  
+
           // Update counts
           this.updateCompetencyCounts();
-  
+
           this.loading = false;
-  
+
           this.snackBar.open('Course deleted successfully', 'X', {
             duration: 3000,
             panelClass: ['snackbar-success']
@@ -612,7 +628,7 @@ getCompetenciesByType(type: string, course: any): any[] {
         },
         error: (error) => {
           this.loading = false;
-  
+
           this.snackBar.open(
             error?.error?.detail || 'Failed to delete course',
             'X',
@@ -624,23 +640,23 @@ getCompetenciesByType(type: string, course: any): any[] {
         }
       });
   }
-  
+
   deleteCard(item: any, index: number) {
-    console.log("item, index", item,index)
+    console.log("item, index", item, index)
     const dialogRef = this.dialog.open(DeleteRoleMappingPopupComponent, {
       width: '600px',
       data: {
         planId: this.planData?.id,   // role mapping id
         course: item,                // course object
         index: index,
-        from : 'viewCourse'                 // index for UI removal
+        from: 'viewCourse'                 // index for UI removal
       },
       panelClass: 'view-cbp-plan-popup',
       minHeight: '300px',
       maxHeight: '90vh',
       disableClose: true
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'saved') {
         this.confirmDeleteCourse(item, index);
@@ -744,7 +760,7 @@ getCompetenciesByType(type: string, course: any): any[] {
           );
         }
 
-        const imgData = canvasPage.toDataURL('image/png',1);
+        const imgData = canvasPage.toDataURL('image/png', 1);
         if (page > 0) pdf.addPage();
         const imgHeightMM = canvasPage.height / ratio;
         pdf.addImage(imgData, 'PNG', marginLeft, marginTop, usableWidth, imgHeightMM);
@@ -770,40 +786,40 @@ getCompetenciesByType(type: string, course: any): any[] {
     const element = this.pdfContent.nativeElement;
 
     const opt = {
-      margin:       [10, 5, 5, 10], // top, left, bottom, right in mm
-      filename:     'CBP_Plan.pdf',
-      image:        { type: 'jpeg', quality: 0.85 },
-      html2canvas:  { scale: 1.5, useCORS: true, logging: false },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
-      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] } // avoid cutting text
+      margin: [10, 5, 5, 10], // top, left, bottom, right in mm
+      filename: 'CBP_Plan.pdf',
+      image: { type: 'jpeg', quality: 0.85 },
+      html2canvas: { scale: 1.5, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // avoid cutting text
     };
 
     html2pdf()
-    .set(opt)
-    .from(element)
-    .save()
-    .then(() => {
-      // PDF download finished
-      this.loading = false;
-    })
-    .catch(() => {
-      // Handle errors and stop loading
-      this.loading = false;
-    });
+      .set(opt)
+      .from(element)
+      .save()
+      .then(() => {
+        // PDF download finished
+        this.loading = false;
+      })
+      .catch(() => {
+        // Handle errors and stop loading
+        this.loading = false;
+      });
 
     setTimeout(() => {
       this.loading = false;
     }, 2000);
 
 
-  
+
   }
 
-  
-    
+
+
   generateExcel(jsonArray: any[], filename: string = "final.xlsx") {
     console.log('jsonArray', jsonArray)
-    
+
     if (!jsonArray || jsonArray.length === 0) return;
 
     // -------- MAIN HEADER FROM FIRST OBJECT ---------
@@ -812,58 +828,58 @@ getCompetenciesByType(type: string, course: any): any[] {
     if (firstObj.department_name) title += " / " + firstObj.department_name;
 
     // -------- COLUMN HEADERS ---------
-   const headers = [
-  "Designation",
-  "Role & Responsibilities",
-  "Activities",
-  "Behavioral Competencies",
-  "Functional Competencies",
-  "Domain Competencies",
-  'courseDetails'
-];
+    const headers = [
+      "Designation",
+      "Role & Responsibilities",
+      "Activities",
+      "Behavioral Competencies",
+      "Functional Competencies",
+      "Domain Competencies",
+      'courseDetails'
+    ];
 
     // -------- DATA ROWS ---------
-   const dataRows = jsonArray.map(json => {
-  const courses =
-    json?.cbp_plans?.length
-      ? json.cbp_plans[json.cbp_plans.length - 1]?.selected_courses || []
-      : [];
+    const dataRows = jsonArray.map(json => {
+      const courses =
+        json?.cbp_plans?.length
+          ? json.cbp_plans[json.cbp_plans.length - 1]?.selected_courses || []
+          : [];
 
-  const courseDetails = courses.map((c: any, i: number) => {
-    const competencies = (c.competencies || [])
-      .map((cc: any) =>
-        `${cc.competencyAreaName} → ${cc.competencyThemeName} → ${cc.competencySubThemeName}`
-      )
-      .join(" | ");
+      const courseDetails = courses.map((c: any, i: number) => {
+        const competencies = (c.competencies || [])
+          .map((cc: any) =>
+            `${cc.competencyAreaName} → ${cc.competencyThemeName} → ${cc.competencySubThemeName}`
+          )
+          .join(" | ");
 
-    return (
-      `${i + 1}. Course Name: ${c.course}\n` +
-      `   Identifier: ${c.identifier}\n` +
-      `   Duration (mins): ${Math.round(+c.duration / 60)}\n` +
-      `   Relevancy: ${c.relevancy}%\n` +
-      `   Rationale: ${c.rationale}\n` +
-      `   Organisation: ${(c.organisation || []).join(", ")}\n` +
-      `   Competencies: ${competencies}`
-    );
-  }).join("\n\n");
-  return {
-    "Designation": `${json.designation_name} : Wing/Division - ${json.wing_division_section}`,
-    "Role & Responsibilities": (json.role_responsibilities || [])
-      .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
-    "Activities": (json.activities || [])
-      .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
-      "Behavioral Competencies": (json.competencies || [])
-        .filter((c: any) => c.type === "Behavioral")
-        .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
-      "Functional Competencies": (json.competencies || [])
-        .filter((c: any) => c.type === "Functional")
-        .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
-         "Domain Competencies": (json.competencies || [])
-        .filter((c: any) => c.type === "Domain")
-        .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
-      "Course Details": courseDetails
-  };
-});
+        return (
+          `${i + 1}. Course Name: ${c.course}\n` +
+          `   Identifier: ${c.identifier}\n` +
+          `   Duration (mins): ${Math.round(+c.duration / 60)}\n` +
+          `   Relevancy: ${c.relevancy}%\n` +
+          `   Rationale: ${c.rationale}\n` +
+          `   Organisation: ${(c.organisation || []).join(", ")}\n` +
+          `   Competencies: ${competencies}`
+        );
+      }).join("\n\n");
+      return {
+        "Designation": `${json.designation_name} : Wing/Division - ${json.wing_division_section}`,
+        "Role & Responsibilities": (json.role_responsibilities || [])
+          .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
+        "Activities": (json.activities || [])
+          .map((v: string, i: number) => `${i + 1}. ${v}`).join("\n\n"),
+        "Behavioral Competencies": (json.competencies || [])
+          .filter((c: any) => c.type === "Behavioral")
+          .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
+        "Functional Competencies": (json.competencies || [])
+          .filter((c: any) => c.type === "Functional")
+          .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
+        "Domain Competencies": (json.competencies || [])
+          .filter((c: any) => c.type === "Domain")
+          .map((c: any, i: number) => `${i + 1}. ${c.theme} - ${c.sub_theme}`).join("\n\n"),
+        "Course Details": courseDetails
+      };
+    });
 
 
     // -------- CREATE WORKSHEET ---------
@@ -930,32 +946,33 @@ getCompetenciesByType(type: string, course: any): any[] {
     XLSX.writeFile(wb, filename);
   }
 
-      
-    
 
-    downloadCSV() {
-      let fileName = ''
-      if(!this.sharedService?.cbpPlanFinalObj.departments) {
-        fileName = `CBP_Report_${this.sharedService?.cbpPlanFinalObj.ministry.identifier}_${this.sharedService?.cbpPlanFinalObj.departments}.xlsx`
-      } else {
-        fileName = `CBP_Report_${this.sharedService?.cbpPlanFinalObj.ministry.identifier}.xlsx`
-      }
-      this.generateExcel(this.jsonData, fileName );
+
+
+  downloadCSV() {
+    let fileName = ''
+    if (!this.sharedService?.cbpPlanFinalObj.departments) {
+      fileName = `CBP_Report_${this.sharedService?.cbpPlanFinalObj.ministry.identifier}_${this.sharedService?.cbpPlanFinalObj.departments}.xlsx`
+    } else {
+      fileName = `CBP_Report_${this.sharedService?.cbpPlanFinalObj.ministry.identifier}.xlsx`
     }
+    this.generateExcel(this.jsonData, fileName);
+  }
 
-    downloadPdfFromBE(context : string) {
-      this.loading = true
+  downloadPdfFromBE(context: string) {
+    let selectedLanguage = this.filterForm.get('language')?.value || 'en';
+    this.loading = true
     //  this.sharedService.downloadPdf(this.sharedService?.cbpPlanFinalObj.ministry.identifier)
-      if(!this.sharedService?.cbpPlanFinalObj.departments) {
-        this.sharedService.downloadPdf(this.sharedService?.cbpPlanFinalObj.ministry.identifier, context)  
-      } else {
-        this.sharedService.downloadPdfForDepartment(this.sharedService?.cbpPlanFinalObj.ministry.identifier, this.sharedService?.cbpPlanFinalObj.departments, context)  
-      }
-      
-      setTimeout(()=>{
-        this.loading = false
-      },5000)
+    if (!this.sharedService?.cbpPlanFinalObj.departments) {
+      this.sharedService.downloadPdf(this.sharedService?.cbpPlanFinalObj.ministry.identifier, context, selectedLanguage)
+    } else {
+      this.sharedService.downloadPdfForDepartment(this.sharedService?.cbpPlanFinalObj.ministry.identifier, this.sharedService?.cbpPlanFinalObj.departments, context, selectedLanguage )
     }
+
+    setTimeout(() => {
+      this.loading = false
+    }, 5000)
+  }
   getSelectedCourses(department: any): any[] {
     if (!department?.cbp_plans?.length) {
       return [];
@@ -967,4 +984,19 @@ getCompetenciesByType(type: string, course: any): any[] {
     return latestPlan?.selected_courses || [];
   }
 
+  applyFilters() {
+
   }
+
+  filterList(value: string, type: string) {
+    const search = value.toLowerCase();
+
+    switch (type) {
+
+      case 'language':
+        this.filteredLanguages = this.languages.filter(v => v.label?.toLowerCase().includes(search));
+        break;
+    }
+  }
+
+}

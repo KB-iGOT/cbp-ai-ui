@@ -1,0 +1,40 @@
+<div class="overlay" *ngIf="isOpen" (click)="cancel()"></div>
+
+<div class="drawer" [class.open]="isOpen">
+
+    <!-- HEADER -->
+    <div class="drawer-header">
+        <h4>Update Designation Hierarchy</h4>
+        <button class="close-btn" (click)="cancel()">✕</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="drawer-body" cdkDropList (cdkDropListDropped)="drop($event)">
+
+        <div class="designation-item" *ngFor="let item of designations; let i = index" cdkDrag>
+            <div class="drag-handle" cdkDragHandle><mat-icon>drag_indicator</mat-icon></div>
+
+            <div class="designation-name">
+                {{ item.name }}
+            </div>
+
+            <select [(ngModel)]="item.sort_order" (ngModelChange)="onOrderChange(item)">
+                <option *ngFor="let num of numbers" [value]="num">
+                    {{ num }}
+                </option>
+            </select>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="drawer-footer">
+        <button class="btn cancel" (click)="cancel()">Cancel</button>
+        <button class="btn submit" (click)="submit()">Submit</button>
+    </div>
+
+</div>
+
+<div class="overlay-loader" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+</div>

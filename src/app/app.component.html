@@ -27,20 +27,23 @@
                   <mat-icon>settings</mat-icon>
                 </button> -->
               
-                <!-- <mat-menu #settingsMenu="matMenu">
-                  <button mat-menu-item (click)="goToUploadDocument()">
-                    <mat-icon>upload</mat-icon>
-                    <span>Manage Documents</span>
-                  </button>
-                </mat-menu> -->
+                
                 <div>
                 <button [ngClass]="disableUploadDocument ? 'btn-active-disable':'btn-active'" class="" [disabled]="disableUploadDocument"  mat-raised-button color="primary" (click)="goToUploadDocument()">
                     <mat-icon>upload</mat-icon> Manage Documents
                 </button>
             </div>
               </div>
-            <div class="cursor-pointer" [matTooltip]="userEmail">
-                <img src="assets/icons/user.png" alt="Profile" class="profile-pic">
+            <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
+                <div class="profile-pic-container">
+                    <img src="assets/icons/user.png" alt="Profile" class="profile-pic" >
+                </div>
+                <mat-menu #settingsMenu="matMenu">
+                  <button mat-menu-item (click)="openUpdateDesignationHierarchy()">
+                    <mat-icon>update</mat-icon>
+                    <span>Update Designation Hierachy</span>
+                  </button>
+                </mat-menu>
             </div>
             <div style="margin-left: 10px;" class="cursor-pointer" (click)="logout()" matTooltip="Logout"><mat-icon>logout</mat-icon></div>
         </div>
@@ -679,3 +682,4 @@
         <img src="assets/icons/progress-icon.svg">
     </div>
 </div> -->
+<app-update-designation-hierarchy (closeDrawer)="closeDrawer()" *ngIf="openUpdateDesignationHierarchyDrawer"></app-update-designation-hierarchy>

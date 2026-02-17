@@ -47,6 +47,7 @@ const API_END_POINTS = {
   CENTER_BASED_MINISTRY: 'cbp-tpc-ai/api/v1/department/state-center',
   DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/reports/course-recommendations/download',
   DELETE_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/cbp-plan',
+  UPDATE_DESIGNATION_HIERARCHY: 'cbp-tpc-ai/api/v1/role-mapping/reorder'
 }
 
 
@@ -65,6 +66,7 @@ export class SharedService {
   summaryTriggerExecuted = new Subject()
   loginSuccess = new Subject()
   checkRoleMappingFormValidation = new Subject()
+  updateDesignationHierarchySubject = new Subject()
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.screenWidth = event.target.innerWidth;
@@ -615,12 +617,12 @@ export class SharedService {
       }))
   }
 
-  downloadPdf(state_center_id: string, context : string) {
+  downloadPdf(state_center_id: string, context : string, language: string) {
     const endpoint =
     context === 'acbp'
       ? API_END_POINTS.DOWNLOAD_PDF_ACBP
       : API_END_POINTS.DOWNLOAD_PDF;
-    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}`;
+    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}*&language=${language}`;
     const headers = this.headers
 
     return this.http.get(url, {
@@ -653,12 +655,12 @@ export class SharedService {
     });
   }
 
-  downloadPdfForDepartment(state_center_id, department_id: string, context?: string) {
+  downloadPdfForDepartment(state_center_id, department_id: string, context: string,language: string) {
     const endpoint =
     context === 'acbp'
       ? API_END_POINTS.DOWNLOAD_PDF_ACBP
       : API_END_POINTS.DOWNLOAD_PDF;
-    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}&department_id=${department_id}`;
+    const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}&department_id=${department_id}&language=${language}`;
     const headers = this.headers
 
     return this.http.get(url, {
@@ -870,6 +872,14 @@ export class SharedService {
       }
     }
     return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.SUGGESTED_COURSE_LIST}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  updateDesignationHierarchy(reqBody) {
+    const headers = this.headers
+    return this.http.put<any>(`${this.baseUrl}${API_END_POINTS.UPDATE_DESIGNATION_HIERARCHY}`, reqBody, { headers })
       .pipe(map((response: any) => {
         return response
       }))
