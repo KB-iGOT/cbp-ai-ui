@@ -22,7 +22,7 @@
             <div class="custom-select">
                 <div class="selected-value" (click)="toggleDropdown(item, $event)">
                     {{ item.sort_order }}
-                    <span class="chevron" [class.open]="openDropdownId === item.id">▾</span>
+                    <span class="chevron" [class.open]="openDropdownId === item.id"><mat-icon>arrow_drop_down</mat-icon></span>
                 </div>
 
                 <div class="dropdown" [id]="'dropdown-' + item.id" *ngIf="openDropdownId === item.id"
