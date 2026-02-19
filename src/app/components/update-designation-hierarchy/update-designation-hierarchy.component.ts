@@ -24,7 +24,7 @@ export interface Designation {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UpdateDesignationHierarchyComponent implements OnInit {
-
+  openDropdownId: string | null = null;
   isOpen = true;
   state_center_id!: string;
   department_id!: string;
@@ -39,14 +39,14 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
   constructor(private http: HttpClient, public sharedService: SharedService, private snackBar: MatSnackBar,) { }
 
   ngOnInit(): void {
-    
+
 
     this.refreshRoleMappingData()
-    
-    
+
+
 
     console.log('this.designations--', this.designations)
-    
+
   }
 
   drop(event: CdkDragDrop<Designation[]>) {
@@ -58,19 +58,15 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
     });
   }
 
-  onOrderChange(item: Designation) {
-    const selectedOrder = item.sort_order; // number selected in dropdown
-    const currentIndex = this.designations.findIndex(d => d.id === item.id);
+  // onOrderChange(item: any) {
+  //   const selectedOrder = item.sort_order;
+  //   const currentIndex = this.designations.findIndex(d => d.id === item.id);
 
-    // Remove the item
-    this.designations.splice(currentIndex, 1);
+  //   this.designations.splice(currentIndex, 1);
+  //   this.designations.splice(selectedOrder - 1, 0, item);
 
-    // Insert at the new position (subtract 1 because arrays are 0-based)
-    this.designations.splice(selectedOrder - 1, 0, item);
-
-    // Update sort_order for all items
-    this.designations.forEach((d, index) => (d.sort_order = index + 1));
-  }
+  //   this.designations.forEach((d, index) => d.sort_order = index + 1);
+  // }
 
   private updateSortOrderByIndex() {
     this.designations.forEach((item, index) => {
@@ -138,27 +134,27 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
     this.closeDrawer.emit();
   }
 
-    refreshRoleMappingData() {
+  refreshRoleMappingData() {
     console.log('Refreshing role mapping data...');
     if (this.sharedService.cbpPlanFinalObj && this.sharedService.cbpPlanFinalObj.ministry && this.sharedService.cbpPlanFinalObj.ministry.identifier) {
       const ministryType = this.sharedService.cbpPlanFinalObj.ministry.sbOrgType;
       const ministryId = this.sharedService.cbpPlanFinalObj.ministry.identifier;
-      
+
       this.loading = true;
-      
+
       if (ministryType === 'ministry') {
-        if(this.sharedService.cbpPlanFinalObj.departments) {
+        if (this.sharedService.cbpPlanFinalObj.departments) {
           const departmentId = this.sharedService.cbpPlanFinalObj.departments;
-        this.sharedService.getRoleMappingByStateCenterAndDepartment(ministryId, departmentId).subscribe({
-          next: (res) => {
-            this.loading = false;
-            console.log('State role mapping data refreshed:', res);
-          },
-          error: (error) => {
-            this.loading = false;
-            console.error('Error refreshing state role mapping data:', error);
-          }
-        });
+          this.sharedService.getRoleMappingByStateCenterAndDepartment(ministryId, departmentId).subscribe({
+            next: (res) => {
+              this.loading = false;
+              console.log('State role mapping data refreshed:', res);
+            },
+            error: (error) => {
+              this.loading = false;
+              console.error('Error refreshing state role mapping data:', error);
+            }
+          });
         } else {
           this.sharedService.getRoleMappingByStateCenter(ministryId).subscribe({
             next: (res) => {
@@ -171,7 +167,7 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
             }
           });
         }
-        
+
       } else if (ministryType === 'state') {
         const departmentId = this.sharedService.cbpPlanFinalObj.departments;
         this.sharedService.getRoleMappingByStateCenterAndDepartment(ministryId, departmentId).subscribe({
@@ -197,15 +193,16 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
 
     this.role_mapping_generation = cbpPlanFinalObj?.role_mapping_generation || '[]';
     // Map role_mapping_generation to internal designations array
-    this.designations = (this.role_mapping_generation).map((r: any, index: number) => ({
+    this.numbers = Array.from({ length: this.role_mapping_generation.length }, (_, i) => i + 1);
+    this.designations = this.role_mapping_generation.map((r: any, index: number) => ({
       id: r.id,
       name: r.designation_name,
-      sort_order: r.sort_order || index + 1, // fallback if sort_order missing
-      searchFilter: '',              // search input for this item
-      filteredNumbers: [...this.numbers] 
+      sort_order: r.sort_order || index + 1,
+      searchFilter: '',              // Search input value
+      filteredNumbers: [...this.numbers] // Numbers to display in select
     }));
 
-   
+
     this.loading = false
     this.numbers = Array.from({ length: this.designations.length }, (_, i) => i + 1);
     // Sort by sort_order
@@ -213,7 +210,46 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
     this.updateSortOrderByIndex();
   }
 
- filterNumbers(item: any) {
+toggleDropdown(item: any, event: Event) {
+  event.stopPropagation();
+  this.openDropdownId = this.openDropdownId === item.id ? null : item.id;
+
+  setTimeout(() => {
+    const dropdownEl = document.getElementById('dropdown-' + item.id);
+    if (!dropdownEl) return;
+
+    const rect = dropdownEl.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    // If dropdown bottom exceeds viewport, open upward
+    if (rect.bottom > windowHeight) {
+      dropdownEl.style.top = `-${rect.height}px`;  // open above
+    } else {
+      dropdownEl.style.top = `100%`;  // open below
+    }
+  });
+}
+
+
+// Select number from dropdown
+selectNumber(item: any, num: number, event: Event) {
+  event.stopPropagation(); // IMPORTANT: prevents parent toggle
+
+  // Set the selected value
+  item.sort_order = num;
+
+  // Close dropdown
+  this.openDropdownId = null;
+
+  // Reset search
+  item.searchFilter = '';
+  item.filteredNumbers = [...this.numbers];
+
+  // Reorder array
+  this.onOrderChange(item);
+}
+
+filterNumbers(item: any) {
   if (!item.searchFilter) {
     item.filteredNumbers = [...this.numbers];
   } else {
@@ -223,4 +259,20 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
     );
   }
 }
+
+onOrderChange(item: any) {
+  const selectedOrder = item.sort_order;
+  const currentIndex = this.designations.findIndex(d => d.id === item.id);
+
+  this.designations.splice(currentIndex, 1);
+  this.designations.splice(selectedOrder - 1, 0, item);
+
+  this.designations.forEach((d, index) => (d.sort_order = index + 1));
+}
+
+trackById(index: number, item: any) {
+  return item.id;
+}
+
+
 }
