@@ -17,7 +17,7 @@
             <div class="designation-name">
                 {{ item.name }}
             </div>
-
+            
             <select [(ngModel)]="item.sort_order" (ngModelChange)="onOrderChange(item)">
                 <option *ngFor="let num of numbers" [value]="num">
                     {{ num }}

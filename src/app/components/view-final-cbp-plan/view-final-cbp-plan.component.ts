@@ -24,7 +24,7 @@ export class ViewFinalCbpPlanComponent {
     private fb: FormBuilder
   ) {
     this.filterForm = this.fb.group({
-      language: [null]
+      language: ['en']
     });
     this.openedFrom = data?.openedFrom;
     this.getMappingData()

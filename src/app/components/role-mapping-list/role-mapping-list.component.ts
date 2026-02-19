@@ -166,6 +166,7 @@ export class RoleMappingListComponent {
         });
       }
     }
+    this.loading = false
   }
 
   private updateDataSource(res: any[]) {

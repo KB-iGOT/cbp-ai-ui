@@ -28,7 +28,7 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
   isOpen = true;
   state_center_id!: string;
   department_id!: string;
-  designations: Designation[] = [];
+  designations: any[] = [];
   role_mapping_generation: any
   loading = false
   @Output() closeDrawer = new EventEmitter<void>();
@@ -39,30 +39,14 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
   constructor(private http: HttpClient, public sharedService: SharedService, private snackBar: MatSnackBar,) { }
 
   ngOnInit(): void {
-    this.numbers = Array.from({ length: 999 }, (_, i) => i + 1);
+    
 
-    const cbpPlanFinalObj = JSON.parse(localStorage.getItem('cbpPlanFinalObj') || '{}');
-    console.log('cbpPlanFinalObj--', cbpPlanFinalObj)
-    if (cbpPlanFinalObj?.departments) {
-      this.department_id = cbpPlanFinalObj?.departments
-    }
-    if (cbpPlanFinalObj?.ministry && cbpPlanFinalObj?.ministry.identifier) {
-      this.state_center_id = cbpPlanFinalObj?.ministry.identifier
-    }
-
-    this.role_mapping_generation = cbpPlanFinalObj?.role_mapping_generation || '[]';
-    // Map role_mapping_generation to internal designations array
-    this.designations = (this.role_mapping_generation).map((r: any, index: number) => ({
-      id: r.id,
-      name: r.designation_name,
-      sort_order: r.sort_order || index + 1, // fallback if sort_order missing
-    }));
+    this.refreshRoleMappingData()
+    
+    
 
     console.log('this.designations--', this.designations)
-
-    // Sort by sort_order
-    this.designations.sort((a, b) => a.sort_order - b.sort_order);
-    this.updateSortOrderByIndex();
+    
   }
 
   drop(event: CdkDragDrop<Designation[]>) {
@@ -153,4 +137,90 @@ export class UpdateDesignationHierarchyComponent implements OnInit {
     this.isOpen = false
     this.closeDrawer.emit();
   }
+
+    refreshRoleMappingData() {
+    console.log('Refreshing role mapping data...');
+    if (this.sharedService.cbpPlanFinalObj && this.sharedService.cbpPlanFinalObj.ministry && this.sharedService.cbpPlanFinalObj.ministry.identifier) {
+      const ministryType = this.sharedService.cbpPlanFinalObj.ministry.sbOrgType;
+      const ministryId = this.sharedService.cbpPlanFinalObj.ministry.identifier;
+      
+      this.loading = true;
+      
+      if (ministryType === 'ministry') {
+        if(this.sharedService.cbpPlanFinalObj.departments) {
+          const departmentId = this.sharedService.cbpPlanFinalObj.departments;
+        this.sharedService.getRoleMappingByStateCenterAndDepartment(ministryId, departmentId).subscribe({
+          next: (res) => {
+            this.loading = false;
+            console.log('State role mapping data refreshed:', res);
+          },
+          error: (error) => {
+            this.loading = false;
+            console.error('Error refreshing state role mapping data:', error);
+          }
+        });
+        } else {
+          this.sharedService.getRoleMappingByStateCenter(ministryId).subscribe({
+            next: (res) => {
+              this.loading = false;
+              console.log('Center role mapping data refreshed:', res);
+            },
+            error: (error) => {
+              this.loading = false;
+              console.error('Error refreshing center role mapping data:', error);
+            }
+          });
+        }
+        
+      } else if (ministryType === 'state') {
+        const departmentId = this.sharedService.cbpPlanFinalObj.departments;
+        this.sharedService.getRoleMappingByStateCenterAndDepartment(ministryId, departmentId).subscribe({
+          next: (res) => {
+            this.loading = false;
+            console.log('State role mapping data refreshed:', res);
+          },
+          error: (error) => {
+            this.loading = false;
+            console.error('Error refreshing state role mapping data:', error);
+          }
+        });
+      }
+    }
+    let cbpPlanFinalObj = this.sharedService.cbpPlanFinalObj
+    console.log('cbpPlanFinalObj--', cbpPlanFinalObj)
+    if (cbpPlanFinalObj?.departments) {
+      this.department_id = cbpPlanFinalObj?.departments
+    }
+    if (cbpPlanFinalObj?.ministry && cbpPlanFinalObj?.ministry.identifier) {
+      this.state_center_id = cbpPlanFinalObj?.ministry.identifier
+    }
+
+    this.role_mapping_generation = cbpPlanFinalObj?.role_mapping_generation || '[]';
+    // Map role_mapping_generation to internal designations array
+    this.designations = (this.role_mapping_generation).map((r: any, index: number) => ({
+      id: r.id,
+      name: r.designation_name,
+      sort_order: r.sort_order || index + 1, // fallback if sort_order missing
+      searchFilter: '',              // search input for this item
+      filteredNumbers: [...this.numbers] 
+    }));
+
+   
+    this.loading = false
+    this.numbers = Array.from({ length: this.designations.length }, (_, i) => i + 1);
+    // Sort by sort_order
+    this.designations.sort((a, b) => a.sort_order - b.sort_order);
+    this.updateSortOrderByIndex();
+  }
+
+ filterNumbers(item: any) {
+  if (!item.searchFilter) {
+    item.filteredNumbers = [...this.numbers];
+  } else {
+    const filterValue = item.searchFilter.toString().toLowerCase();
+    item.filteredNumbers = this.numbers.filter(num =>
+      num.toString().toLowerCase().includes(filterValue)
+    );
+  }
+}
 }
