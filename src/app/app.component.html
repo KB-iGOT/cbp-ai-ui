@@ -1,54 +1,56 @@
 <div class="request-container">
     <div class="header-container">
-        <div class="left-container mt-4 mb-1 cursor-pointer" (click)="routeToMain()">            
+        <div class="left-container mt-4 mb-1 cursor-pointer" (click)="routeToMain()">
             <div>
-                <img src="assets/icons/dopt-logo.png"
-                    alt="Department of Personnel & Training" class="h-50" />
+                <img src="assets/icons/dopt-logo.png" alt="Department of Personnel & Training" class="h-50" />
             </div>
             <div>
-                <img src="assets/icons/CBC_logo.svg"
-                    alt="Capacity Building Commission Logo" class="h-50" />
+                <img src="assets/icons/CBC_logo.svg" alt="Capacity Building Commission Logo" class="h-50" />
             </div>
             <div>
-                <img src="https://igotkarmayogi.gov.in/assets/img/karmayogiLogo.svg"
-                    alt="Karmayogi Bharat Logo" class="h-50" />
+                <img src="https://igotkarmayogi.gov.in/assets/img/karmayogiLogo.svg" alt="Karmayogi Bharat Logo"
+                    class="h-50" />
             </div>
             <div *ngIf="nextStep !== 'initial'">
                 <h2 class="highlight-ai">
-                    <span class="ai-loader-icon-medium"><img src="assets/icons/ai-loader.gif"></span><span>IGOT AI driven CBP</span>
+                    <span class="ai-loader-icon-medium"><img src="assets/icons/ai-loader.gif"></span><span>IGOT AI
+                        driven CBP</span>
                 </h2>
             </div>
         </div>
-        
+
         <div class="right-container mt-4" style="justify-content: space-between;" *ngIf="loginSuccess">
             <div><mat-icon>help</mat-icon></div>
             <div style="margin-top: -5px;">
                 <!-- <button mat-icon-button [matMenuTriggerFor]="settingsMenu">
                   <mat-icon>settings</mat-icon>
                 </button> -->
-              
-                
+
+
                 <div>
-                <button [ngClass]="disableUploadDocument ? 'btn-active-disable':'btn-active'" class="" [disabled]="disableUploadDocument"  mat-raised-button color="primary" (click)="goToUploadDocument()">
-                    <mat-icon>upload</mat-icon> Manage Documents
-                </button>
+                    <button [ngClass]="disableUploadDocument ? 'btn-active-disable':'btn-active'" class=""
+                        [disabled]="disableUploadDocument" mat-raised-button color="primary"
+                        (click)="goToUploadDocument()">
+                        <mat-icon>upload</mat-icon> Manage Documents
+                    </button>
+                </div>
             </div>
-              </div>
             <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
                 <div class="profile-pic-container">
-                    <img src="assets/icons/user.png" alt="Profile" class="profile-pic" >
+                    <img src="assets/icons/user.png" alt="Profile" class="profile-pic">
                 </div>
                 <mat-menu #settingsMenu="matMenu">
-                  <button mat-menu-item (click)="openUpdateDesignationHierarchy()">
-                    <mat-icon>update</mat-icon>
-                    <span>Update Designation Hierachy</span>
-                  </button>
+                    <button mat-menu-item (click)="openUpdateDesignationHierarchy()">
+                        <mat-icon>update</mat-icon>
+                        <span>Update Designation Hierachy</span>
+                    </button>
                 </mat-menu>
             </div>
-            <div style="margin-left: 10px;" class="cursor-pointer" (click)="logout()" matTooltip="Logout"><mat-icon>logout</mat-icon></div>
+            <div style="margin-left: 10px;" class="cursor-pointer" (click)="logout()" matTooltip="Logout">
+                <mat-icon>logout</mat-icon></div>
         </div>
     </div>
-    
+
 </div>
 
 <div class="container-fluid">
@@ -682,4 +684,5 @@
         <img src="assets/icons/progress-icon.svg">
     </div>
 </div> -->
-<app-update-designation-hierarchy (closeDrawer)="closeDrawer()" *ngIf="openUpdateDesignationHierarchyDrawer"></app-update-designation-hierarchy>
+<app-update-designation-hierarchy (closeDrawer)="closeDrawer()"
+    *ngIf="openUpdateDesignationHierarchyDrawer"></app-update-designation-hierarchy>

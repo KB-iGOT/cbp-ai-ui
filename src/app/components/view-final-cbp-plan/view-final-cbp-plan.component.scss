@@ -2851,3 +2851,7 @@ h1 {
 ::ng-deep .language-select .mat-select-trigger {
   font-weight: 400 !important;
 }
+
+::ng-deep .language-select .mat-select-value {
+  color: white !important;
+}

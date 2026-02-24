@@ -780,4 +780,27 @@ display: inline-block; /* Required in some cases */
   ::ng-deep .select-with-search mat-option:first-of-type {
     margin-top: 4px;
   }
+
+  .btn-active-disable {
+    border-radius: var(--Radius-Full-Round, 9999999px);
+    opacity: 0.5;
+    background: var(--Primary-KB-Primary-Light, #1B4CA1);
+    color: var(--white-kb-white-100, #FFF);
+    text-align: center;
+    
+    /* Button */
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    height: 48px;
+    padding: 0px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    width: 100%;
+}
   
