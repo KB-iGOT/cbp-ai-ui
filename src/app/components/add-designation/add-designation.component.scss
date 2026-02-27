@@ -793,3 +793,126 @@ border: none;
     margin-top: 4px;
     margin-bottom: 8px;
   }
+
+
+
+::ng-deep .mat-select-panel.search-panel .search-input {
+  flex: 1 1 auto;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  box-sizing: border-box;
+}
+
+::ng-deep .mat-select-panel.search-panel .search-input:focus {
+  border-color: #0074b6;
+  box-shadow: 0 0 0 3px rgba(0,116,182,0.06);
+}
+
+::ng-deep .mat-select-panel.search-panel .clear-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  padding: 6px;
+  line-height: 1;
+}
+
+::ng-deep .mat-select-panel.search-panel .loading-indicator {
+  padding: 10px 12px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Ensure options don't get hidden behind sticky search and align option text with search input */
+::ng-deep .mat-select-panel.search-panel .mat-option {
+  padding-top: 10px;
+  padding-left: 16px;
+}
+
+/* Align disabled no-result message to the option padding and remove extra margins */
+::ng-deep .mat-select-panel.search-panel mat-option[disabled] {
+  padding: 8px 16px !important;
+}
+
+/* Align other select panels (group) to match the same width/padding as designation */
+::ng-deep .mat-select-panel.align-panel {
+  padding: 0 !important;
+  box-sizing: border-box;
+  margin-left: 0 !important;
+  min-width: 340px !important;
+  max-width: 340px !important;
+}
+
+::ng-deep .mat-select-panel.align-panel .mat-option {
+  padding-left: 16px;
+}
+
+::ng-deep .mat-select-panel.search-panel mat-option[disabled] .mat-error,
+::ng-deep .mat-select-panel.search-panel .mat-error {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  color: #f44336; /* match mat-error color */
+}
+
+::ng-deep .mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .mat-text-field-wrapper {
+  background: white;
+  border-radius: 25px !important;
+  height: 42px;
+}
+
+::ng-deep .mat-notched-outline {
+  border-radius: 25px !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline 
+.mat-form-field-outline {
+  border-radius: 25px !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline 
+.mat-form-field-outline-start,
+::ng-deep .mat-form-field-appearance-outline 
+.mat-form-field-outline-end {
+  border-width: 1px !important;
+  min-width: 0 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: transparent !important; /* removes outline color */
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: transparent !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+ // border: 1px solid rgba(0,0,0,0.16);
+  border-radius: 25px;
+  height: 42px;
+  align-items: center;
+  padding: 0 16px;
+  background: #fff;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex {
+ // border-color: #1B4CA1;
+}
+
+::ng-deep .mat-select-panel {
+  border: 1px solid rgba(0,0,0,0.16);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}

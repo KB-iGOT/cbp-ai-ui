@@ -22,9 +22,9 @@ export class AppComponent {
   dataSource: any
   displayedColumns: string[] = ['RequestId', 'title', 'requestor', 'requestType',
     'requestStatus', 'assignee', 'requestedOn', 'interests', 'action']
-    selectedMinistryType: string = 'ministry';
-    ministryData:any = []
-  ministryFullData:any = []
+  selectedMinistryType: string = 'ministry';
+  ministryData: any = []
+  ministryFullData: any = []
   sectorData = [
     {
       value: 'Women and child development'
@@ -49,8 +49,9 @@ export class AppComponent {
   formData: {}
   nextStep = 'initial'
   loginSuccess = false
-  cbpFinalObj:any = {}
+  cbpFinalObj: any = {}
   userEmail = ''
+  userProfile: any = {}
   disableUploadDocument = true
   disableUploadDocumentOriginal = true
   openUpdateDesignationHierarchyDrawer = false
@@ -58,42 +59,52 @@ export class AppComponent {
   roleMappingChild!: RoleMappingGenerationComponent;
   constructor(
     private dialog: MatDialog,
-    private eventSvc: EventService, 
+    private eventSvc: EventService,
     public sharedService: SharedService,
     private router: Router,
-  public snackBar: MatSnackBar) {
+    public snackBar: MatSnackBar) {
     this.dataSource = new MatTableDataSource<any>([])
     this.isMaintenancePage = window.location.href.includes('/maintenance')
   }
 
-  ngOnInit() {   
-    this.sharedService.loginSuccess.subscribe((data:any)=>{
+  ngOnInit() {
+    this.sharedService.loginSuccess.subscribe((data: any) => {
       this.loginSuccess = data
     })
-
-    this.sharedService.checkRoleMappingFormValidation.subscribe((data:any)=>{
-      if(data === 'VALID') {
+    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
+    this.sharedService.checkRoleMappingFormValidation.subscribe((data: any) => {
+      if ( this.cbpFinalObj?.role_mapping_generation?.length) {
+        
         this.disableUploadDocument = false
         this.disableUploadDocumentOriginal = false
-      } else {
-        this.disableUploadDocument = true
-        this.disableUploadDocumentOriginal = true
-      }
+      } else
+        if (data === 'VALID') {
+          this.disableUploadDocument = false
+          this.disableUploadDocumentOriginal = false
+        } else {
+          this.disableUploadDocument = true
+          this.disableUploadDocumentOriginal = true
+        }
     })
-   this.loginSuccess = this.sharedService.checkIfLogin()
-   if(this.loginSuccess) {
+    this.loginSuccess = this.sharedService.checkIfLogin()
+    if (this.loginSuccess) {
+
+      this.userEmail = localStorage.getItem('userEmail')
+      this.userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}')
+    }
     
-    this.userEmail = localStorage.getItem('userEmail')
-   }
-   this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
-   if(this.cbpFinalObj && this.cbpFinalObj?.ministry && (this.cbpFinalObj?.ministry?.sbOrgType === 'ministry' || this.cbpFinalObj?.ministry?.sbOrgType === 'state') && 
-  this.cbpFinalObj?.role_mapping_generation?.length) {
-    this.nextStep = 'role-mapping'
-   } else {
-    this.nextStep = 'initial'
-   }
-   console.log('this.nextStep',this.nextStep)
-   console.log('this.sharedService.cb', this.sharedService.cbpPlanFinalObj)
+    if (this.cbpFinalObj && this.cbpFinalObj?.ministry && (this.cbpFinalObj?.ministry?.sbOrgType === 'ministry' || this.cbpFinalObj?.ministry?.sbOrgType === 'state') &&
+      this.cbpFinalObj?.role_mapping_generation?.length) {
+      this.nextStep = 'role-mapping'
+    } else {
+      this.nextStep = 'initial'
+    }
+    if ( this.cbpFinalObj?.role_mapping_generation?.length) {
+      this.disableUploadDocument = false
+      this.disableUploadDocumentOriginal = false
+    }
+    console.log('this.nextStep', this.nextStep)
+    console.log('this.sharedService.cb', this.sharedService.cbpPlanFinalObj)
   }
 
 
@@ -107,17 +118,17 @@ export class AppComponent {
     this.nextStep = 'role-mapping'
     console.log('event', event)
     this.formData = event
-   
-    
+
+
   }
 
   moveToInitialScreen(event) {
-    if(event === 'add') {
+    if (event === 'add') {
       this.nextStep = 'initial'
     } else if (event === 'edit') {
       this.nextStep = 'initial'
     }
-    
+
   }
 
   loginSuccessStatus(event) {
@@ -128,7 +139,7 @@ export class AppComponent {
   logout() {
     this.loginSuccess = false
     this.nextStep = 'initial'
-    localStorage.clear()    
+    localStorage.clear()
     if (this.roleMappingChild) {
       this.roleMappingChild.roleMappingForm.reset();
     }
@@ -136,9 +147,9 @@ export class AppComponent {
       next: (res) => {
         this.sharedService.loginSuccess.next(false)
         this.router.navigate(['/logout']);
-        setTimeout(()=>{
+        setTimeout(() => {
           this.router.navigate(['/']);
-        },500)        
+        }, 500)
         this.snackBar.open('You are logout successfully', 'X', {
           duration: 3000,
           panelClass: ['snackbar-success']
@@ -155,9 +166,9 @@ export class AppComponent {
   }
 
   goToUploadDocument() {
-   
+
     this.router.navigate(['/upload-documents']);
-    
+
   }
 
   routeToMain() {
@@ -173,12 +184,12 @@ export class AppComponent {
     //       maxHeight: '80vh',           // Prevent it from going beyond viewport
     //       disableClose: true // Optional: prevent closing with outside click
     //     });
-      
+
     //     dialogRef.afterClosed().subscribe(result => {
     //       // if (result === 'saved') {
     //       //   console.log('Changes saved!');
     //       //   // Refresh data or show a toast here
-            
+
     //       // }
     //       // this.refreshRoleMappingData();
     //     });
@@ -190,5 +201,9 @@ export class AppComponent {
 
   }
 
-  
+  openApproveRequests() {
+    this.router.navigate(['/approve-requests']);
+  }
+
+
 }

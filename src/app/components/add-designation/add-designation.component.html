@@ -16,8 +16,46 @@
                     <p>Designation Name</p>
                 </div>
                 <div class="section-header mt-4">
-                    <input type="text" formControlName="designation_name" placeholder="Enter Designation" [value]=""
-                        style="border-radius: 25px; border: 1px solid #ccc; padding: 8px 12px; width: 100%;font-size: 14px;font-family: 'Lato';">
+                    <!-- <input type="text" formControlName="designation_name" placeholder="Enter Designation" [value]=""
+                        style="border-radius: 25px; border: 1px solid #ccc; padding: 8px 12px; width: 100%;font-size: 14px;font-family: 'Lato';"> -->
+                    <mat-form-field appearance="outline" class="margin-top-s w-full required-select">
+                        <mat-select multiple #position formControlName="designation_name"
+                            placeholder="Select designation" (closed)="onDesignationDropdownClosed()"
+                            panelClass="search-panel" (openedChange)="setupScrollListener($event)">
+
+                            <!-- Sticky search input container -->
+                            <div class="sticky-search-container" (click)="$event.stopPropagation()">
+                                <div class="search-input-wrapper">
+                                    <input type="text" placeholder="Search designation"
+                                        formControlName="searchDesignation" class="search-input"
+                                        (keydown)="$event.stopPropagation()"
+                                        (keydown.enter)="$event.preventDefault(); $event.stopPropagation()"
+                                        (keyup)="designationSearch($event)" autocomplete="off">
+                                    <button *ngIf="searchDesignationControl?.value" type="button" class="clear-button"
+                                        (click)="searchDesignationControl.setValue('')">
+                                        ✕ Clear Search
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Options list -->
+                            <mat-option [value]="designation?.name" *ngFor="let designation of masterData?.designation">
+                                {{designation?.name}}
+                            </mat-option>
+                            <!-- Loading indicator -->
+                            <div *ngIf="isLoadingMoreDesignations" class="loading-indicator">
+                                Load More...
+                            </div>
+                            <!-- No results message -->
+                            <mat-option *ngIf="(masterData?.designation )?.length === 0" disabled>
+                                <!-- No matches found -->
+                                <div class="mat-error txt-size">Designation Not Found.</div>
+                            </mat-option>
+                        </mat-select>
+                        <!-- <mat-error class="text-xs"
+                            *ngIf="designationForm?.get('designation_name')?.touched && designationForm?.get('designation_name')?.invalid">
+                            Please select at least one designation.
+                        </mat-error> -->
+                    </mat-form-field>
                 </div>
             </div>
 

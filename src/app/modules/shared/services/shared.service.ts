@@ -47,7 +47,8 @@ const API_END_POINTS = {
   CENTER_BASED_MINISTRY: 'cbp-tpc-ai/api/v1/department/state-center',
   DOWNLOAD_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/reports/course-recommendations/download',
   DELETE_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/cbp-plan',
-  UPDATE_DESIGNATION_HIERARCHY: 'cbp-tpc-ai/api/v1/role-mapping/reorder'
+  UPDATE_DESIGNATION_HIERARCHY: 'cbp-tpc-ai/api/v1/role-mapping/reorder',
+  SEARCH_PUBLIC_DESIGNATION: 'apis/public/v8/designation/search',
 }
 
 
@@ -533,13 +534,13 @@ export class SharedService {
 
   deleteRoleMappingByStateAndDepartment(state_center_id, department_id) {
     const headers = this.headers
-    let url  = ''
-    if(department_id && department_id !== 'null' && department_id !== 'undefined' && department_id !== undefined && department_id !== null) {
+    let url = ''
+    if (department_id && department_id !== 'null' && department_id !== 'undefined' && department_id !== undefined && department_id !== null) {
       url = `${this.baseUrl}${API_END_POINTS.DELETE_ROLE_MAPPING_BY_STATE_CENTER}?state_center_id=${state_center_id}&department_id=${department_id}`
     } else {
       url = `${this.baseUrl}${API_END_POINTS.DELETE_ROLE_MAPPING_BY_STATE_CENTER}?state_center_id=${state_center_id}`
     }
-    
+
     return this.http.delete<any>(url, { headers })
       .pipe(map((response: any) => {
         return response
@@ -617,11 +618,11 @@ export class SharedService {
       }))
   }
 
-  downloadPdf(state_center_id: string, context : string, language: string) {
+  downloadPdf(state_center_id: string, context: string, language: string) {
     const endpoint =
-    context === 'acbp'
-      ? API_END_POINTS.DOWNLOAD_PDF_ACBP
-      : API_END_POINTS.DOWNLOAD_PDF;
+      context === 'acbp'
+        ? API_END_POINTS.DOWNLOAD_PDF_ACBP
+        : API_END_POINTS.DOWNLOAD_PDF;
     const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}*&language=${language}`;
     const headers = this.headers
 
@@ -655,11 +656,11 @@ export class SharedService {
     });
   }
 
-  downloadPdfForDepartment(state_center_id, department_id: string, context: string,language: string) {
+  downloadPdfForDepartment(state_center_id, department_id: string, context: string, language: string) {
     const endpoint =
-    context === 'acbp'
-      ? API_END_POINTS.DOWNLOAD_PDF_ACBP
-      : API_END_POINTS.DOWNLOAD_PDF;
+      context === 'acbp'
+        ? API_END_POINTS.DOWNLOAD_PDF_ACBP
+        : API_END_POINTS.DOWNLOAD_PDF;
     const url = `${this.baseUrl}${endpoint}?state_center_id=${state_center_id}&department_id=${department_id}&language=${language}`;
     const headers = this.headers
 
@@ -694,7 +695,7 @@ export class SharedService {
   }
 
   getCenterBasedDepartment(state_center_id) {
-   // let reqBody = { "request": { "filters": { "status": 1, "ministryOrStateType": "ministry", "ministryOrStateId": state_center_id}, "sort_by": { "createdDate": "desc" }, "limit": 9999, "offset": 0, "fields": ["identifier", "orgName", "description", "parentOrgName", "ministryOrStateId", "ministryOrStateType", "ministryOrStateName", "sbOrgSubType"] } }
+    // let reqBody = { "request": { "filters": { "status": 1, "ministryOrStateType": "ministry", "ministryOrStateId": state_center_id}, "sort_by": { "createdDate": "desc" }, "limit": 9999, "offset": 0, "fields": ["identifier", "orgName", "description", "parentOrgName", "ministryOrStateId", "ministryOrStateType", "ministryOrStateName", "sbOrgSubType"] } }
     const headers = this.headers
     return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.CENTER_BASED_MINISTRY}/${state_center_id}?limit=9999&offset=0&sub_org_type=ministry`, { headers })
       .pipe(map((response: any) => {
@@ -704,7 +705,7 @@ export class SharedService {
 
 
   downloadPdfForCourseRecommendation(state_center_id) {
-    
+
     const url = `${this.baseUrl}${API_END_POINTS.DOWNLOAD_COURSE_RECOMMENDATION}?role_mapping_id=${state_center_id}`;
     const headers = this.headers
 
@@ -738,35 +739,35 @@ export class SharedService {
   }
 
   uploadDocument(reqBody, file?: File) {
-    const storageData:any = JSON.parse(localStorage.getItem('loginData'))
+    const storageData: any = JSON.parse(localStorage.getItem('loginData'))
     //  console.log('storageData--', storageData)
-      this.headers = new HttpHeaders({
-        'Authorization': `Bearer ${storageData?.access_token}`
-      });
-      const headers = this.headers
-      
-      // Add required fields
-      // if (reqBody.state_center_id) {
-      //   formData.append('state_center_id', reqBody.state_center_id);
-      // }
-      
-      // if (reqBody.department_id) {
-      //   formData.append('department_id', reqBody.department_id);
-      // }
-      
-     
-      
-      // if(reqBody.documentName) {
-      //   formData.append('document_name', reqBody.documentName);
-      // }
-      // Add file if provided
-      // if (file) {
-      //   formData.append('file', file);
-      // }
+    this.headers = new HttpHeaders({
+      'Authorization': `Bearer ${storageData?.access_token}`
+    });
+    const headers = this.headers
+
+    // Add required fields
+    // if (reqBody.state_center_id) {
+    //   formData.append('state_center_id', reqBody.state_center_id);
+    // }
+
+    // if (reqBody.department_id) {
+    //   formData.append('department_id', reqBody.department_id);
+    // }
+
+
+
+    // if(reqBody.documentName) {
+    //   formData.append('document_name', reqBody.documentName);
+    // }
+    // Add file if provided
+    // if (file) {
+    //   formData.append('file', file);
+    // }
     return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.UPLOAD_DOCUMENT}`, reqBody, { headers })
-    .pipe(map((response: any) => {
-      return response
-    }))
+      .pipe(map((response: any) => {
+        return response
+      }))
   }
 
   getUploadedDocuments(reqBody) {
@@ -791,28 +792,28 @@ export class SharedService {
 
   deleteFile(fileId) {
     const headers = this.headers
-    return this.http.delete<any>(`${this.baseUrl}${API_END_POINTS.DELETE_FILE}/${fileId}`, {headers})
-    .pipe(map((response: any) => {
-      return response
-    }))
+    return this.http.delete<any>(`${this.baseUrl}${API_END_POINTS.DELETE_FILE}/${fileId}`, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
   }
 
   triggerFileSummary(fileId) {
-    const storageData:any = JSON.parse(localStorage.getItem('loginData'))
+    const storageData: any = JSON.parse(localStorage.getItem('loginData'))
     // console.log('storageData--', storageData)
-     this.headers = new HttpHeaders({
-       'Authorization': `Bearer ${storageData?.access_token}`
-     });
+    this.headers = new HttpHeaders({
+      'Authorization': `Bearer ${storageData?.access_token}`
+    });
     const headers = this.headers
-    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.DELETE_FILE}/${fileId}/summary`, {}, {headers})
-    .pipe(map((response: any) => {
-      return response
-    }))
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.DELETE_FILE}/${fileId}/summary`, {}, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
   }
 
   downloadFile(fileId: string): Observable<Blob> {
     const headers = this.headers;
-  
+
     return this.http.get(`${this.baseUrl}${API_END_POINTS.DOWNLOAD_FILE}/${fileId}/download`, {
       headers,
       responseType: 'blob'
@@ -821,15 +822,15 @@ export class SharedService {
 
   deleteSummary(fileId) {
     const headers = this.headers
-    return this.http.delete<any>(`${this.baseUrl}${API_END_POINTS.DELETE_SUMMARY}/${fileId}/summary`, {headers})
-    .pipe(map((response: any) => {
-      return response
-    }))
+    return this.http.delete<any>(`${this.baseUrl}${API_END_POINTS.DELETE_SUMMARY}/${fileId}/summary`, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
   }
 
   deleteRecommendedCourse(roleMappingId: string, courseIdentifier: string) {
     const headers = this.headers;
-  
+
     return this.http.delete<any>(
       `${this.baseUrl}${API_END_POINTS.DELETE_COURSE_RECOMMENDATION}/${roleMappingId}/course/${courseIdentifier}`,
       { headers }
@@ -853,9 +854,9 @@ export class SharedService {
     let reqBody = {
       "request": {
         "filters": {
-          "identifier":identifiers,
-          
-          
+          "identifier": identifiers,
+
+
           "status": [
             "Live"
           ]
@@ -880,6 +881,14 @@ export class SharedService {
   updateDesignationHierarchy(reqBody) {
     const headers = this.headers
     return this.http.put<any>(`${this.baseUrl}${API_END_POINTS.UPDATE_DESIGNATION_HIERARCHY}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  searchPublicDesignation(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.SEARCH_PUBLIC_DESIGNATION}`, reqBody, { headers })
       .pipe(map((response: any) => {
         return response
       }))

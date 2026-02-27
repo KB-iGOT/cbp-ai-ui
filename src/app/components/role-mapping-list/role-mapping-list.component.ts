@@ -11,6 +11,7 @@ import { ViewCourseRecommendationComponent } from '../view-course-recommendation
 import { ViewFinalCbpPlanComponent } from '../view-final-cbp-plan/view-final-cbp-plan.component';
 import { ListPopupComponent } from '../list-popup/list-popup.component';
 import { AddDesignationComponent } from '../add-designation/add-designation.component';
+import { SelectionModel } from '@angular/cdk/collections';
 @Component({
   selector: 'app-role-mapping-list',
   templateUrl: './role-mapping-list.component.html',
@@ -21,6 +22,7 @@ export class RoleMappingListComponent {
   searchText = ''
   selectedValue =''
   displayedColumns: string[] = [
+    'select',
     'designation_name',
     'role_responsibilities',
     'activities',
@@ -39,6 +41,7 @@ export class RoleMappingListComponent {
   activeRowElement:any
   cbpFinalObj:any ={}
   loading = false
+  selection = new SelectionModel<any>(true, []); // true = multi-select
   @Output() moveToInitialScreen = new EventEmitter<any>()
   constructor(
     public sharedService: SharedService, 
@@ -53,6 +56,7 @@ export class RoleMappingListComponent {
 
   ngOnInit() {
     console.log('haredService?.cbpPlanFinalObj', this.sharedService?.cbpPlanFinalObj)
+    this.sharedService.checkRoleMappingFormValidation.next(true)
     this.sharedService.updateDesignationHierarchySubject.subscribe((data)=>{
       if(data) {
         this.loadRoleMappingList()
@@ -605,6 +609,31 @@ export class RoleMappingListComponent {
       }
       
   }
+
+  toggleRow(row: any) {
+  this.selection.toggle(row);
+  console.log('Selected rows:', this.selection.selected);
+}
+
+isAllSelected() {
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dataSource.data.length;
+  return numSelected === numRows;
+}
+
+isSomeSelected() {
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dataSource.data.length;
+  return numSelected > 0 && numSelected < numRows;
+}
+
+toggleAllRows(event: any) {
+  if (event.checked) {
+    this.dataSource.data.forEach(row => this.selection.select(row));
+  } else {
+    this.selection.clear();
+  }
+}
   
   
 }

@@ -5,6 +5,7 @@ import { UploadDocumentPageComponent } from './modules/upload-document-page/uplo
 import { InitialScreenComponent } from './modules/initial-screen/initial-screen.component';
 import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
 import { RoleMappingListComponent } from './components/role-mapping-list/role-mapping-list.component';
+import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
 const routerOptions: any = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
@@ -16,6 +17,7 @@ const routerOptions: any = {
 
 const routes: Routes = [
   { path: 'upload-documents', component: UploadDocumentPageComponent },
+  { path: 'approve-requests', component: ApprovalRequestsComponent },
   {
     path: '',
     component: InitialScreenComponent,

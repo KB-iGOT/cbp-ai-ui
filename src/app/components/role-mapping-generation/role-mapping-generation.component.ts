@@ -1147,6 +1147,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
   getUserProfileData() {
     this.sharedService.getUserProfile().subscribe((data) => {
       console.log('data--', data)
+      localStorage.setItem('userProfile', JSON.stringify(data))
       this.loginUserOrgIds = data?.organization_ids
       let filteredMinistryData = []
       this.ministryFullData.map((item) => {

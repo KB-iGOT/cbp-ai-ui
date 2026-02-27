@@ -60,6 +60,7 @@ import { ProgressDialogComponent } from './modules/upload-document-page/progress
 import { MarkdownModule } from 'ngx-markdown';
 import { UpdateDesignationHierarchyComponent } from './components/update-designation-hierarchy/update-designation-hierarchy.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
 const appInitializer = (initSvc: InitService) => async () => {
   try {
     await initSvc.init()
@@ -93,7 +94,8 @@ const appInitializer = (initSvc: InitService) => async () => {
     UploadDialogComponent,
     InitialScreenComponent,
     ProgressDialogComponent,
-    UpdateDesignationHierarchyComponent
+    UpdateDesignationHierarchyComponent,
+    ApprovalRequestsComponent
   ],
   imports: [
     BrowserModule,

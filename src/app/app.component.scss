@@ -550,7 +550,7 @@ line-height: normal;
 }
 
 .h-50 {
-    height: 100% !important;
+    height: 90% !important;
 }
 
 .mb-1 {
@@ -605,4 +605,40 @@ width: 100%;
     gap: 8px;
     border: none;
     width: 100%;
+}
+
+.menu-disable {
+    cursor: not-allowed;
+}
+
+.menu-disable {
+    cursor: pointer;
+}
+
+.seperator {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.16);
+    margin: 8px 0;
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px;
+    
+}
+.user-profile p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}   
+
+.menu-label {
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
