@@ -21,6 +21,7 @@
 
         <div class="right-container mt-4" style="justify-content: space-between;" *ngIf="loginSuccess">
             <div><mat-icon>help</mat-icon></div>
+            <div class="cursor-pointer" (click)="routeToDashboard()"><mat-icon>dashboard</mat-icon></div>
 
             <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
                 <div class="profile-pic-container">

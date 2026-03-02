@@ -6,6 +6,7 @@ import { InitialScreenComponent } from './modules/initial-screen/initial-screen.
 import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
 import { RoleMappingListComponent } from './components/role-mapping-list/role-mapping-list.component';
 import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 const routerOptions: any = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
@@ -16,6 +17,7 @@ const routerOptions: any = {
 };
 
 const routes: Routes = [
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'upload-documents', component: UploadDocumentPageComponent },
   { path: 'approve-requests', component: ApprovalRequestsComponent },
   {

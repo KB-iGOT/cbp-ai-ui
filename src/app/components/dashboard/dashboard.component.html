@@ -1,0 +1,200 @@
+<div class="dashboard-wrapper">
+    <div class="dashboard-container">
+
+        <!-- FILTERS SECTION -->
+        <mat-card class="filters-card">
+            <div class="filters-header">
+                <mat-icon>filter_list</mat-icon>
+                <span>Filters</span>
+            </div>
+
+            <div class="filters-row">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Centre / State</mat-label>
+                    <mat-select>
+                        <mat-option value="">State</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>State</mat-label>
+                    <mat-select>
+                        <mat-option value="">All States</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Department</mat-label>
+                    <mat-select>
+                        <mat-option value="">All Departments</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Date Range (3–12 months)</mat-label>
+                    <input matInput placeholder="Dec 02, 2025 - Mar 02, 2026">
+                </mat-form-field>
+
+            </div>
+        </mat-card>
+
+        <!-- OVERVIEW METRICS -->
+        <h2 class="section-title">
+            <mat-icon>dashboard</mat-icon>
+            Overview Metrics
+        </h2>
+
+        <div class="card-grid">
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">States/Ministries which generated Role Mapping</p>
+                        <h2>28</h2>
+                        <p class="card-subtitle">At least 1 designation/role mapping</p>
+                    </div>
+                    <mat-icon class="icon primary">public</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Departments which generated Role Mapping</p>
+                        <h2>156</h2>
+                        <p class="card-subtitle">At least 1 designation/role mapping</p>
+                    </div>
+                    <mat-icon class="icon teal">apartment</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Total Capacity Building Plans Created</p>
+                        <h2>4,523</h2>
+                    </div>
+                    <mat-icon class="icon green">description</mat-icon>
+                </div>
+            </mat-card>
+
+        </div>
+
+        <!-- COMPETENCIES -->
+        <h2 class="section-title">
+            <mat-icon>psychology</mat-icon>
+            Competencies Recommended
+        </h2>
+
+        <div class="card-grid">
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Behavioral Competencies</p>
+                        <h2>245</h2>
+                    </div>
+                    <mat-icon class="icon purple">psychology</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Functional Competencies</p>
+                        <h2>512</h2>
+                    </div>
+                    <mat-icon class="icon teal">settings</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Domain Competencies</p>
+                        <h2>328</h2>
+                    </div>
+                    <mat-icon class="icon orange">tune</mat-icon>
+                </div>
+            </mat-card>
+
+        </div>
+
+        <!-- DOCUMENTS -->
+        <h2 class="section-title">
+            <mat-icon>menu_book</mat-icon>
+            Documents & Course Recommendations
+        </h2>
+
+        <div class="card-grid">
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Total Documents Uploaded</p>
+                        <h2>12,450</h2>
+                        <p class="card-subtitle">Min 1, Max 10 per role mapping</p>
+                    </div>
+                    <mat-icon class="icon amber">upload_file</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Role Mappings with Course Recommendations</p>
+                        <h2>8,500</h2>
+                        <p class="card-subtitle">8500 of 50,000 role mappings</p>
+                    </div>
+                    <mat-icon class="icon green">menu_book</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Course Recommendations Saved</p>
+                        <h2>5,200</h2>
+                        <p class="card-subtitle">5200 of 8500 recommendations</p>
+                    </div>
+                    <mat-icon class="icon teal">save</mat-icon>
+                </div>
+            </mat-card>
+
+        </div>
+
+        <!-- GAP ANALYSIS -->
+        <h2 class="section-title warning">
+            <mat-icon>warning</mat-icon>
+            Gap Analysis
+        </h2>
+
+        <div class="card-grid">
+
+            <mat-card class="metric-card warning-bg">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Competencies Without Courses</p>
+                        <h2>78</h2>
+                        <p class="card-subtitle">Unique competencies with no identified courses</p>
+                    </div>
+                    <mat-icon class="icon red">cancel</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Manually Added Courses</p>
+                        <h2>142</h2>
+                        <p class="card-subtitle">Competencies with user-added courses</p>
+                    </div>
+                    <mat-icon class="icon green">add_circle</mat-icon>
+                </div>
+            </mat-card>
+
+        </div>
+
+    </div>
+</div>

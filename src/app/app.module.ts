@@ -61,6 +61,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { UpdateDesignationHierarchyComponent } from './components/update-designation-hierarchy/update-designation-hierarchy.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 const appInitializer = (initSvc: InitService) => async () => {
   try {
     await initSvc.init()
@@ -95,7 +96,8 @@ const appInitializer = (initSvc: InitService) => async () => {
     InitialScreenComponent,
     ProgressDialogComponent,
     UpdateDesignationHierarchyComponent,
-    ApprovalRequestsComponent
+    ApprovalRequestsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

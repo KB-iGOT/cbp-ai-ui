@@ -205,5 +205,8 @@ export class AppComponent {
     this.router.navigate(['/approve-requests']);
   }
 
+  routeToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
 
 }
