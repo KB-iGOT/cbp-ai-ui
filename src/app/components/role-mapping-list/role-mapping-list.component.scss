@@ -837,3 +837,62 @@ width: 240px;
 background-color: transparent;
 cursor: not-allowed;
 }
+
+.role-mapping-tabs {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Base button style */
+.role-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 1px solid #d0d5dd;
+  background-color: #f9fafb;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Active state */
+.role-tab.active {
+  border-color: #1B4CA1;
+  background-color: #eff6ff;
+  color: #1B4CA1;
+}
+
+/* Dot indicator */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #1B4CA1;
+}
+
+.dot.gray {
+  background-color: #98a2b3;
+}
+
+/* Badge styles */
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.badge.blue {
+  background-color: #dbeafe;
+  color: #1B4CA1;
+}
+
+.badge.red {
+  background-color: #fee2e2;
+  color: #b42318;
+}
