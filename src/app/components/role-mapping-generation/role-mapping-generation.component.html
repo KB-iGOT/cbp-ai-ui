@@ -115,6 +115,13 @@
             <div class="mt-4 additional-details">
                 <textarea rows="5" placeholder="Additional details" formControlName="additionalDetails"></textarea>
             </div>
+             <div class="mt-4">
+                    <button [ngClass]="disableUploadDocument ? 'btn-active-disable':'btn-active'" class=""
+                        [disabled]="disableUploadDocument" mat-raised-button color="primary"
+                        (click)="goToUploadDocument()">
+                        <mat-icon>upload</mat-icon> Manage Documents
+                    </button>
+                </div>
             <!-- *ngIf="roleMappingForm.get('ministryType')?.value === 'state'" -->
             <!-- <div class="mt-4 section" >
                 <div class="sub-heading">
