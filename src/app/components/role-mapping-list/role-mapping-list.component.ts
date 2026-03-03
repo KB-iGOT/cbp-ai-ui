@@ -53,94 +53,13 @@ export class RoleMappingListComponent {
 
   ngOnInit() {
     console.log('haredService?.cbpPlanFinalObj', this.sharedService?.cbpPlanFinalObj)
-    
-    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
-    this.dataSource = new MatTableDataSource(this.cbpFinalObj?.role_mapping_generation)
-    this.originalData = this.cbpFinalObj?.role_mapping_generation
-    if(this.cbpFinalObj && this.cbpFinalObj?.ministry && (this.cbpFinalObj?.ministry.sbOrgType)) {
-      this.sharedService.cbpPlanFinalObj = this.cbpFinalObj
-      if(this.cbpFinalObj?.ministry.sbOrgType === 'ministry') {
-        this.formData = {}
-        this.formData['value'] = {}
-        this.formData['value']['ministryType'] = this.cbpFinalObj?.ministry.sbOrgType
-        this.formData['value']['ministry'] = this.cbpFinalObj?.ministry?.identifier
-        this.formData['value']['departments'] = this.cbpFinalObj?.departments
-      } else if (this.cbpFinalObj?.ministry.sbOrgType === 'state') {
-        this.formData = {}
-        this.formData['value'] = {}
-        this.formData['value']['ministryType'] = this.cbpFinalObj?.ministry.sbOrgType
-        this.formData['value']['ministry'] = this.cbpFinalObj?.ministry?.identifier
-        this.formData['value']['departments'] = this.cbpFinalObj?.departments
+    this.sharedService.updateDesignationHierarchySubject.subscribe((data)=>{
+      if(data) {
+        this.loadRoleMappingList()
       }
-    } 
-    console.log('this.formData', this.formData  )
-      if(this.formData && this.formData.value && this.formData.value.ministryType === 'ministry') {
-
-        let state_center_id = this.formData.value.ministry
-        this.loading = true
-        if(this.formData.value.departments) {
-          let department_id = this.formData.value.departments
-          if(typeof department_id === 'string') {
-            this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
-              next:(res)=>{
-                this.loading = false
-                this.sharedService.cbpPlanFinalObj['role_mapping_generation'] = res
-                this.dataSource = new MatTableDataSource(res)
-                setTimeout(()=>{
-                 this.dataSource.paginator = this.paginator;
-                },1000)
-                this.originalData = res;
-                console.log('this.dataSource',this.dataSource)
-              },
-              error:()=>{
-                this.loading = false
-              }
-            })
-          } else {
-            this.loading = false
-          }
-          
-        } else {
-          this.sharedService.getRoleMappingByStateCenter(state_center_id).subscribe((res)=>{
-            this.loading = false
-           console.log('res', res)
-           this.sharedService.cbpPlanFinalObj['role_mapping_generation'] = res
-           this.dataSource = new MatTableDataSource(res)
-           setTimeout(()=>{
-            this.dataSource.paginator = this.paginator;
-           },1000)
-           
-           this.originalData = res;
-           console.log('this.dataSource',this.dataSource)
-           })
-        }
-        
-      }
-      if(this.formData && this.formData.value && this.formData.value.ministryType === 'state') {
-        this.loading = true
-        console.log('this.formData',this.formData)
-        let state_center_id = this.formData.value.ministry
-        let department_id = this.formData.value.departments
-        this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
-          next:(res)=>{
-            this.loading = false
-            this.sharedService.cbpPlanFinalObj['role_mapping_generation'] = res
-            this.dataSource = new MatTableDataSource(res)
-            setTimeout(()=>{
-             this.dataSource.paginator = this.paginator;
-            },1000)
-            this.originalData = res;
-            console.log('this.dataSource',this.dataSource)
-          },
-          error:()=>{
-            this.loading = false
-          }
-        })
-        
-         
-        
-      }
-      localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+    })
+    this.loadRoleMappingList()
+   
    
   }
 
@@ -247,6 +166,7 @@ export class RoleMappingListComponent {
         });
       }
     }
+    this.loading = false
   }
 
   private updateDataSource(res: any[]) {
@@ -593,6 +513,98 @@ export class RoleMappingListComponent {
     });
   }
   
+  loadRoleMappingList() {
+    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
+    this.dataSource = new MatTableDataSource(this.cbpFinalObj?.role_mapping_generation)
+    this.originalData = this.cbpFinalObj?.role_mapping_generation
+    if(this.cbpFinalObj && this.cbpFinalObj?.ministry && (this.cbpFinalObj?.ministry.sbOrgType)) {
+      this.sharedService.cbpPlanFinalObj = this.cbpFinalObj
+      if(this.cbpFinalObj?.ministry.sbOrgType === 'ministry') {
+        this.formData = {}
+        this.formData['value'] = {}
+        this.formData['value']['ministryType'] = this.cbpFinalObj?.ministry.sbOrgType
+        this.formData['value']['ministry'] = this.cbpFinalObj?.ministry?.identifier
+        this.formData['value']['departments'] = this.cbpFinalObj?.departments
+      } else if (this.cbpFinalObj?.ministry.sbOrgType === 'state') {
+        this.formData = {}
+        this.formData['value'] = {}
+        this.formData['value']['ministryType'] = this.cbpFinalObj?.ministry.sbOrgType
+        this.formData['value']['ministry'] = this.cbpFinalObj?.ministry?.identifier
+        this.formData['value']['departments'] = this.cbpFinalObj?.departments
+      }
+    } 
+    console.log('this.formData', this.formData  )
+      if(this.formData && this.formData.value && this.formData.value.ministryType === 'ministry') {
+
+        let state_center_id = this.formData.value.ministry
+        this.loading = true
+        if(this.formData.value.departments) {
+          let department_id = this.formData.value.departments
+          if(typeof department_id === 'string') {
+            this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
+              next:(res)=>{
+                this.loading = false
+                this.sharedService.cbpPlanFinalObj['role_mapping_generation'] = res
+                localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+                this.dataSource = new MatTableDataSource(res)
+                setTimeout(()=>{
+                 this.dataSource.paginator = this.paginator;
+                },1000)
+                this.originalData = res;
+                console.log('this.dataSource',this.dataSource)
+              },
+              error:()=>{
+                this.loading = false
+              }
+            })
+          } else {
+            this.loading = false
+          }
+          
+        } else {
+          this.sharedService.getRoleMappingByStateCenter(state_center_id).subscribe((res)=>{
+            this.loading = false
+           console.log('res', res)
+           this.sharedService.cbpPlanFinalObj['role_mapping_generation'] = res
+           localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+           this.dataSource = new MatTableDataSource(res)
+           setTimeout(()=>{
+            this.dataSource.paginator = this.paginator;
+           },1000)
+           
+           this.originalData = res;
+           console.log('this.dataSource',this.dataSource)
+           })
+        }
+        
+      }
+      if(this.formData && this.formData.value && this.formData.value.ministryType === 'state') {
+        this.loading = true
+        console.log('this.formData',this.formData)
+        let state_center_id = this.formData.value.ministry
+        let department_id = this.formData.value.departments
+        this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
+          next:(res)=>{
+            this.loading = false
+            this.sharedService.cbpPlanFinalObj['role_mapping_generation'] = res
+            localStorage.setItem('cbpPlanFinalObj', JSON.stringify(this.sharedService.cbpPlanFinalObj))
+            this.dataSource = new MatTableDataSource(res)
+            setTimeout(()=>{
+             this.dataSource.paginator = this.paginator;
+            },1000)
+            this.originalData = res;
+            console.log('this.dataSource',this.dataSource)
+          },
+          error:()=>{
+            this.loading = false
+          }
+        })
+        
+         
+        
+      }
+      
+  }
   
   
 }

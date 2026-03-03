@@ -32,9 +32,11 @@
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
     "html2pdf.js": "0.10.1",
+    "marked": "^17.0.3",
     "material-icons": "^0.7.1",
     "moment": "^2.29.1",
     "ngx-filesaver": "^14.0.0",
+    "ngx-markdown": "^20.1.0",
     "ngx-owl-carousel-o": "16.0.0",
     "ngx-toastr": "^16.0.2",
     "rxjs": "~6.6.7",
@@ -42,8 +44,7 @@
     "tslib": "^2.0.0",
     "typed.js": "^2.0.16",
     "xlsx": "^0.18.5",
-    "zone.js": "~0.13.3",
-    "ngx-markdown": "^20.1.0"
+    "zone.js": "~0.13.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",

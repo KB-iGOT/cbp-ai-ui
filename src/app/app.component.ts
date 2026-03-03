@@ -6,6 +6,8 @@ import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/materia
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
 import { Router } from '@angular/router';
+import { UpdateDesignationHierarchyComponent } from './components/update-designation-hierarchy/update-designation-hierarchy.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -51,9 +53,11 @@ export class AppComponent {
   userEmail = ''
   disableUploadDocument = true
   disableUploadDocumentOriginal = true
+  openUpdateDesignationHierarchyDrawer = false
   @ViewChild(RoleMappingGenerationComponent)
   roleMappingChild!: RoleMappingGenerationComponent;
   constructor(
+    private dialog: MatDialog,
     private eventSvc: EventService, 
     public sharedService: SharedService,
     private router: Router,
@@ -158,6 +162,32 @@ export class AppComponent {
 
   routeToMain() {
     this.router.navigate(['/']);
+  }
+
+  openUpdateDesignationHierarchy() {
+    // const dialogRef = this.dialog.open(UpdateDesignationHierarchyComponent, {
+    //       width: '1000px',
+    //       data: '',
+    //       panelClass: 'view-cbp-plan-popup',
+    //       minHeight: '300px',          // Set minimum height
+    //       maxHeight: '80vh',           // Prevent it from going beyond viewport
+    //       disableClose: true // Optional: prevent closing with outside click
+    //     });
+      
+    //     dialogRef.afterClosed().subscribe(result => {
+    //       // if (result === 'saved') {
+    //       //   console.log('Changes saved!');
+    //       //   // Refresh data or show a toast here
+            
+    //       // }
+    //       // this.refreshRoleMappingData();
+    //     });
+    this.openUpdateDesignationHierarchyDrawer = true;
+  }
+
+  closeDrawer() {
+    this.openUpdateDesignationHierarchyDrawer = false;
+
   }
 
   
