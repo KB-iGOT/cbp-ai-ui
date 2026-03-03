@@ -166,79 +166,92 @@ export class ViewFinalCbpPlanComponent {
     if (this.sharedService?.cbpPlanFinalObj.ministry.sbOrgType === 'ministry') {
       this.loading = true
       let state_center_id = this.sharedService?.cbpPlanFinalObj.ministry.identifier
+      
       if (this.sharedService?.cbpPlanFinalObj.departments?.length) {
+        
         let department_id = this.sharedService?.cbpPlanFinalObj.departments
         this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
           next: (res) => {
             this.loading = false
-            console.log('res', res)
-            let behavioralCompetencies = []
-            let functionalCompetencies = []
-            let domainCompetencies = []
+             this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
+            const totalSet = new Set<string>();
+            const behavioralSet = new Set<string>();
+            const functionalSet = new Set<string>();
+            const domainSet = new Set<string>();
+            let domainArr = []
+            let completedomainArr = []
             for (let i = 0; i < res.length; i++) {
-              behavioralCompetencies = []
-              functionalCompetencies = []
-              domainCompetencies = []
-              let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-              res[i].competencies.forEach(c => {
-                competenciesObj.total++;
-                this.totalCompetencieObj.total++
-                if (c.type.toLowerCase() === 'behavioral') {
 
-                  behavioralCompetencies.push(`${c.theme} - ${c.sub_theme}`)
+              
+
+              let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+
+              res[i]?.competencies?.forEach(c => {
+
+                const theme = (c?.theme || '').trim().toLowerCase();
+                const subTheme = (c?.sub_theme || '').trim().toLowerCase();
+                const type = (c?.type || '').trim().toLowerCase();
+
+                if (!theme && !subTheme) return;
+
+                const key = `${theme}-${subTheme}`;
+
+                // PER DESIGNATION UNIQUE
+                if (!totalSet.has(key)) {
+                  totalSet.add(key);
+                  competenciesObj.total++;
+
+                  // ✅ GLOBAL TOTAL INCREMENT
+                  this.totalCompetencieObj.total++;
+                }
+
+                if (type === 'behavioral' && !behavioralSet.has(key)) {
+                  behavioralSet.add(key);
                   competenciesObj.behavioral++;
-                  this.totalCompetencieObj.behavioral++
+                  this.totalCompetencieObj.behavioral++;
                 }
-                if (c.type.toLowerCase() === 'functional') {
-                  functionalCompetencies.push(`${c.theme} - ${c.sub_theme}`)
+
+                if (type === 'functional' && !functionalSet.has(key)) {
+                  functionalSet.add(key);
                   competenciesObj.functional++;
-                  this.totalCompetencieObj.functional++
+                  this.totalCompetencieObj.functional++;
                 }
-                if (c.type.toLowerCase() === 'domain') {
-                  domainCompetencies.push(`${c.theme} - ${c.sub_theme}`)
+
+                if(type==='domain') {
+                  domainArr.push(key)
+                }
+
+                if (type === 'domain' && !domainSet.has(key)) {
+                  domainSet.add(key);
                   competenciesObj.domain++;
-                  this.totalCompetencieObj.domain++
-
+                  this.totalCompetencieObj.domain++;
                 }
-              });
-              const cbpPlans = res[i]?.cbp_plans || [];
 
-              const latestPlan = cbpPlans.length
-                ? cbpPlans[cbpPlans.length - 1]
-                : null;
-              console.log('latestPlan', latestPlan)
-              let obj: any = {
+              });
+
+              console.log('domainArr---',domainArr)
+              console.log('domainArr---',JSON.stringify(domainArr))
+              const uniqueArray = [...new Set(domainArr)];
+console.log(uniqueArray);
+console.log(uniqueArray.length);
+
+
+              completedomainArr.push(domainSet)
+              console.log('completedomainArr, ',completedomainArr)
+              console.log('completedomainArr, ',completedomainArr.length)
+              this.designationData.push({
                 designation: res[i].designation_name,
                 wing: res[i].wing_division_section,
                 updated: res[i].updated_at,
                 rolesResponsibilities: res[i].role_responsibilities,
                 activities: res[i].activities,
-                competenciesObj: competenciesObj,
-                behavioralCompetencies: behavioralCompetencies,
-                functionalCompetencies: functionalCompetencies,
-                domainCompetencies: domainCompetencies,
-                selectedCourses: latestPlan?.selected_courses || []
-                // behavioralCompetencies: [
-                //   "Strategic Leadership", "Executive Presence", "Influencing and Negotiation",
-                //   "Relationship Management", "Verbal & Non-Verbal Fluency", "Planning & Prioritization",
-                //   "Accountability", "Conflict Management"
-                // ],
-                // functionalCompetencies: [
-                //   "Rules of business (AoB/ToB)", "Cabinet note writing", "Submission of briefs, supply of information",
-                //   "Policy design/ amendment", "Policy implementation", "Policy monitoring & impact assessment",
-                //   "Project Planning", "Project Evaluation & Monitoring", "Creation of M&E Framework",
-                //   "Citizen Partnering & Collaboration", "Public Grievance Handling"
-                // ],
-                // domainCompetencies: [
-                //   "Strategic Policy Formulation", "Inter-ministerial & State Government Coordination",
-                //   "Senior Leadership Governance & Oversight", "Legislative & Parliamentary Affairs Management",
-                //   "National Programme Strategic Direction"
-                // ],
-                // completionRate: { behavioral: 85, functional: 78, domain: 92 }
-              }
+                competenciesObj,
+                behavioralCompetencies: [...behavioralSet],
+                functionalCompetencies: [...functionalSet],
+                domainCompetencies: [...domainSet],
+                selectedCourses: res[i]?.cbp_plans?.at(-1)?.selected_courses || []
+              });
 
-
-              this.designationData.push(obj)
             }
             this.cdr.detectChanges();
             setTimeout(() => {
@@ -256,18 +269,20 @@ export class ViewFinalCbpPlanComponent {
           }
         });
       } else {
+        
         this.sharedService.getRoleMappingByStateCenter(state_center_id).subscribe({
           next: (res) => {
             this.loading = false
             console.log('res', res)
             this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-            const totalSet = new Set<string>();
+              const totalSet = new Set<string>();
             const behavioralSet = new Set<string>();
             const functionalSet = new Set<string>();
             const domainSet = new Set<string>();
+            
             for (let i = 0; i < res.length; i++) {
 
-
+            
 
               let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
@@ -425,13 +440,14 @@ export class ViewFinalCbpPlanComponent {
           this.loading = false
           console.log('res', res)
           this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-          const totalSet = new Set<string>();
+            const totalSet = new Set<string>();
           const behavioralSet = new Set<string>();
           const functionalSet = new Set<string>();
           const domainSet = new Set<string>();
+         
           for (let i = 0; i < res.length; i++) {
 
-
+           
 
             let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
