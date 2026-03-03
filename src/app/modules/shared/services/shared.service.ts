@@ -447,7 +447,6 @@ export class SharedService {
           "courseCategory": ["Course"]
         },
         "fields": ["posterImage", "description", "name"],
-        "sort_by": { "createdOn": "desc" },
         "limit": 12,
         "offset": 0
       }
