@@ -166,23 +166,29 @@ export class ViewFinalCbpPlanComponent {
     if (this.sharedService?.cbpPlanFinalObj.ministry.sbOrgType === 'ministry') {
       this.loading = true
       let state_center_id = this.sharedService?.cbpPlanFinalObj.ministry.identifier
-      
+
       if (this.sharedService?.cbpPlanFinalObj.departments?.length) {
-        
+
         let department_id = this.sharedService?.cbpPlanFinalObj.departments
         this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
           next: (res) => {
             this.loading = false
-             this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-            const totalSet = new Set<string>();
-            const behavioralSet = new Set<string>();
-            const functionalSet = new Set<string>();
-            const domainSet = new Set<string>();
-            let domainArr = []
-            let completedomainArr = []
+            this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+            this.designationData = [];
+
+            // ✅ GLOBAL UNIQUE SETS (for overall unique count)
+            const globalTotalSet = new Set<string>();
+            const globalBehavioralSet = new Set<string>();
+            const globalFunctionalSet = new Set<string>();
+            const globalDomainSet = new Set<string>();
+
             for (let i = 0; i < res.length; i++) {
 
-              
+              // ✅ LOCAL UNIQUE SETS (per designation)
+              const totalSet = new Set<string>();
+              const behavioralSet = new Set<string>();
+              const functionalSet = new Set<string>();
+              const domainSet = new Set<string>();
 
               let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
@@ -196,49 +202,36 @@ export class ViewFinalCbpPlanComponent {
 
                 const key = `${theme}-${subTheme}`;
 
-                // PER DESIGNATION UNIQUE
+                // ✅ PER DESIGNATION UNIQUE
                 if (!totalSet.has(key)) {
                   totalSet.add(key);
                   competenciesObj.total++;
-
-                  // ✅ GLOBAL TOTAL INCREMENT
-                  this.totalCompetencieObj.total++;
                 }
 
                 if (type === 'behavioral' && !behavioralSet.has(key)) {
                   behavioralSet.add(key);
                   competenciesObj.behavioral++;
-                  this.totalCompetencieObj.behavioral++;
                 }
 
                 if (type === 'functional' && !functionalSet.has(key)) {
                   functionalSet.add(key);
                   competenciesObj.functional++;
-                  this.totalCompetencieObj.functional++;
-                }
-
-                if(type==='domain') {
-                  domainArr.push(key)
                 }
 
                 if (type === 'domain' && !domainSet.has(key)) {
                   domainSet.add(key);
                   competenciesObj.domain++;
-                  this.totalCompetencieObj.domain++;
                 }
+
+                // ✅ GLOBAL UNIQUE TRACKING
+                globalTotalSet.add(key);
+
+                if (type === 'behavioral') globalBehavioralSet.add(key);
+                if (type === 'functional') globalFunctionalSet.add(key);
+                if (type === 'domain') globalDomainSet.add(key);
 
               });
 
-              console.log('domainArr---',domainArr)
-              console.log('domainArr---',JSON.stringify(domainArr))
-              const uniqueArray = [...new Set(domainArr)];
-console.log(uniqueArray);
-console.log(uniqueArray.length);
-
-
-              completedomainArr.push(domainSet)
-              console.log('completedomainArr, ',completedomainArr)
-              console.log('completedomainArr, ',completedomainArr.length)
               this.designationData.push({
                 designation: res[i].designation_name,
                 wing: res[i].wing_division_section,
@@ -253,6 +246,14 @@ console.log(uniqueArray.length);
               });
 
             }
+
+            // ✅ SET GLOBAL COUNTS AFTER LOOP
+            this.totalCompetencieObj.total = globalTotalSet.size;
+            this.totalCompetencieObj.behavioral = globalBehavioralSet.size;
+            this.totalCompetencieObj.functional = globalFunctionalSet.size;
+            this.totalCompetencieObj.domain = globalDomainSet.size;
+
+            this.cdr.detectChanges();
             this.cdr.detectChanges();
             setTimeout(() => {
               this.scrollToTop()
@@ -269,20 +270,27 @@ console.log(uniqueArray.length);
           }
         });
       } else {
-        
+
         this.sharedService.getRoleMappingByStateCenter(state_center_id).subscribe({
           next: (res) => {
             this.loading = false
             console.log('res', res)
-            this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-              const totalSet = new Set<string>();
-            const behavioralSet = new Set<string>();
-            const functionalSet = new Set<string>();
-            const domainSet = new Set<string>();
-            
+            this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+            this.designationData = [];
+
+            // ✅ GLOBAL UNIQUE SETS (for overall unique count)
+            const globalTotalSet = new Set<string>();
+            const globalBehavioralSet = new Set<string>();
+            const globalFunctionalSet = new Set<string>();
+            const globalDomainSet = new Set<string>();
+
             for (let i = 0; i < res.length; i++) {
 
-            
+              // ✅ LOCAL UNIQUE SETS (per designation)
+              const totalSet = new Set<string>();
+              const behavioralSet = new Set<string>();
+              const functionalSet = new Set<string>();
+              const domainSet = new Set<string>();
 
               let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
@@ -296,32 +304,33 @@ console.log(uniqueArray.length);
 
                 const key = `${theme}-${subTheme}`;
 
-                // PER DESIGNATION UNIQUE
+                // ✅ PER DESIGNATION UNIQUE
                 if (!totalSet.has(key)) {
                   totalSet.add(key);
                   competenciesObj.total++;
-
-                  // ✅ GLOBAL TOTAL INCREMENT
-                  this.totalCompetencieObj.total++;
                 }
 
                 if (type === 'behavioral' && !behavioralSet.has(key)) {
                   behavioralSet.add(key);
                   competenciesObj.behavioral++;
-                  this.totalCompetencieObj.behavioral++;
                 }
 
                 if (type === 'functional' && !functionalSet.has(key)) {
                   functionalSet.add(key);
                   competenciesObj.functional++;
-                  this.totalCompetencieObj.functional++;
                 }
 
                 if (type === 'domain' && !domainSet.has(key)) {
                   domainSet.add(key);
                   competenciesObj.domain++;
-                  this.totalCompetencieObj.domain++;
                 }
+
+                // ✅ GLOBAL UNIQUE TRACKING
+                globalTotalSet.add(key);
+
+                if (type === 'behavioral') globalBehavioralSet.add(key);
+                if (type === 'functional') globalFunctionalSet.add(key);
+                if (type === 'domain') globalDomainSet.add(key);
 
               });
 
@@ -339,6 +348,14 @@ console.log(uniqueArray.length);
               });
 
             }
+
+            // ✅ SET GLOBAL COUNTS AFTER LOOP
+            this.totalCompetencieObj.total = globalTotalSet.size;
+            this.totalCompetencieObj.behavioral = globalBehavioralSet.size;
+            this.totalCompetencieObj.functional = globalFunctionalSet.size;
+            this.totalCompetencieObj.domain = globalDomainSet.size;
+
+            this.cdr.detectChanges();
             this.cdr.detectChanges();
             setTimeout(() => {
               this.scrollToTop()
@@ -439,15 +456,22 @@ console.log(uniqueArray.length);
         next: (res) => {
           this.loading = false
           console.log('res', res)
-          this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-            const totalSet = new Set<string>();
-          const behavioralSet = new Set<string>();
-          const functionalSet = new Set<string>();
-          const domainSet = new Set<string>();
-         
+          this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+          this.designationData = [];
+
+          // ✅ GLOBAL UNIQUE SETS (for overall unique count)
+          const globalTotalSet = new Set<string>();
+          const globalBehavioralSet = new Set<string>();
+          const globalFunctionalSet = new Set<string>();
+          const globalDomainSet = new Set<string>();
+
           for (let i = 0; i < res.length; i++) {
 
-           
+            // ✅ LOCAL UNIQUE SETS (per designation)
+            const totalSet = new Set<string>();
+            const behavioralSet = new Set<string>();
+            const functionalSet = new Set<string>();
+            const domainSet = new Set<string>();
 
             let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
@@ -461,32 +485,33 @@ console.log(uniqueArray.length);
 
               const key = `${theme}-${subTheme}`;
 
-              // PER DESIGNATION UNIQUE
+              // ✅ PER DESIGNATION UNIQUE
               if (!totalSet.has(key)) {
                 totalSet.add(key);
                 competenciesObj.total++;
-
-                // ✅ GLOBAL TOTAL INCREMENT
-                this.totalCompetencieObj.total++;
               }
 
               if (type === 'behavioral' && !behavioralSet.has(key)) {
                 behavioralSet.add(key);
                 competenciesObj.behavioral++;
-                this.totalCompetencieObj.behavioral++;
               }
 
               if (type === 'functional' && !functionalSet.has(key)) {
                 functionalSet.add(key);
                 competenciesObj.functional++;
-                this.totalCompetencieObj.functional++;
               }
 
               if (type === 'domain' && !domainSet.has(key)) {
                 domainSet.add(key);
                 competenciesObj.domain++;
-                this.totalCompetencieObj.domain++;
               }
+
+              // ✅ GLOBAL UNIQUE TRACKING
+              globalTotalSet.add(key);
+
+              if (type === 'behavioral') globalBehavioralSet.add(key);
+              if (type === 'functional') globalFunctionalSet.add(key);
+              if (type === 'domain') globalDomainSet.add(key);
 
             });
 
@@ -504,6 +529,14 @@ console.log(uniqueArray.length);
             });
 
           }
+
+          // ✅ SET GLOBAL COUNTS AFTER LOOP
+          this.totalCompetencieObj.total = globalTotalSet.size;
+          this.totalCompetencieObj.behavioral = globalBehavioralSet.size;
+          this.totalCompetencieObj.functional = globalFunctionalSet.size;
+          this.totalCompetencieObj.domain = globalDomainSet.size;
+
+          this.cdr.detectChanges();
 
 
           this.cdr.detectChanges();
