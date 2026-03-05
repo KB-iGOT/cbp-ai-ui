@@ -2846,7 +2846,7 @@ h1 {
 .right-side-container {
       display: flex;
     justify-content: space-between;
-    margin-right: 8%;
+    gap:64px;
 }
 
 ::ng-deep .language-select .mat-select-trigger {
@@ -2857,7 +2857,7 @@ h1 {
   color: white !important;
 }
 
-:host ::ng-deep .search-and-buttons-container {
+:host ::ng-deep .select-search-panel {
    .mat-option-text {
     color:#fff !important
   }
