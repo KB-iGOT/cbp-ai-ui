@@ -2,42 +2,83 @@
     <div class="dashboard-container">
 
         <!-- FILTERS SECTION -->
-        <mat-card class="filters-card">
-            <div class="filters-header">
-                <mat-icon>filter_list</mat-icon>
-                <span>Filters</span>
-            </div>
+        <form [formGroup]="filtersForm" class="filters-form">
 
-            <div class="filters-row">
+            <mat-card class="filters-card">
+                <div class="filters-header">
+                    <mat-icon>filter_list</mat-icon>
+                    <span>Filters</span>
+                </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Centre / State</mat-label>
-                    <mat-select>
-                        <mat-option value="">State</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="filters-row">
+                    <div>
+                        <label>Centre / State </label>
+                        <!-- Centre / State -->
+                        <mat-form-field appearance="fill"
+                            style="background: white; border-radius: 25px; padding: 0 12px; border: 1px solid #ccc;width: 100%;">
 
-                <mat-form-field appearance="outline">
-                    <mat-label>State</mat-label>
-                    <mat-select>
-                        <mat-option value="">All States</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                            <mat-select formControlName="centreState" [disabled]="!isSuperAdmin"
+                                (selectionChange)="onMinistryTypeChange($event)">
+                                <mat-option value="">Select Center/State</mat-option>
+                                <mat-option value="ministry">Center</mat-option>
+                                <mat-option value="state">State</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label>Ministry </label>
+                        <!-- Centre / State -->
+                        <mat-form-field appearance="fill"
+                            style="background: white; border-radius: 25px; padding: 0 12px; border: 1px solid #ccc;width: 100%;">
+                            <mat-select panelClass="select-with-search" [disabled]="!isSuperAdmin" multiple
+                                [placeholder]="selectedMinistryType === 'ministry' ? 'Select Ministry/ Department':'Select State'"
+                                (selectionChange)="onMinistryChange($event)" formControlName="ministries"
+                                style="border-radius: 25px; background: white; width:100%"
+                                (openedChange)="onOpened($event)">
+                                <div class="search-wrapper" *ngIf="panelOpen">
+                                    <input type="text" placeholder="Search..." (input)="filterData($event)"
+                                        class="search-input" (keydown.space)="$event.stopPropagation()"
+                                        (keydown)="$event.stopPropagation()">
+                                </div>
+                                <mat-option [value]="item?.identifier" *ngFor="let item of filteredList"
+                                    [selected]="selectedMinistryId === item?.identifier">{{item?.orgName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label>Department</label>
+                        <!-- Centre / State -->
+                        <mat-form-field appearance="fill"
+                            style="background: white; border-radius: 25px; padding: 0 12px;border: 1px solid #ccc;">
+                            <mat-select panelClass="select-with-search" placeholder="Select Department" [disabled]="!isSuperAdmin" multiple
+                                formControlName="departments" style="border-radius: 25px; background: white;"
+                                (selectionChange)="onDepartmentChange()" (openedChange)="onOpenedDepartment($event)">
+                                <div class="search-wrapper" *ngIf="departmentPanelOpen">
+                                    <input type="text" placeholder="Search..." (input)="filterDepartmentData($event)"
+                                        class="search-input" (keydown.space)="$event.stopPropagation()"
+                                        (keydown)="$event.stopPropagation()">
+                                </div>
+                                <mat-option [value]="item?.identifier"
+                                    *ngFor="let item of filteredDepartmentList">{{item?.orgName}}</mat-option>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Department</mat-label>
-                    <mat-select>
-                        <mat-option value="">All Departments</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Date Range (3–12 months)</mat-label>
-                    <input matInput placeholder="Dec 02, 2025 - Mar 02, 2026">
-                </mat-form-field>
+                    <!-- Date Range -->
+                    <div>
+                        <label>Date Range (3-12 Months)</label>
+                        <mat-form-field appearance="outline">
 
-            </div>
-        </mat-card>
+                            <input matInput ngxDaterangepickerMd formControlName="dateRange"
+                                placeholder="Select date range" [autoApply]="true" />
+                        </mat-form-field>
+                    </div>
+
+
+                </div>
+            </mat-card>
+        </form>
 
         <!-- OVERVIEW METRICS -->
         <h2 class="section-title">
@@ -196,6 +237,92 @@
                 </mat-card>
 
             </div>
+
+            <div class="card-grid">
+
+                <mat-card class="metric-card warning-bg">
+                    <div class="card-content">
+                        <div>
+                            <p class="card-title">Behavioral Competencies Without Courses</p>
+                            <h2>78</h2>
+                        </div>
+                        <mat-icon class="icon red">cancel</mat-icon>
+                    </div>
+                </mat-card>
+
+                <mat-card class="metric-card">
+                    <div class="card-content">
+                        <div>
+                            <p class="card-title">Functional Competencies Without Courses</p>
+                            <h2>78</h2>
+                        </div>
+                        <mat-icon class="icon red">cancel</mat-icon>
+                    </div>
+                </mat-card>
+
+                <mat-card class="metric-card">
+                    <div class="card-content">
+                        <div>
+                            <p class="card-title">Domain Competencies Without Courses</p>
+                            <h2>78</h2>
+                        </div>
+                        <mat-icon class="icon red">cancel</mat-icon>
+                    </div>
+                </mat-card>
+
+            </div>
+        </div>
+
+          <!-- OVERVIEW METRICS -->
+        <h2 class="section-title">
+            <mat-icon>dashboard</mat-icon>
+            Users and Role Mapping Metrics
+        </h2>
+
+        <div class="card-grid">
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Unique Users (Credentials)</p>
+                        <h2>28</h2>
+                    </div>
+                    <mat-icon class="icon primary">public</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Unique Users with Role Mappings</p>
+                        <h2>156</h2>
+                        <p class="card-subtitle">Generated atleast 1 role mapping</p>
+                    </div>
+                    <mat-icon class="icon teal">apartment</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                <div class="card-content">
+                    <div>
+                        <p class="card-title">Total Designation/Role Mappings Generated</p>
+                        <h2>4,523</h2>
+                    </div>
+                    <mat-icon class="icon green">description</mat-icon>
+                </div>
+            </mat-card>
+
+            <mat-card class="metric-card">
+                 <div class="card-content">
+                    <div>
+                        <p class="card-title">Unique Role Mappings</p>
+                        <h2>156</h2>
+                        <p class="card-subtitle">10,000 unique of 50,000 total</p>
+                    </div>
+                    <mat-icon class="icon teal">apartment</mat-icon>
+                </div>
+            </mat-card>
+
         </div>
     </div>
 </div>

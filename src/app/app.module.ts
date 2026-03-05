@@ -62,6 +62,9 @@ import { UpdateDesignationHierarchyComponent } from './components/update-designa
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 const appInitializer = (initSvc: InitService) => async () => {
   try {
     await initSvc.init()
@@ -124,7 +127,10 @@ const appInitializer = (initSvc: InitService) => async () => {
     MatTooltipModule,
     MatTabsModule,
     MarkdownModule.forRoot(),
-    DragDropModule
+    DragDropModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxDaterangepickerMd.forRoot()
   ],
   providers: [
     {

@@ -49,6 +49,11 @@ const API_END_POINTS = {
   DELETE_COURSE_RECOMMENDATION: 'cbp-tpc-ai/api/v1/cbp-plan',
   UPDATE_DESIGNATION_HIERARCHY: 'cbp-tpc-ai/api/v1/role-mapping/reorder',
   SEARCH_PUBLIC_DESIGNATION: 'apis/public/v8/designation/search',
+  DASHBOARD_ADMIN: 'cbp-tpc-ai/api/v1/dashboard/cbp-dashboard-metrics',
+  GAP_ANALYSIS_ADMIN: 'cbp-tpc-ai/api/v1/dashboard/gap-analysis',
+  DASHBOARD_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-dashboard-metrics',
+  GAP_ANALYSIS_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-gap-analysis'
+
 }
 
 
@@ -888,6 +893,38 @@ export class SharedService {
   searchPublicDesignation(reqBody) {
     const headers = this.headers
     return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.SEARCH_PUBLIC_DESIGNATION}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  getDashboardAdmin(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.DASHBOARD_ADMIN}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  getDashboardGapAnalysisAdmin(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.GAP_ANALYSIS_ADMIN}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  getDashboardPublic(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.DASHBOARD_PUBLIC}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  getDashboardGapAnalysisPublic(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.GAP_ANALYSIS_PUBLIC}`, reqBody, { headers })
       .pipe(map((response: any) => {
         return response
       }))

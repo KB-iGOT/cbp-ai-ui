@@ -90,7 +90,8 @@ export class AppComponent {
     if (this.loginSuccess) {
 
       this.userEmail = localStorage.getItem('userEmail')
-      this.userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}')
+      
+      console.log('userProfile--',this.userProfile)
     }
     
     if (this.cbpFinalObj && this.cbpFinalObj?.ministry && (this.cbpFinalObj?.ministry?.sbOrgType === 'ministry' || this.cbpFinalObj?.ministry?.sbOrgType === 'state') &&
