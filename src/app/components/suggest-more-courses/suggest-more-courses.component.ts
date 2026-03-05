@@ -75,9 +75,6 @@ export class SuggestMoreCoursesComponent implements OnInit{
           "description",
           "name"
         ],
-        "sort_by": {
-          "createdOn": "desc"
-        },
         "limit": this.pageSize,
         "offset": this.currentPage * this.pageSize
       }
@@ -155,9 +152,6 @@ export class SuggestMoreCoursesComponent implements OnInit{
           "description",
           "name"
         ],
-        "sort_by": {
-          "createdOn": "desc"
-        },
         "query": this.searchText.trim(),
         "limit": this.pageSize,
         "offset": this.currentPage * this.pageSize

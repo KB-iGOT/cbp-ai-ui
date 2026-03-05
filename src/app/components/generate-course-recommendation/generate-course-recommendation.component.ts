@@ -140,7 +140,7 @@ export class GenerateCourseRecommendationComponent {
       );
 
       if (index !== -1) {
-        this.selectFilterCourses.splice(index);
+        this.selectFilterCourses.splice(index, 1);
       }
     }
     console.log('this.selectFilterCourses', this.selectFilterCourses)

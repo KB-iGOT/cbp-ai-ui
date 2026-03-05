@@ -166,108 +166,29 @@ export class ViewFinalCbpPlanComponent {
     if (this.sharedService?.cbpPlanFinalObj.ministry.sbOrgType === 'ministry') {
       this.loading = true
       let state_center_id = this.sharedService?.cbpPlanFinalObj.ministry.identifier
+
       if (this.sharedService?.cbpPlanFinalObj.departments?.length) {
+
         let department_id = this.sharedService?.cbpPlanFinalObj.departments
         this.sharedService.getRoleMappingByStateCenterAndDepartment(state_center_id, department_id).subscribe({
           next: (res) => {
             this.loading = false
-            console.log('res', res)
-            let behavioralCompetencies = []
-            let functionalCompetencies = []
-            let domainCompetencies = []
-            for (let i = 0; i < res.length; i++) {
-              behavioralCompetencies = []
-              functionalCompetencies = []
-              domainCompetencies = []
-              let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-              res[i].competencies.forEach(c => {
-                competenciesObj.total++;
-                this.totalCompetencieObj.total++
-                if (c.type.toLowerCase() === 'behavioral') {
+            this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+            this.designationData = [];
 
-                  behavioralCompetencies.push(`${c.theme} - ${c.sub_theme}`)
-                  competenciesObj.behavioral++;
-                  this.totalCompetencieObj.behavioral++
-                }
-                if (c.type.toLowerCase() === 'functional') {
-                  functionalCompetencies.push(`${c.theme} - ${c.sub_theme}`)
-                  competenciesObj.functional++;
-                  this.totalCompetencieObj.functional++
-                }
-                if (c.type.toLowerCase() === 'domain') {
-                  domainCompetencies.push(`${c.theme} - ${c.sub_theme}`)
-                  competenciesObj.domain++;
-                  this.totalCompetencieObj.domain++
+            // ✅ GLOBAL UNIQUE SETS (for overall unique count)
+            const globalTotalSet = new Set<string>();
+            const globalBehavioralSet = new Set<string>();
+            const globalFunctionalSet = new Set<string>();
+            const globalDomainSet = new Set<string>();
 
-                }
-              });
-              const cbpPlans = res[i]?.cbp_plans || [];
-
-              const latestPlan = cbpPlans.length
-                ? cbpPlans[cbpPlans.length - 1]
-                : null;
-              console.log('latestPlan', latestPlan)
-              let obj: any = {
-                designation: res[i].designation_name,
-                wing: res[i].wing_division_section,
-                updated: res[i].updated_at,
-                rolesResponsibilities: res[i].role_responsibilities,
-                activities: res[i].activities,
-                competenciesObj: competenciesObj,
-                behavioralCompetencies: behavioralCompetencies,
-                functionalCompetencies: functionalCompetencies,
-                domainCompetencies: domainCompetencies,
-                selectedCourses: latestPlan?.selected_courses || []
-                // behavioralCompetencies: [
-                //   "Strategic Leadership", "Executive Presence", "Influencing and Negotiation",
-                //   "Relationship Management", "Verbal & Non-Verbal Fluency", "Planning & Prioritization",
-                //   "Accountability", "Conflict Management"
-                // ],
-                // functionalCompetencies: [
-                //   "Rules of business (AoB/ToB)", "Cabinet note writing", "Submission of briefs, supply of information",
-                //   "Policy design/ amendment", "Policy implementation", "Policy monitoring & impact assessment",
-                //   "Project Planning", "Project Evaluation & Monitoring", "Creation of M&E Framework",
-                //   "Citizen Partnering & Collaboration", "Public Grievance Handling"
-                // ],
-                // domainCompetencies: [
-                //   "Strategic Policy Formulation", "Inter-ministerial & State Government Coordination",
-                //   "Senior Leadership Governance & Oversight", "Legislative & Parliamentary Affairs Management",
-                //   "National Programme Strategic Direction"
-                // ],
-                // completionRate: { behavioral: 85, functional: 78, domain: 92 }
-              }
-
-
-              this.designationData.push(obj)
-            }
-            this.cdr.detectChanges();
-            setTimeout(() => {
-              this.scrollToTop()
-            }, 1000);
-            console.log('this.designationData', this.designationData)
-            console.log('this.totalCompetencieObj', this.totalCompetencieObj)
-          },
-          error: (error) => {
-            this.loading = false
-            this.snackBar.open(error?.error?.detail, 'X', {
-              duration: 3000,
-              panelClass: ['snackbar-error']
-            });
-          }
-        });
-      } else {
-        this.sharedService.getRoleMappingByStateCenter(state_center_id).subscribe({
-          next: (res) => {
-            this.loading = false
-            console.log('res', res)
-            this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-            const totalSet = new Set<string>();
-            const behavioralSet = new Set<string>();
-            const functionalSet = new Set<string>();
-            const domainSet = new Set<string>();
             for (let i = 0; i < res.length; i++) {
 
-
+              // ✅ LOCAL UNIQUE SETS (per designation)
+              const totalSet = new Set<string>();
+              const behavioralSet = new Set<string>();
+              const functionalSet = new Set<string>();
+              const domainSet = new Set<string>();
 
               let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
@@ -281,32 +202,33 @@ export class ViewFinalCbpPlanComponent {
 
                 const key = `${theme}-${subTheme}`;
 
-                // PER DESIGNATION UNIQUE
+                // ✅ PER DESIGNATION UNIQUE
                 if (!totalSet.has(key)) {
                   totalSet.add(key);
                   competenciesObj.total++;
-
-                  // ✅ GLOBAL TOTAL INCREMENT
-                  this.totalCompetencieObj.total++;
                 }
 
                 if (type === 'behavioral' && !behavioralSet.has(key)) {
                   behavioralSet.add(key);
                   competenciesObj.behavioral++;
-                  this.totalCompetencieObj.behavioral++;
                 }
 
                 if (type === 'functional' && !functionalSet.has(key)) {
                   functionalSet.add(key);
                   competenciesObj.functional++;
-                  this.totalCompetencieObj.functional++;
                 }
 
                 if (type === 'domain' && !domainSet.has(key)) {
                   domainSet.add(key);
                   competenciesObj.domain++;
-                  this.totalCompetencieObj.domain++;
                 }
+
+                // ✅ GLOBAL UNIQUE TRACKING
+                globalTotalSet.add(key);
+
+                if (type === 'behavioral') globalBehavioralSet.add(key);
+                if (type === 'functional') globalFunctionalSet.add(key);
+                if (type === 'domain') globalDomainSet.add(key);
 
               });
 
@@ -324,6 +246,116 @@ export class ViewFinalCbpPlanComponent {
               });
 
             }
+
+            // ✅ SET GLOBAL COUNTS AFTER LOOP
+            this.totalCompetencieObj.total = globalTotalSet.size;
+            this.totalCompetencieObj.behavioral = globalBehavioralSet.size;
+            this.totalCompetencieObj.functional = globalFunctionalSet.size;
+            this.totalCompetencieObj.domain = globalDomainSet.size;
+
+            this.cdr.detectChanges();
+            this.cdr.detectChanges();
+            setTimeout(() => {
+              this.scrollToTop()
+            }, 1000);
+            console.log('this.designationData', this.designationData)
+            console.log('this.totalCompetencieObj', this.totalCompetencieObj)
+          },
+          error: (error) => {
+            this.loading = false
+            this.snackBar.open(error?.error?.detail, 'X', {
+              duration: 3000,
+              panelClass: ['snackbar-error']
+            });
+          }
+        });
+      } else {
+
+        this.sharedService.getRoleMappingByStateCenter(state_center_id).subscribe({
+          next: (res) => {
+            this.loading = false
+            console.log('res', res)
+            this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+            this.designationData = [];
+
+            // ✅ GLOBAL UNIQUE SETS (for overall unique count)
+            const globalTotalSet = new Set<string>();
+            const globalBehavioralSet = new Set<string>();
+            const globalFunctionalSet = new Set<string>();
+            const globalDomainSet = new Set<string>();
+
+            for (let i = 0; i < res.length; i++) {
+
+              // ✅ LOCAL UNIQUE SETS (per designation)
+              const totalSet = new Set<string>();
+              const behavioralSet = new Set<string>();
+              const functionalSet = new Set<string>();
+              const domainSet = new Set<string>();
+
+              let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+
+              res[i]?.competencies?.forEach(c => {
+
+                const theme = (c?.theme || '').trim().toLowerCase();
+                const subTheme = (c?.sub_theme || '').trim().toLowerCase();
+                const type = (c?.type || '').trim().toLowerCase();
+
+                if (!theme && !subTheme) return;
+
+                const key = `${theme}-${subTheme}`;
+
+                // ✅ PER DESIGNATION UNIQUE
+                if (!totalSet.has(key)) {
+                  totalSet.add(key);
+                  competenciesObj.total++;
+                }
+
+                if (type === 'behavioral' && !behavioralSet.has(key)) {
+                  behavioralSet.add(key);
+                  competenciesObj.behavioral++;
+                }
+
+                if (type === 'functional' && !functionalSet.has(key)) {
+                  functionalSet.add(key);
+                  competenciesObj.functional++;
+                }
+
+                if (type === 'domain' && !domainSet.has(key)) {
+                  domainSet.add(key);
+                  competenciesObj.domain++;
+                }
+
+                // ✅ GLOBAL UNIQUE TRACKING
+                globalTotalSet.add(key);
+
+                if (type === 'behavioral') globalBehavioralSet.add(key);
+                if (type === 'functional') globalFunctionalSet.add(key);
+                if (type === 'domain') globalDomainSet.add(key);
+
+              });
+
+              this.designationData.push({
+                designation: res[i].designation_name,
+                wing: res[i].wing_division_section,
+                updated: res[i].updated_at,
+                rolesResponsibilities: res[i].role_responsibilities,
+                activities: res[i].activities,
+                competenciesObj,
+                behavioralCompetencies: [...behavioralSet],
+                functionalCompetencies: [...functionalSet],
+                domainCompetencies: [...domainSet],
+                selectedCourses: res[i]?.cbp_plans?.at(-1)?.selected_courses || []
+              });
+
+            }
+
+            // ✅ SET GLOBAL COUNTS AFTER LOOP
+            this.totalCompetencieObj.total = globalTotalSet.size;
+            this.totalCompetencieObj.behavioral = globalBehavioralSet.size;
+            this.totalCompetencieObj.functional = globalFunctionalSet.size;
+            this.totalCompetencieObj.domain = globalDomainSet.size;
+
+            this.cdr.detectChanges();
             this.cdr.detectChanges();
             setTimeout(() => {
               this.scrollToTop()
@@ -424,14 +456,22 @@ export class ViewFinalCbpPlanComponent {
         next: (res) => {
           this.loading = false
           console.log('res', res)
-          this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 }
-          const totalSet = new Set<string>();
-          const behavioralSet = new Set<string>();
-          const functionalSet = new Set<string>();
-          const domainSet = new Set<string>();
+          this.totalCompetencieObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
+          this.designationData = [];
+
+          // ✅ GLOBAL UNIQUE SETS (for overall unique count)
+          const globalTotalSet = new Set<string>();
+          const globalBehavioralSet = new Set<string>();
+          const globalFunctionalSet = new Set<string>();
+          const globalDomainSet = new Set<string>();
+
           for (let i = 0; i < res.length; i++) {
 
-
+            // ✅ LOCAL UNIQUE SETS (per designation)
+            const totalSet = new Set<string>();
+            const behavioralSet = new Set<string>();
+            const functionalSet = new Set<string>();
+            const domainSet = new Set<string>();
 
             let competenciesObj = { total: 0, behavioral: 0, functional: 0, domain: 0 };
 
@@ -445,32 +485,33 @@ export class ViewFinalCbpPlanComponent {
 
               const key = `${theme}-${subTheme}`;
 
-              // PER DESIGNATION UNIQUE
+              // ✅ PER DESIGNATION UNIQUE
               if (!totalSet.has(key)) {
                 totalSet.add(key);
                 competenciesObj.total++;
-
-                // ✅ GLOBAL TOTAL INCREMENT
-                this.totalCompetencieObj.total++;
               }
 
               if (type === 'behavioral' && !behavioralSet.has(key)) {
                 behavioralSet.add(key);
                 competenciesObj.behavioral++;
-                this.totalCompetencieObj.behavioral++;
               }
 
               if (type === 'functional' && !functionalSet.has(key)) {
                 functionalSet.add(key);
                 competenciesObj.functional++;
-                this.totalCompetencieObj.functional++;
               }
 
               if (type === 'domain' && !domainSet.has(key)) {
                 domainSet.add(key);
                 competenciesObj.domain++;
-                this.totalCompetencieObj.domain++;
               }
+
+              // ✅ GLOBAL UNIQUE TRACKING
+              globalTotalSet.add(key);
+
+              if (type === 'behavioral') globalBehavioralSet.add(key);
+              if (type === 'functional') globalFunctionalSet.add(key);
+              if (type === 'domain') globalDomainSet.add(key);
 
             });
 
@@ -488,6 +529,14 @@ export class ViewFinalCbpPlanComponent {
             });
 
           }
+
+          // ✅ SET GLOBAL COUNTS AFTER LOOP
+          this.totalCompetencieObj.total = globalTotalSet.size;
+          this.totalCompetencieObj.behavioral = globalBehavioralSet.size;
+          this.totalCompetencieObj.functional = globalFunctionalSet.size;
+          this.totalCompetencieObj.domain = globalDomainSet.size;
+
+          this.cdr.detectChanges();
 
 
           this.cdr.detectChanges();
