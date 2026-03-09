@@ -186,7 +186,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
 
   getUploadedDocuments() {
     const formData = this.roleMappingForm.value;
-    this.loading = true
+    this.apiLoading = true
     let reqBody = {
       state_center_id: formData.ministry,
       include_summary: true,
@@ -196,15 +196,15 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
     if (formData?.departments) {
       reqBody['department_id'] = formData?.departments
     }
-    this.loading = true
+    this.apiLoading = true
 
     this.sharedService.getUploadedDocuments(reqBody).subscribe((res) => {
       if (res && res?.items && res?.items?.length) {
-        this.loading = false
+        this.apiLoading = false
         this.documents = res?.items
       } else {
         this.documents = []
-        this.loading = false
+        this.apiLoading = false
       }
     })
   }
@@ -699,7 +699,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
   }
 
   generateFinalRoleMapping() {
-    this.loading = true;
+    this.apiLoading = true;
 
     if (!this.roleMappingForm.valid) {
       this.roleMappingForm.markAllAsTouched();
@@ -786,6 +786,8 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
           if (!this.firstApiResponse) {
             this.firstApiResponse = data; // 👈 store first response
             console.log('First API response:', this.firstApiResponse);
+          } else {
+            this.loading = true
           }
         }),
         takeWhile((data: any) => data?.status !== 'COMPLETED', true)
@@ -793,7 +795,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
       .subscribe(data => {
         console.log('role mapping data--', data)
         if (this.firstApiResponse?.is_existing) {
-          this.loading = false;
+          this.apiLoading = false;
           this.destroy$.next();   // 🛑 stop polling
           this.destroy$.complete();
           const dialogRef = this.dialog.open(DeleteRoleMappingPopupComponent, {
@@ -857,6 +859,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
           });
         }
         else if (data?.status === 'COMPLETED') {
+          
           this.loading = false;
 
           this.sharedService.cbpPlanFinalObj['role_mapping_generation'] =

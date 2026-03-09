@@ -171,7 +171,7 @@
                 <input [disabled]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1"
                     [ngClass]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1 ? 'btn-disable':'btn-active'" 
                     type="button" 
-                    [value]="loading ? 'Generating CBP Plan...' : 'Generate CBP Plan'"
+                    [value]="loading ? 'Generating CBP...' : 'Generate CBP'"
                     (click)="onGenerateRoleMapping()" />
             </div>
         </div>
