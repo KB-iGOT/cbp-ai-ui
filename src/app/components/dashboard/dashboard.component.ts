@@ -39,8 +39,9 @@ export class DashboardComponent implements OnInit {
   selectedMinistryObj = {}
   apiLoading = false
   loginUserOrgIds = []
-  dashboardData:any
-  gapAnalysisData:any
+  dashboardData: any
+  gapAnalysisData: any
+  dashboardResponseObj = {}
   constructor(private fb: FormBuilder, private sharedService: SharedService, private snackBar: MatSnackBar) { }
   ngOnInit() {
     this.userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
@@ -92,24 +93,33 @@ export class DashboardComponent implements OnInit {
     if (val?.departments?.length) {
       payload['departments'] = val?.departments
     }
-    if(this.isSuperAdmin) {
-      this.sharedService.getDashboardAdmin(payload).subscribe((res)=>{
-        this.dashboardData = res
+    if (this.isSuperAdmin) {
+      this.dashboardData = {};
 
-        console.log('this.dashboardData--',this.dashboardData)
-      })
-      this.sharedService.getDashboardGapAnalysisAdmin(payload).subscribe((res)=>{
-        this.gapAnalysisData = res
-        console.log('this.gapAnalysisData--',this.gapAnalysisData)
-      })
+      this.sharedService.getDashboardAdmin(payload).subscribe((res) => {
+        console.log('res from admin', res);
+        Object.assign(this.dashboardData, res); // merge data
+        console.log('this.dashboardData after admin', this.dashboardData);
+      });
+
+      this.sharedService.getDashboardGapAnalysisAdmin(payload).subscribe((res) => {
+        console.log('res from gap analysis', res);
+        Object.assign(this.dashboardData, res); // merge data
+        console.log('this.dashboardData after gap analysis', this.dashboardData);
+      });
+
     } else {
-      this.sharedService.getDashboardPublic(payload).subscribe((res)=>{
-        this.dashboardData = res
-      })
-      this.sharedService.getDashboardGapAnalysisPublic(payload).subscribe((res)=>{
-        this.gapAnalysisData = res
-      })
+      this.dashboardData = {};
+
+      this.sharedService.getDashboardPublic(payload).subscribe((res) => {
+        Object.assign(this.dashboardData, res);
+      });
+
+      this.sharedService.getDashboardGapAnalysisPublic(payload).subscribe((res) => {
+        Object.assign(this.dashboardData, res);
+      });
     }
+    console.log('this.dashboardData', this.dashboardData)
   }
   onOpened(opened: boolean) {
     this.panelOpen = opened;
