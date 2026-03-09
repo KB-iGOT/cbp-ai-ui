@@ -35,19 +35,24 @@
                     </button>
                 </div>
             </div>
-            <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
+            <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="showSettingsMenu ? settingsMenu : null"
+                [matMenuTriggerDisabled]="!showSettingsMenu">
+
                 <div class="profile-pic-container">
                     <img src="assets/icons/user.png" alt="Profile" class="profile-pic">
                 </div>
-                <mat-menu #settingsMenu="matMenu">
-                    <button mat-menu-item (click)="openUpdateDesignationHierarchy()">
-                        <mat-icon>update</mat-icon>
-                        <span>Update Designation Hierachy</span>
-                    </button>
-                </mat-menu>
+
             </div>
+
+            <mat-menu #settingsMenu="matMenu">
+                <button mat-menu-item (click)="openUpdateDesignationHierarchy()">
+                    <mat-icon>update</mat-icon>
+                    <span>Update Designation Hierachy</span>
+                </button>
+            </mat-menu>
             <div style="margin-left: 10px;" class="cursor-pointer" (click)="logout()" matTooltip="Logout">
-                <mat-icon>logout</mat-icon></div>
+                <mat-icon>logout</mat-icon>
+            </div>
         </div>
     </div>
 
