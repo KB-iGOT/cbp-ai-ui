@@ -732,6 +732,27 @@ border: none;
     color: #333;
   }
 
+  .table-header-unmatched {
+    font-size: 16px;
+    font-weight: 600;
+    background: #f4dcde !important;
+    color: #b42318;
+  }
+
+  .table-body {
+background-color: #fff !important;
+  }
+
+  .table-body-unmatched {
+    background-color: #faf6f7 !important;
+  }
+
+  
+
+  .designation-text-unmatched p{
+     color: #b42318 !important;
+  }
+
   .select-map-flex-container {
     display: flex;
     flex-direction: row;
@@ -875,8 +896,8 @@ cursor: not-allowed;
   background-color: #1B4CA1;
 }
 
-.dot.gray {
-  background-color: #98a2b3;
+.dot.red {
+  background-color: #b42318;
 }
 
 /* Badge styles */

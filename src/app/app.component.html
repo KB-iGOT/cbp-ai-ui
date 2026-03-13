@@ -21,7 +21,13 @@
 
         <div class="right-container mt-4" style="justify-content: space-between;" *ngIf="loginSuccess">
             <div><mat-icon>help</mat-icon></div>
-            <div class="cursor-pointer" (click)="routeToDashboard()"><mat-icon>dashboard</mat-icon></div>
+            <div class="cursor-pointer" (click)="routeToDashboard()">
+                <div class="dashboard-pill">
+                    <div><mat-icon class="vertical-middle">dashboard</mat-icon></div>
+                    <div>Dashboard</div>
+                </div>
+                
+            </div>
 
             <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
                 <div class="profile-pic-container">
@@ -34,7 +40,9 @@
                     </div>
                     <div class="seperator"></div>
                     <div>
-                        <button mat-menu-item (click)="openUpdateDesignationHierarchy()">
+                        <button mat-menu-item [ngClass]="!showDesignationHierarchy ? 'menu-disable':'menu-active'"
+                        [disabled]="!showDesignationHierarchy" 
+                         (click)="openUpdateDesignationHierarchy()">
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers h-4 w-4"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg>
                             <span class="ml-5 menu-label">Update  Hierachy</span>
                         </button>

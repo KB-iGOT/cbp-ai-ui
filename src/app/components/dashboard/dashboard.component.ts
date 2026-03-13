@@ -3,6 +3,7 @@ import { SharedService } from '../../modules/shared/services/shared.service';
 import dayjs from 'dayjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -42,20 +43,33 @@ export class DashboardComponent implements OnInit {
   dashboardData: any
   gapAnalysisData: any
   dashboardResponseObj = {}
-  constructor(private fb: FormBuilder, private sharedService: SharedService, private snackBar: MatSnackBar) { }
+  cbpFinalObj: any = {}
+  constructor(private fb: FormBuilder, private sharedService: SharedService, private snackBar: MatSnackBar, public router: Router) { }
   ngOnInit() {
     this.userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
     this.isSuperAdmin = this.userProfile?.role_info?.role_name === 'Super Admin'
       && this.userProfile?.role_info?.is_active;
     this.loginUserOrgIds = this.userProfile?.organization_ids
 
+    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
+    console.log('this.cbpFinalObj--', this.cbpFinalObj)
+
+
     // Initialize the form without disabling anything
     this.filtersForm = this.fb.group({
       centreState: [''],
       ministries: [[]],
       departments: [[]],
-      dateRange: [{ startDate: dayjs().subtract(3, 'month'), endDate: dayjs() }]
+      dateRange: [{ startDate: dayjs(), endDate: dayjs() }]
     });
+
+    if (this.cbpFinalObj) {
+      let event = {value:this.cbpFinalObj?.ministry?.sbOrgType}
+      let ministryEvent = {value: this.cbpFinalObj?.ministry?.identifier}
+      this.onMinistryTypeChange(event)
+      this.onMinistryChange(ministryEvent)
+      
+    }
 
     // Dynamically enable controls if super admin
     if (this.isSuperAdmin) {
@@ -210,6 +224,11 @@ export class DashboardComponent implements OnInit {
         }
       })
     }
+    this.filtersForm.patchValue({
+        centreState: this.cbpFinalObj?.ministry?.sbOrgType,
+        ministries: [this.cbpFinalObj?.ministry?.identifier],
+        departments: [this.cbpFinalObj?.departments]
+      });
   }
 
   getMinistryData() {
@@ -242,5 +261,9 @@ export class DashboardComponent implements OnInit {
     })
 
 
+  }
+
+  routeToInitial() {
+    this.router.navigate(['/initial']);
   }
 }

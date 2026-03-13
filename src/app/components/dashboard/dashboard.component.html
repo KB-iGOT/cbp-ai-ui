@@ -1,4 +1,11 @@
 <div class="dashboard-wrapper">
+    <div class="header">
+        <div class="sub-heading mt-10 mb-10 cursor-pointer">
+            <p (click)="routeToInitial()"><mat-icon style="vertical-align: middle;">arrow_back</mat-icon><span
+                    class="pl-10">Back to Role Mapping Generation</span></p>
+        </div>
+
+    </div>
     <div class="dashboard-container">
 
         <!-- FILTERS SECTION -->
@@ -67,11 +74,11 @@
 
                     <!-- Date Range -->
                     <div>
-                        <label>Date Range (3-12 Months)</label>
-                        <mat-form-field appearance="outline">
+                        <label>Date Range</label>
+                        <mat-form-field appearance="outline" >
 
                             <input matInput ngxDaterangepickerMd formControlName="dateRange"
-                                placeholder="Select date range" [autoApply]="true" />
+                                placeholder="Select date range" [autoApply]="true" [linkedCalendars]="true"/>
                         </mat-form-field>
                     </div>
 
@@ -238,7 +245,7 @@
 
             </div>
 
-            <div class="card-grid">
+            <div class="card-grid mt-2">
 
                 <mat-card class="metric-card warning-bg">
                     <div class="card-content">

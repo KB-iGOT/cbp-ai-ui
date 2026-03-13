@@ -332,3 +332,24 @@
 ::ng-deep .select-with-search mat-option:first-of-type {
     margin-top: 4px;
 }
+
+::ng-deep .md-drppicker.ltr {
+    min-width: 500px !important;
+}
+
+.sub-heading p {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

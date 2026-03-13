@@ -55,6 +55,7 @@ export class AppComponent {
   disableUploadDocument = true
   disableUploadDocumentOriginal = true
   openUpdateDesignationHierarchyDrawer = false
+  roleMappingGenerated = false
   @ViewChild(RoleMappingGenerationComponent)
   roleMappingChild!: RoleMappingGenerationComponent;
   constructor(
@@ -90,7 +91,7 @@ export class AppComponent {
     if (this.loginSuccess) {
 
       this.userEmail = localStorage.getItem('userEmail')
-      
+      this.userProfile = JSON.parse(localStorage.getItem('userProfile'))
       console.log('userProfile--',this.userProfile)
     }
     
@@ -112,6 +113,7 @@ export class AppComponent {
   successRoleMapping(event) {
     this.nextStep = 'role-mapping'
     this.formData = event
+    this.roleMappingGenerated = true
     console.log('event', event)
   }
 
@@ -119,14 +121,17 @@ export class AppComponent {
     this.nextStep = 'role-mapping'
     console.log('event', event)
     this.formData = event
-
-
+    this.roleMappingGenerated = true
+   
+    
   }
 
   moveToInitialScreen(event) {
-    if (event === 'add') {
+    if(event === 'add') {
+      this.roleMappingGenerated = false
       this.nextStep = 'initial'
     } else if (event === 'edit') {
+      this.roleMappingGenerated = false
       this.nextStep = 'initial'
     }
 
@@ -210,4 +215,10 @@ export class AppComponent {
     this.router.navigate(['/dashboard']);
   }
 
+  get showDesignationHierarchy() {
+    this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
+  return this.cbpFinalObj?.role_mapping_generation?.length > 0 || this.roleMappingGenerated;
+}
+
+  
 }

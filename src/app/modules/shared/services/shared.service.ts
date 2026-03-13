@@ -52,7 +52,8 @@ const API_END_POINTS = {
   DASHBOARD_ADMIN: 'cbp-tpc-ai/api/v1/dashboard/cbp-dashboard-metrics',
   GAP_ANALYSIS_ADMIN: 'cbp-tpc-ai/api/v1/dashboard/gap-analysis',
   DASHBOARD_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-dashboard-metrics',
-  GAP_ANALYSIS_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-gap-analysis'
+  GAP_ANALYSIS_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-gap-analysis',
+  MATCHED_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/match-designations'
 
 }
 
@@ -925,6 +926,14 @@ export class SharedService {
   getDashboardGapAnalysisPublic(reqBody) {
     const headers = this.headers
     return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.GAP_ANALYSIS_PUBLIC}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+   getMatchedRoleMapping(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.MATCHED_ROLE_MAPPING}`, reqBody, { headers })
       .pipe(map((response: any) => {
         return response
       }))

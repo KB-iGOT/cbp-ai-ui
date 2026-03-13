@@ -103,16 +103,16 @@
                 </div>
             </div>
             <div class="role-mapping-tabs mt-5">
-                <button class="role-tab active">
+                <button class="role-tab" [class.active]="activeTab === 'matched'" (click)="setDataSoure('matched')">
                     <span class="dot"></span>
                     Matched role mappings
-                    <span class="badge blue">2</span>
+                    <span class="badge blue">{{matchedRoleMapping}}</span>
                 </button>
 
-                <button class="role-tab">
-                    <span class="dot gray"></span>
+                <button class="role-tab table-body-unmatched"  [class.active]="activeTab === 'unmatched'" (click)="setDataSoure('unmatched')">
+                    <span class="dot red"></span>
                     Unmatched role mapping
-                    <span class="badge red">2</span>
+                    <span class="badge red">{{unMatchedRoleMapping}}</span>
                 </button>
             </div>
             <div class="nav-container">
@@ -233,16 +233,16 @@
 
                             </table> -->
                             <div class="table-container mt-4" style="overflow: auto;">
-                                <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+                                <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" [ngClass]="activeTab === 'matched'? 'table-body': 'table-body-unmatched'">
                                     <!-- Selection Column -->
                                     <ng-container matColumnDef="select">
-                                        <th mat-header-cell *matHeaderCellDef>
+                                        <th mat-header-cell *matHeaderCellDef [hidden]="activeTab !== 'matched'">
                                             <mat-checkbox class="radio-style-checkbox" (change)="toggleAllRows($event)"
                                                 [checked]="isAllSelected()" [indeterminate]="isSomeSelected()">
                                             </mat-checkbox>
                                         </th>
 
-                                        <td mat-cell *matCellDef="let row">
+                                        <td mat-cell *matCellDef="let row" [hidden]="activeTab !== 'matched'">
                                             <mat-checkbox class="radio-style-checkbox"
                                                 (click)="$event.stopPropagation()" (change)="toggleRow(row)"
                                                 [checked]="selection.isSelected(row)">
@@ -251,19 +251,22 @@
                                     </ng-container>
                                     <!-- Designation Name -->
                                     <ng-container matColumnDef="designation_name">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Designation
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'"  mat-header-cell *matHeaderCellDef> Designation
                                         </th>
-                                        <td class="cursor-pointer" mat-cell *matCellDef="let element"
+                                        <td class="cursor-pointer" mat-cell *matCellDef="let element" 
                                             (click)="viewCBPPlan(element)">
-                                            <p class="designation">{{ element?.designation_name }} </p>
+                                            <div  [ngClass]="activeTab === 'matched'? 'designation-text': 'designation-text-unmatched'">
+                                                <p class="designation">{{ element?.designation_name }} </p>
                                             <p class="wing-text mt-2">Wing/Division - {{
                                                 element?.wing_division_section }} </p>
+                                            </div>
+                                            
                                         </td>
                                     </ng-container>
 
                                     <!-- Role & Responsibilities -->
                                     <ng-container matColumnDef="role_responsibilities">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Role &
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'" mat-header-cell *matHeaderCellDef> Role &
                                             Responsibilities </th>
                                         <td mat-cell *matCellDef="let element">
                                             <ul>
@@ -283,7 +286,7 @@
                                     </ng-container>
                                     <!-- Activities -->
                                     <ng-container matColumnDef="activities">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Activities </th>
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'" mat-header-cell *matHeaderCellDef> Activities </th>
                                         <td mat-cell *matCellDef="let element">
                                             <ul>
                                                 <li class="role-item"
@@ -302,7 +305,7 @@
 
                                     <!-- Behavioral Competencies -->
                                     <ng-container matColumnDef="behavioral">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Behavioral
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'" mat-header-cell *matHeaderCellDef> Behavioral
                                             Competencies </th>
                                         <td mat-cell *matCellDef="let element">
                                             <ul class="competency-list">
@@ -317,7 +320,7 @@
 
                                     <!-- Functional Competencies -->
                                     <ng-container matColumnDef="functional">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Functional
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'" mat-header-cell *matHeaderCellDef> Functional
                                             Competencies </th>
                                         <td mat-cell *matCellDef="let element">
                                             <ul class="competency-list">
@@ -332,7 +335,7 @@
 
                                     <!-- Domain Competencies -->
                                     <ng-container matColumnDef="domain">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Domain
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'" mat-header-cell *matHeaderCellDef> Domain
                                             Competencies </th>
                                         <td mat-cell *matCellDef="let element">
                                             <ul class="competency-list">
@@ -347,7 +350,7 @@
 
                                     <!-- Actions -->
                                     <ng-container matColumnDef="action">
-                                        <th class="table-header" mat-header-cell *matHeaderCellDef> Action </th>
+                                        <th [ngClass]="activeTab === 'matched'? 'table-header': 'table-header-unmatched'" mat-header-cell *matHeaderCellDef> Action </th>
                                         <td mat-cell *matCellDef="let element">
                                             <button mat-icon-button [matMenuTriggerFor]="actionMenu">
                                                 <mat-icon>more_vert</mat-icon>
