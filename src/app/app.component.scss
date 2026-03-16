@@ -6,6 +6,10 @@
     margin: 10px auto;
 }
 
+.container-fluid {
+    padding:0
+}
+
 .sub-heading p{
     color: #000;
     font-family: Montserrat;
@@ -530,7 +534,7 @@ line-height: normal;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 85px;
+    height: 75px;
     //margin-bottom: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     background: #fff;
@@ -546,7 +550,7 @@ line-height: normal;
     display: flex;
     gap:8px;
     width: 100%;
-    margin-left: 10px;
+    margin-left: 60px;
 }
 
 .h-50 {
@@ -653,9 +657,35 @@ width: 100%;
     align-items: center;
     justify-content: center;
     background-color: #f4f8ff;
+    font-size: 14px;
+    color: #000;
 
 }
 
 .vertical-middle {
     vertical-align: middle;
+}
+
+.how-to-use-chip {
+   width: 130px;
+    padding: 3px 10px;
+    background: #f4f8ff;
+    border-radius: 36px;
+    height: 32px;
+    color: #000;
+    cursor: pointer;
+    font-weight: 400;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.how-to-use-chip mat-icon{
+    vertical-align: middle;
+    margin-right: 5px;
+    
+}
+
+.how-to-use-chip:hover {
+    background: #7c3bed;
+    color: #fff;
 }

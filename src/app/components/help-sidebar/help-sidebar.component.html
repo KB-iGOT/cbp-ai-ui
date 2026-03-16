@@ -1,0 +1,175 @@
+<div class="overlay" *ngIf="sidebarOpen"></div>
+
+<div class="help-sidebar" [class.open]="sidebarOpen">
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <div>
+      <h2>How to Use</h2>
+      <p>iGOT-AI CBP Tool · Step-by-Step Guide</p>
+    </div>
+
+    <button class="close-btn" (click)="hideSideBar()">✕</button>
+
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+
+    <button 
+    [class.active]="activeTab==='steps'"
+    (click)="activeTab='steps'">
+    Steps
+    </button>
+
+    <button
+    [class.active]="activeTab==='dos'"
+    (click)="activeTab='dos'">
+    DOs & DON'Ts
+    </button>
+
+    <button
+    [class.active]="activeTab==='next'"
+    (click)="activeTab='next'">
+    Next Steps
+    </button>
+
+  </div>
+
+  <!-- ===================== -->
+  <!-- STEPS SECTION -->
+  <!-- ===================== -->
+
+  <div *ngIf="activeTab==='steps'" class="steps">
+
+    <div 
+    class="step-card"
+    *ngFor="let step of steps; let i=index">
+
+      <div class="step-header" (click)="toggleStep(step)">
+
+        <span class="step-number">
+          {{i+1 | number:'2.0'}}
+        </span>
+
+        <div>
+          <small>STEP {{i+1}} OF 13</small>
+          <h4>{{step.title}}</h4>
+        </div>
+
+      </div>
+
+      <div class="step-content" *ngIf="step.open">
+
+        <ul>
+          <li *ngFor="let item of step.content">
+            {{item}}
+          </li>
+        </ul>
+
+        <div class="info-box">
+          💡 Acknowledge usage terms and confirm document compliance before logging in.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===================== -->
+  <!-- DOS & DONTS -->
+  <!-- ===================== -->
+
+  <div *ngIf="activeTab==='dos'" class="dos-donts">
+
+    <h3>DOs</h3>
+
+    <div class="dos-box">
+
+      <h4>✅ Always Do These</h4>
+
+      <ul>
+        <li>Keep only official, publicly available PDFs under 25 MB.</li>
+        <li>Use only your designated login credentials.</li>
+        <li>Acknowledge usage terms before logging in.</li>
+        <li>Review and edit all AI-generated CBP drafts.</li>
+        <li>Combine AI recommendations with manual additions.</li>
+        <li>Align all competencies with the KCM framework.</li>
+        <li>Download and securely store finalised CBP and reports.</li>
+      </ul>
+
+    </div>
+
+    <h3>DON'Ts</h3>
+
+    <div class="donts-box">
+
+      <h4>❌ Never Do These</h4>
+
+      <ul>
+        <li>Do not upload confidential or classified documents.</li>
+        <li>Do not adopt AI outputs without Competent Authority review.</li>
+        <li>Do not add competencies outside KCM without approval.</li>
+        <li>Do not share login credentials with others.</li>
+        <li>Do not upload oversized or non-text-searchable files.</li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- ===================== -->
+  <!-- NEXT STEPS -->
+  <!-- ===================== -->
+
+  <div *ngIf="activeTab==='next'" class="next-steps">
+
+    <div class="next-card">
+
+      <span class="circle">1</span>
+
+      <p>
+      Collect all necessary documents — official guidelines,
+      implementation toolkits, annual reports, and Work Allocation Orders.
+      </p>
+
+    </div>
+
+    <div class="next-card">
+
+      <span class="circle">2</span>
+
+      <p>
+      Generate, review and edit department-wise CBP to create
+      the finalised version with Competent Authority sign-off.
+      </p>
+
+    </div>
+
+    <div class="next-card">
+
+      <span class="circle">3</span>
+
+      <p>
+      Actionise the CBP — create and assign designation-wise
+      MyiGOT training plans for available courses.
+      </p>
+
+    </div>
+
+    <div class="next-card">
+
+      <span class="circle">4</span>
+
+      <p>
+      Plan development of new courses to address identified
+      competency gap areas.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

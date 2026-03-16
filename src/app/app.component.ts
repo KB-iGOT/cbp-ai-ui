@@ -56,6 +56,7 @@ export class AppComponent {
   disableUploadDocumentOriginal = true
   openUpdateDesignationHierarchyDrawer = false
   roleMappingGenerated = false
+  showHelpDrawer = false
   @ViewChild(RoleMappingGenerationComponent)
   roleMappingChild!: RoleMappingGenerationComponent;
   constructor(
@@ -218,6 +219,14 @@ export class AppComponent {
   get showDesignationHierarchy() {
     this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
   return this.cbpFinalObj?.role_mapping_generation?.length > 0 || this.roleMappingGenerated;
+}
+
+openHelp() {
+  this.showHelpDrawer = true
+}
+
+closeHelpDrawer() {
+  this.showHelpDrawer = false
 }
 
   

@@ -1,6 +1,6 @@
 <div class="container">
     <!-- <input class="btn-active" type="button" value="Download as PDF" (click)="downloadPDF()" /> -->
-    <div class="logo-container">
+    <div class="logo-container" *ngIf="login">
         <div>
             <span class="ai-loader-icon-medium"><img src="assets/icons/ai-loader.gif"></span>
         </div>
@@ -176,10 +176,11 @@
             </div>
         </div>
     </mat-card>
-    <div *ngIf="!login" class="mt-4">
+    
+</div>
+<div *ngIf="!login">
         <app-login (success)="loginStatus($event)"></app-login>
     </div>
-</div>
 
 <div class="overlay-loader" *ngIf="apiLoading">
     <mat-spinner diameter="50"></mat-spinner>

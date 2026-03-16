@@ -65,6 +65,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { HelpSidebarComponent } from './components/help-sidebar/help-sidebar.component';
 const appInitializer = (initSvc: InitService) => async () => {
   try {
     await initSvc.init()
@@ -100,7 +101,8 @@ const appInitializer = (initSvc: InitService) => async () => {
     ProgressDialogComponent,
     UpdateDesignationHierarchyComponent,
     ApprovalRequestsComponent,
-    DashboardComponent
+    DashboardComponent,
+    HelpSidebarComponent
   ],
   imports: [
     BrowserModule,

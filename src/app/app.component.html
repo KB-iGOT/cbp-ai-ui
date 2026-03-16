@@ -19,50 +19,69 @@
             </div>
         </div>
 
-        <div class="right-container mt-4" style="justify-content: space-between;" *ngIf="loginSuccess">
-            <div><mat-icon>help</mat-icon></div>
-            <div class="cursor-pointer" (click)="routeToDashboard()">
-                <div class="dashboard-pill">
-                    <div><mat-icon class="vertical-middle">dashboard</mat-icon></div>
-                    <div>Dashboard</div>
-                </div>
-                
-            </div>
-
-            <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
-                <div class="profile-pic-container">
-                    <img src="assets/icons/user.png" alt="Profile" class="profile-pic">
-                </div>
-                <mat-menu #settingsMenu="matMenu">
-                    <div class="user-profile">
-                       <p><b> {{userProfile?.username | titlecase}}</b></p>
-                       <p>{{userProfile?.email}}</p>
-                    </div>
-                    <div class="seperator"></div>
-                    <div>
-                        <button mat-menu-item [ngClass]="!showDesignationHierarchy ? 'menu-disable':'menu-active'"
-                        [disabled]="!showDesignationHierarchy" 
-                         (click)="openUpdateDesignationHierarchy()">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers h-4 w-4"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg>
-                            <span class="ml-5 menu-label">Update  Hierachy</span>
-                        </button>
-                        <button mat-menu-item (click)="openApproveRequests()">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list h-4 w-4"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
-                            <span class="ml-5 menu-label">Approval Requests</span>
-                        </button>
-                        <button mat-menu-item [ngClass]="disableUploadDocument ? 'menu-disable':'menu-active'" class=""
-                            [disabled]="disableUploadDocument" (click)="goToUploadDocument()">
-                            <mat-icon>upload</mat-icon> <span class="menu-label">Manage Documents</span>
-                        </button>
-                        <button mat-menu-item (click)="logout()">
-                            <mat-icon>logout</mat-icon>
-                            <span class="menu-label">Logout</span>
-                        </button>
-
+        <div class="right-container mt-4" style="justify-content: space-between;">
+            <div class="how-to-use-chip" (click)="openHelp()"><mat-icon>video_library</mat-icon>How to use</div>
+            <ng-container *ngIf="loginSuccess">
+                <div class="cursor-pointer" (click)="routeToDashboard()">
+                    <div class="dashboard-pill">
+                        <div><mat-icon class="vertical-middle">dashboard</mat-icon></div>
+                        <div>Dashboard</div>
                     </div>
 
-                </mat-menu>
-            </div>
+                </div>
+
+                <div class="cursor-pointer" [matTooltip]="userEmail" [matMenuTriggerFor]="settingsMenu">
+                    <div class="profile-pic-container">
+                        <img src="assets/icons/user.png" alt="Profile" class="profile-pic">
+                    </div>
+                    <mat-menu #settingsMenu="matMenu">
+                        <div class="user-profile">
+                            <p><b> {{userProfile?.username | titlecase}}</b></p>
+                            <p>{{userProfile?.email}}</p>
+                        </div>
+                        <div class="seperator"></div>
+                        <div>
+                            <button mat-menu-item [ngClass]="!showDesignationHierarchy ? 'menu-disable':'menu-active'"
+                                [disabled]="!showDesignationHierarchy" (click)="openUpdateDesignationHierarchy()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-layers h-4 w-4">
+                                    <path
+                                        d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z">
+                                    </path>
+                                    <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path>
+                                    <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path>
+                                </svg>
+                                <span class="ml-5 menu-label">Update Hierachy</span>
+                            </button>
+                            <button mat-menu-item (click)="openApproveRequests()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-clipboard-list h-4 w-4">
+                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                    </path>
+                                    <path d="M12 11h4"></path>
+                                    <path d="M12 16h4"></path>
+                                    <path d="M8 11h.01"></path>
+                                    <path d="M8 16h.01"></path>
+                                </svg>
+                                <span class="ml-5 menu-label">Approval Requests</span>
+                            </button>
+                            <button mat-menu-item [ngClass]="disableUploadDocument ? 'menu-disable':'menu-active'"
+                                class="" [disabled]="disableUploadDocument" (click)="goToUploadDocument()">
+                                <mat-icon>upload</mat-icon> <span class="menu-label">Manage Documents</span>
+                            </button>
+                            <button mat-menu-item (click)="logout()">
+                                <mat-icon>logout</mat-icon>
+                                <span class="menu-label">Logout</span>
+                            </button>
+
+                        </div>
+
+                    </mat-menu>
+                </div>
+            </ng-container>
 
         </div>
     </div>
@@ -702,3 +721,4 @@
 </div> -->
 <app-update-designation-hierarchy (closeDrawer)="closeDrawer()"
     *ngIf="openUpdateDesignationHierarchyDrawer"></app-update-designation-hierarchy>
+<app-help-sidebar *ngIf="showHelpDrawer" (closeHelpDrawer)="closeHelpDrawer()"></app-help-sidebar>
