@@ -25,32 +25,11 @@ export class ApprovalRequestsComponent {
   ministryFullData: any = []
   roleMappingForm!: FormGroup;
   disableBtn = true
-  sectorData = [
-    {
-      value: 'Women and child development'
-    },
-    {
-      value: 'Rural development'
-    },
-    {
-      value: 'Urban development'
-    },
-    {
-      value: 'Healthcare'
-    },
-    {
-      value: 'Agriculture'
-    },
-    {
-      value: 'Others'
-    }
-
-  ]
   searchText = '';
-  displayedColumns: string[] = ['request_id', 'date', 'designation','status', 'actions'];
+  displayedColumns: string[] = ['request_id', 'date', 'designation', 'status', 'actions'];
   cbpFinalObj: any = {}
   departmentData: any = []
-  documents = [
+  approvalRequests = [
     // {
     //   name: 'Work Allocation',
     //   originalName: 'ACBP_Ministry_of_Women_and_Child_Development_Extract...',
@@ -103,7 +82,8 @@ export class ApprovalRequestsComponent {
     });
     this.filterForm = this.fb.group({
       status: [''],
-      time: ['']
+      time: [''],
+      search: ['']
     });
     // this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
     this.getMinistryData()
@@ -124,11 +104,11 @@ export class ApprovalRequestsComponent {
     });
     this.sharedService.summaryTriggerExecuted.subscribe((data: any) => {
       if (data && data?.file_id) {
-        this.getUploadedDocuments()
+        this.getApprovalRequests()
       }
     })
     if (this.cbpPlanFinalObj && this.cbpPlanFinalObj.ministry && this.cbpPlanFinalObj.ministry.identifier) {
-      this.getUploadedDocuments()
+      this.getApprovalRequests()
     }
   }
 
@@ -136,7 +116,7 @@ export class ApprovalRequestsComponent {
     this.dataSource.paginator = this.paginator;
   }
 
-  getUploadedDocuments() {
+  getApprovalRequests() {
 
     let reqBody = {
       state_center_id: this.cbpPlanFinalObj?.ministry?.identifier,
@@ -149,12 +129,13 @@ export class ApprovalRequestsComponent {
     }
     this.loading = true
 
-    this.sharedService.getUploadedDocuments(reqBody).subscribe((res) => {
+    this.sharedService.getApprovalRequests(reqBody).subscribe((res) => {
+      console.log('res--', res)
       if (res && res?.items && res?.items?.length) {
         this.loading = false
-        this.documents = res?.items
-        this.dataSource.data = this.documents;
-        console.log('this.documents', this.documents)
+        this.approvalRequests = res?.items
+        this.dataSource.data = this.approvalRequests;
+        console.log('this.approvalRequests', this.approvalRequests)
       } else {
         this.loading = false
       }
@@ -163,13 +144,46 @@ export class ApprovalRequestsComponent {
 
 
 
-  filteredDocuments() {
-    // console.log('this.documents', this.documents)
-    return this.documents.filter(doc => doc.filename.toLowerCase().includes(this.searchText.toLowerCase()));
+  filteredapprovalRequests() {
+    let data = [...this.approvalRequests];
+
+    const search = this.filterForm.get('search')?.value?.toLowerCase() || '';
+    const status = this.filterForm.get('status')?.value;
+    const time = this.filterForm.get('time')?.value;
+    // Search Filter
+    if (search) {
+      data = data.filter(r =>
+        (r.request_name || '').toLowerCase().includes(search)
+      );
+    }
+
+    // Status Filter
+    if (status) {
+      data = data.filter(r => r.status === status);
+    }
+
+    // Time Filter
+    if (time) {
+      const now = new Date();
+
+      data = data.filter(r => {
+        const created = new Date(r.created_at);
+        const diffDays =
+          (now.getTime() - created.getTime()) / (1000 * 3600 * 24);
+
+        if (time === 'last_7_days') return diffDays <= 7;
+        if (time === 'last_30_days') return diffDays <= 30;
+        if (time === 'last_90_days') return diffDays <= 90;
+
+        return true;
+      });
+    }
+
+    return data;
   }
 
   deleteDocument(docToDelete: any) {
-    this.documents = this.documents.filter(doc => doc !== docToDelete);
+    this.approvalRequests = this.approvalRequests.filter(doc => doc !== docToDelete);
     this.loading = true
     this.sharedService.deleteSummary(docToDelete?.file_id).subscribe((res) => {
       if (res) {
@@ -181,14 +195,14 @@ export class ApprovalRequestsComponent {
               duration: 3000,
               panelClass: ['snackbar-success']
             });
-            this.getUploadedDocuments()
+            this.getApprovalRequests()
           } else {
             this.loading = false
             this.snackBar.open('Error While Deleting Document', 'X', {
               duration: 3000,
               panelClass: ['snackbar-error']
             });
-            this.getUploadedDocuments()
+            this.getApprovalRequests()
           }
 
         })
@@ -208,10 +222,15 @@ export class ApprovalRequestsComponent {
 
   }
 
-  applyFilter() {
+  applyFilters() {
+    const filtered = this.filteredapprovalRequests();
 
+    this.dataSource.data = filtered;
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
   }
-
   onMinistryTypeChange(event) {
     this.roleMappingForm.reset()
 
@@ -316,30 +335,30 @@ export class ApprovalRequestsComponent {
     });
   }
 
-  downloadDoc(doc: any): void {
+  viewRequest(request: any): void {
+    console.log('request--', request)
     this.loading = true
-    this.sharedService.downloadFile(doc.file_id).subscribe({
+    this.router.navigate(['/review-request', request.id]);
+  }
 
-      next: (blob: Blob) => {
+  revokeApprovalRequest(request: any): void {
+    console.log('request--', request)
+    this.loading = true
+    let reqBody =
+    {
+      "request_id": request?.id
+    }
+
+    this.sharedService.revokeApprovalRequest(reqBody).subscribe({
+
+      next: (res: any) => {
+        console.log('res', res)
         this.loading = false
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${doc?.filename}`; // Use dynamic name if needed
-        a.click();
-        window.URL.revokeObjectURL(url);
-
-        // ✅ Success feedback
-        this.snackBar.open('File downloaded successfully!', 'X', {
-          duration: 3000,
-          panelClass: ['snackbar-success']
-        });
+        this.getApprovalRequests()
       },
-      error: (err) => {
+      error: () => {
         this.loading = false
-        // ❌ Error feedback
-        console.error('Download error:', err);
-        this.snackBar.open('Failed to download the file.', 'X', {
+        this.snackBar.open('Failed to revoke the approval request.', 'X', {
           duration: 3000,
           panelClass: ['snackbar-error']
         });
@@ -404,9 +423,6 @@ export class ApprovalRequestsComponent {
     this.router.navigate(['/initial']);
   }
 
-  applyFilters() {
-
-  }
 
   filterList(value: string, type: string) {
     const search = value.toLowerCase();
@@ -420,6 +436,11 @@ export class ApprovalRequestsComponent {
         this.filteredTime = this.time.filter(v => v.label?.toLowerCase().includes(search));
         break;
     }
+  }
+
+  clearSearch() {
+    this.searchText = '';
+    this.applyFilters();
   }
 
 }

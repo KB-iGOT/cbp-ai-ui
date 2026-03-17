@@ -53,7 +53,12 @@ const API_END_POINTS = {
   GAP_ANALYSIS_ADMIN: 'cbp-tpc-ai/api/v1/dashboard/gap-analysis',
   DASHBOARD_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-dashboard-metrics',
   GAP_ANALYSIS_PUBLIC: 'cbp-tpc-ai/api/v1/dashboard/my-gap-analysis',
-  MATCHED_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/match-designations'
+  MATCHED_ROLE_MAPPING: 'cbp-tpc-ai/api/v1/role-mapping/match-designations',
+  GET_APPROVAL_REQUESTS: 'cbp-tpc-ai/api/v1/approval-requests/list',
+  SEARCH_PUBLIC_MDO: 'cbp-tpc-ai/api/v1/approval-requests/mdo-admins',
+  SAVE_APPROVAL_REQUEST:'cbp-tpc-ai/api/v1/approval-requests/send',
+  VIEW_APPROVAL_REQUEST: 'cbp-tpc-ai/api/v1/approval-requests',
+  REVOKE_APPROVAL_REQUEST: 'cbp-tpc-ai/api/v1/approval-requests',
 
 }
 
@@ -939,6 +944,45 @@ export class SharedService {
       }))
   }
 
+  getApprovalRequests(reqBody) {
+     const headers = this.headers
+    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_APPROVAL_REQUESTS}`,  { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  saveApprovalRequest(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.SAVE_APPROVAL_REQUEST}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+   searchPublicmdo(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.SEARCH_PUBLIC_MDO}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  viewApprovalRequests(request_id) {
+     const headers = this.headers
+    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.VIEW_APPROVAL_REQUEST}/${request_id}`,  { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
+
+  revokeApprovalRequest(reqBody) {
+    const headers = this.headers
+    return this.http.post<any>(`${this.baseUrl}${API_END_POINTS.REVOKE_APPROVAL_REQUEST}`, reqBody, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+  }
 
 }
 

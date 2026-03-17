@@ -1,172 +1,163 @@
-<div class="overlay" *ngIf="sidebarOpen"></div>
+<div class="overlay" *ngIf="sidebarOpen" (click)="hideSideBar()"></div>
 
-<div class="help-sidebar" [class.open]="sidebarOpen">
+<div class="panel" [class.open]="sidebarOpen" id="helpPanel">
 
   <!-- HEADER -->
-  <div class="header">
+  <div class="ph">
 
-    <div>
-      <h2>How to Use</h2>
-      <p>iGOT-AI CBP Tool · Step-by-Step Guide</p>
+    <div class="ph-text">
+      <div class="ph-title">How to Use</div>
+      <div class="ph-sub">iGOT-AI CBP Tool · Step-by-Step Guide</div>
     </div>
 
-    <button class="close-btn" (click)="hideSideBar()">✕</button>
+    <button class="ph-dl no-pdf" (click)="downloadPdf()">
+      ⬇ Download PDF
+    </button>
+
+    <button class="ph-close no-pdf" (click)="hideSideBar()">✕</button>
 
   </div>
 
   <!-- TABS -->
-  <div class="tabs">
+  <div class="ptabs">
 
-    <button 
-    [class.active]="activeTab==='steps'"
-    (click)="activeTab='steps'">
-    Steps
+    <button class="ptab" [class.on]="activeTab==='steps'" (click)="activeTab='steps'">
+      Steps
     </button>
 
-    <button
-    [class.active]="activeTab==='dos'"
-    (click)="activeTab='dos'">
-    DOs & DON'Ts
+    <button class="ptab" [class.on]="activeTab==='dos'" (click)="activeTab='dos'">
+      DOs & DON'Ts
     </button>
 
-    <button
-    [class.active]="activeTab==='next'"
-    (click)="activeTab='next'">
-    Next Steps
+    <button class="ptab" [class.on]="activeTab==='next'" (click)="activeTab='next'">
+      Next Steps
     </button>
 
   </div>
 
-  <!-- ===================== -->
-  <!-- STEPS SECTION -->
-  <!-- ===================== -->
+  <!-- BODY -->
+  <div class="pbody">
 
-  <div *ngIf="activeTab==='steps'" class="steps">
+    <!-- STEPS -->
+    <div *ngIf="activeTab==='steps'">
 
-    <div 
-    class="step-card"
-    *ngFor="let step of steps; let i=index">
+      <div class="si" *ngFor="let step of steps; let i=index" [attr.data-n]="i+1" [class.open]="step.open">
 
-      <div class="step-header" (click)="toggleStep(step)">
+        <div class="si-row" (click)="toggleStep(step)">
 
-        <span class="step-number">
-          {{i+1 | number:'2.0'}}
-        </span>
+          <div class="sn">
+            {{i+1}}
+          </div>
 
-        <div>
-          <small>STEP {{i+1}} OF 13</small>
-          <h4>{{step.title}}</h4>
+          <div class="si-meta">
+
+            <div class="si-seq">
+              STEP {{i+1}} OF {{steps?.length}}
+            </div>
+
+            <div class="si-name">
+              {{step.title}}
+            </div>
+
+          </div>
+
+          <div class="chv">▼</div>
+
+        </div>
+
+        <div class="si-body">
+
+          <ul class="si-ul">
+
+            <ng-container *ngFor="let item of step.content">
+
+              <!-- Bullet items -->
+              <li *ngIf="!item.label && !item.text">
+                <span class="sbu"></span>
+                {{ item }}
+              </li>
+
+            </ng-container>
+
+          </ul>
+
+          <!-- Structured blocks -->
+          <ng-container *ngFor="let item of step.content">
+
+            <div class="ssblock" *ngIf="item.label || item.text">
+
+              <div class="ss-lbl" *ngIf="item.label">
+                {{ item.label }}
+              </div>
+
+              <p *ngIf="item.text">
+                {{ item.text }}
+              </p>
+
+            </div>
+
+          </ng-container>
+
+          <div class="tipbar">
+            💡 Acknowledge usage terms and confirm document compliance before logging in.
+          </div>
+
+          <div class="snapshot" *ngFor="let item of step.imageSrc">
+            <img [src]="'assets/help-steps/' + item" />
+          </div>
+
         </div>
 
       </div>
 
-      <div class="step-content" *ngIf="step.open">
+    </div>
 
-        <ul>
-          <li *ngFor="let item of step.content">
-            {{item}}
+    <div *ngIf="activeTab==='dos'">
+
+      <div class="dd-title-bar">DOs</div>
+
+      <div class="dd-card do">
+
+        <div class="dd-hd">✅ Always Do These</div>
+
+        <ul class="dd-ul">
+          <li *ngFor="let item of dos">
+            <mat-icon>arrow_right_alt</mat-icon> {{item}}
           </li>
         </ul>
 
-        <div class="info-box">
-          💡 Acknowledge usage terms and confirm document compliance before logging in.
-        </div>
+      </div>
+
+      <div class="dd-title-bar">DON'Ts</div>
+
+      <div class="dd-card dont">
+
+        <div class="dd-hd"><mat-icon>block</mat-icon> Never Do These</div>
+
+        <ul class="dd-ul">
+          <li *ngFor="let item of donts">
+            <mat-icon>clear</mat-icon> {{item}}
+          </li>
+        </ul>
 
       </div>
 
     </div>
 
-  </div>
+    <!-- NEXT STEPS -->
+    <div *ngIf="activeTab==='next'">
 
-  <!-- ===================== -->
-  <!-- DOS & DONTS -->
-  <!-- ===================== -->
+      <div class="ns-card" *ngFor="let step of nextSteps; let i = index">
 
-  <div *ngIf="activeTab==='dos'" class="dos-donts">
+        <div class="ns-num">
+          {{i + 1}}
+        </div>
 
-    <h3>DOs</h3>
+        <div class="ns-txt">
+          {{step}}
+        </div>
 
-    <div class="dos-box">
-
-      <h4>✅ Always Do These</h4>
-
-      <ul>
-        <li>Keep only official, publicly available PDFs under 25 MB.</li>
-        <li>Use only your designated login credentials.</li>
-        <li>Acknowledge usage terms before logging in.</li>
-        <li>Review and edit all AI-generated CBP drafts.</li>
-        <li>Combine AI recommendations with manual additions.</li>
-        <li>Align all competencies with the KCM framework.</li>
-        <li>Download and securely store finalised CBP and reports.</li>
-      </ul>
-
-    </div>
-
-    <h3>DON'Ts</h3>
-
-    <div class="donts-box">
-
-      <h4>❌ Never Do These</h4>
-
-      <ul>
-        <li>Do not upload confidential or classified documents.</li>
-        <li>Do not adopt AI outputs without Competent Authority review.</li>
-        <li>Do not add competencies outside KCM without approval.</li>
-        <li>Do not share login credentials with others.</li>
-        <li>Do not upload oversized or non-text-searchable files.</li>
-      </ul>
-
-    </div>
-
-  </div>
-
-  <!-- ===================== -->
-  <!-- NEXT STEPS -->
-  <!-- ===================== -->
-
-  <div *ngIf="activeTab==='next'" class="next-steps">
-
-    <div class="next-card">
-
-      <span class="circle">1</span>
-
-      <p>
-      Collect all necessary documents — official guidelines,
-      implementation toolkits, annual reports, and Work Allocation Orders.
-      </p>
-
-    </div>
-
-    <div class="next-card">
-
-      <span class="circle">2</span>
-
-      <p>
-      Generate, review and edit department-wise CBP to create
-      the finalised version with Competent Authority sign-off.
-      </p>
-
-    </div>
-
-    <div class="next-card">
-
-      <span class="circle">3</span>
-
-      <p>
-      Actionise the CBP — create and assign designation-wise
-      MyiGOT training plans for available courses.
-      </p>
-
-    </div>
-
-    <div class="next-card">
-
-      <span class="circle">4</span>
-
-      <p>
-      Plan development of new courses to address identified
-      competency gap areas.
-      </p>
+      </div>
 
     </div>
 

@@ -1,3 +1,144 @@
+.review-container{
+  background:#f5f6fa;
+  min-height:100vh;
+}
+
+/* HEADER */
+
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  background: #fff;
+  padding: 10px 30px 10px 60px;
+    border-radius: 8px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+
+.left-section{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.back-icon{
+  cursor:pointer;
+  font-size:22px;
+}
+
+.request-id{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.status-badge{
+  background:#fff4e5;
+  color:#c17c00;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* CARD */
+
+.details-card{
+ padding: 25px 30px;
+    border-radius: 12px;
+    background: #fff;
+    
+}
+
+
+.section-title{
+     margin: 10px 0;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+}
+
+.details-grid{
+  display:grid;
+  grid-template-columns: repeat(5,1fr);
+  gap:30px;
+  margin-bottom:20px;
+}
+
+.detail-box{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.detail-box mat-icon{
+     background: #eef2ff;
+    padding: 18px;
+    border-radius: 8px;
+    color: #1B4CA1;
+    height: 60px;
+    width: 60px;
+    vertical-align: middle;
+    text-align: center;
+
+}
+
+.label{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.value{
+  font-weight:600;
+}
+
+.organization{
+  margin-top:50px;
+}
+
+.org-value{
+  color:#1B4CA1;
+  font-weight:600;
+}
+
+/* ROLE SECTION */
+
+.role-header{
+  margin-top:30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid #d1d5db;
+  padding:6px 10px;
+  border-radius:10px;
+  background:white;
+}
+
+.search-box input{
+  border:none;
+  outline:none;
+  width:250px;
+}
+
+.divider {
+   margin: 10px 30px;
+    width: 88% !important;
+}
+
+.inner-container {
+    margin: 0 30px 0 60px;
+    width: 95%;
+}
+
+
 // This comment is made for supressing sonarcube warning.
 .container {
     // border-radius: 12px;
@@ -916,4 +1057,11 @@ cursor: not-allowed;
 .badge.red {
   background-color: #fee2e2;
   color: #b42318;
+}
+
+.no-data-cell {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #888;
 }

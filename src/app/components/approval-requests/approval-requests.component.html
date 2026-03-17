@@ -63,15 +63,13 @@
                 </div>
                 <div class="mt-10 w-50">
 
-                    <div class="search-container">
+                    <div class="search-container"> 
                         <div class="rsearch">
                             <mat-icon
                                 class="color-60 search-icon mat-icon notranslate material-icons mat-icon-no-color">search</mat-icon>
-                            <input class="sinput color-60 w-full" [(ngModel)]="searchText" label=""
-                                (input)="applyFilter()" placeholder="Search by Request ID" type="Standard">
-                            <mat-icon *ngIf="searchText.trim().length > 0"
-                                class="color-60 clear-icon mat-icon notranslate material-icons mat-icon-no-color cursor-pointer"
-                                (click)="clearSearch()">clear</mat-icon>
+                            <input class="sinput color-60 w-full"  label="" formControlName="search"
+                                (keyup)="applyFilters()" placeholder="Search by Request ID" type="Standard">
+                          
                         </div>
 
                     </div>
@@ -132,19 +130,19 @@
             </div>
         </form>
         <p class="mt-10" style="font-family: 'Lato'; font-size: 18px; margin-left: 10px;">
-            {{filteredDocuments()?.length}} Documents</p>
+            {{dataSource.data.length}} Approval Requests</p>
         <table style="border-radius: 25px 25px 0 0;
         overflow: hidden;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.12);" mat-table [dataSource]="filteredDocuments()"
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.12);" mat-table [dataSource]="dataSource"
             class="mat-elevation-z2 full-width-table mt-10">
 
             <!-- Document Column -->
             <ng-container matColumnDef="request_id">
                 <th mat-header-cell *matHeaderCellDef> Request ID </th>
-                <td mat-cell *matCellDef="let doc" style="width: 15%;">
+                <td mat-cell *matCellDef="let request" style="width: 15%;">
                     <div>
-                        <div class="doc-title" *ngIf="doc.document_name">{{ doc.filename }}</div>
-                        <div class="doc-title" *ngIf="!doc.document_name">{{ doc.filename }}</div>
+                        <div class="doc-title" *ngIf="request.request_name">{{ request.request_name }}</div>
+                        <div class="doc-title" *ngIf="!request.request_name">{{ request.request_name }}</div>
                     </div>
                 </td>
             </ng-container>
@@ -164,16 +162,13 @@
             <!-- Date Column -->
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef> Date & Time</th>
-                <td mat-cell *matCellDef="let doc" style="width: 15%;"> {{ doc.created_at | date: 'MMM d, y'}} </td>
+                <td mat-cell *matCellDef="let request" style="width: 15%;"> {{ request.created_at | date: 'MMM d, y'}} </td>
             </ng-container>
 
             <ng-container matColumnDef="designation">
                 <th mat-header-cell *matHeaderCellDef> No of Designation </th>
-                <td mat-cell *matCellDef="let doc" style="width: 15%;">
-                    <span *ngIf="doc.summary_status === 'COMPLETED'" class="success"> {{ doc.summary_status | titlecase
-                        }} </span>
-                    <span *ngIf="doc.summary_status !== 'COMPLETED'" class="in-progress"> {{ doc.summary_status |
-                        titlecase }} </span>
+                <td mat-cell *matCellDef="let request" style="width: 15%;">
+                    <span>{{request?.designation_count}}</span>
                 </td>
             </ng-container>
 
@@ -181,10 +176,10 @@
             <!-- Summary Status Column -->
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef> Request Status </th>
-                <td mat-cell *matCellDef="let doc" style="width: 15%;">
-                    <span *ngIf="doc.summary_status === 'COMPLETED'" class="success"> {{ doc.summary_status | titlecase
+                <td mat-cell *matCellDef="let request" style="width: 15%;">
+                     <span *ngIf="request.status === 'completed'" class="success"> {{ request.status | titlecase
                         }} </span>
-                    <span *ngIf="doc.summary_status !== 'COMPLETED'" class="in-progress"> {{ doc.summary_status |
+                    <span *ngIf="request.status !== 'completed'" class="in-progress"> {{ request.status |
                         titlecase }} </span>
                 </td>
             </ng-container>
@@ -192,18 +187,19 @@
             <!-- Actions Column -->
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
-                <td mat-cell *matCellDef="let doc" style="width: 15%;">
+                <td mat-cell *matCellDef="let request" style="width: 15%;">
                     <div class="action-flex">
                         <div>
-                            <button class="btn-active" mat-raised-button color="primary" (click)="downloadDoc(doc)"
+                            <button class="btn-active" mat-raised-button color="primary" (click)="viewRequest(request)"
                                 matTooltip="View/Review Request">
                                 View/Review Request
                             </button>
                         </div>
                         <div>
-                            <button style="margin-left: 15px;" *ngIf="doc.summary_status === 'COMPLETED'"
-                                mat-icon-button color="warn" (click)="deleteDocument(doc)" matTooltip="Delete">
+                            <button style="margin-left: 15px;" *ngIf="request.status === 'COMPLETED'"
+                                mat-icon-button color="warn" (click)="revokeApprovalRequest(request)" matTooltip="Delete">
                                 <mat-icon>delete</mat-icon>
+                                Revoke Request
                             </button>
                         </div>
                     </div>
@@ -222,7 +218,7 @@
             <!-- No Data Message -->
 
         </table>
-        <div *ngIf="filteredDocuments().length === 0" class="no-data-message">
+        <div *ngIf="dataSource.data.length === 0" class="no-data-message">
             No record found
         </div>
         <!-- Pagination -->

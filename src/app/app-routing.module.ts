@@ -7,6 +7,7 @@ import { RoleMappingGenerationComponent } from './components/role-mapping-genera
 import { RoleMappingListComponent } from './components/role-mapping-list/role-mapping-list.component';
 import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ReviewRequestComponent } from './components/review-request/review-request.component';
 const routerOptions: any = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
@@ -38,6 +39,11 @@ const routes: Routes = [
   {
     path: 'logout',
     component: InitialScreenComponent,
+    pathMatch: 'full'
+  },
+  {
+     path: 'review-request/:request_id',
+    component: ReviewRequestComponent,
     pathMatch: 'full'
   },
 ];

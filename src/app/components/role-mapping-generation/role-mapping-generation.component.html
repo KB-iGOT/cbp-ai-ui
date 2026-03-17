@@ -116,7 +116,7 @@
                 <textarea rows="5" placeholder="Additional details" formControlName="additionalDetails"></textarea>
             </div>
              <div class="mt-4">
-                    <button [ngClass]="disableUploadDocument ? 'btn-active-disable':'btn-active'" class=""
+                    <button [ngClass]="disableUploadDocument ? 'btn-active-primary-disable':'btn-active-primary'" class=""
                         [disabled]="disableUploadDocument" mat-raised-button color="primary"
                         (click)="goToUploadDocument()">
                         <mat-icon>upload</mat-icon> Manage Documents

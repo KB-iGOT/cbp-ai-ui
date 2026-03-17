@@ -66,6 +66,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { HelpSidebarComponent } from './components/help-sidebar/help-sidebar.component';
+import { ApprovalRequestFormComponent } from './components/approval-request-form/approval-request-form.component';
+import { ReviewRequestComponent } from './components/review-request/review-request.component';
 const appInitializer = (initSvc: InitService) => async () => {
   try {
     await initSvc.init()
@@ -102,7 +104,9 @@ const appInitializer = (initSvc: InitService) => async () => {
     UpdateDesignationHierarchyComponent,
     ApprovalRequestsComponent,
     DashboardComponent,
-    HelpSidebarComponent
+    HelpSidebarComponent,
+    ApprovalRequestFormComponent,
+    ReviewRequestComponent
   ],
   imports: [
     BrowserModule,

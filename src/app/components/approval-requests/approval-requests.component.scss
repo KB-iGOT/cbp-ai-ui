@@ -15,7 +15,7 @@
     margin: 25px 0;
 }
 
-.search {
+:host .search {
     .rsearch {
         position: relative;
     }
@@ -188,7 +188,7 @@
 }
 
 /* Force search wrapper width to match panel exactly */
-.mat-select-panel .search-wrapper {
+:host .mat-select-panel .search-wrapper {
     width: 100% !important;
     box-sizing: border-box;
     padding: 8px;
@@ -208,7 +208,7 @@
     box-sizing: border-box;
 }
 
-::ng-deep {
+:host ::ng-deep {
     .mat-select-panel-wrap {
         overflow: visible !important;
         /* allow content + scrollbar */
@@ -339,7 +339,7 @@ text-underline-position: from-font;
   border-color: #1B4CA1 !important;
 }
 
-::ng-deep .select-search-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+:host ::ng-deep .select-search-panel .mat-option.mat-selected:not(.mat-option-disabled) {
   background-color: #1B4CA1 !important;
   color: #ffffff !important;
 }
@@ -405,15 +405,15 @@ text-underline-position: from-font;
     justify-content: space-between;
 }
 
-::ng-deep .language-select .mat-select-trigger {
+:host ::ng-deep .language-select .mat-select-trigger {
   font-weight: 400 !important;
 }
 
-::ng-deep .language-select .mat-select-value {
+:host ::ng-deep .language-select .mat-select-value {
   color: white !important;
 }
 
-::ng-deep .custom-pagination {
+:host ::ng-deep .custom-pagination {
     background-color: transparent !important;
 }
 

@@ -12,6 +12,7 @@ import { ViewFinalCbpPlanComponent } from '../view-final-cbp-plan/view-final-cbp
 import { ListPopupComponent } from '../list-popup/list-popup.component';
 import { AddDesignationComponent } from '../add-designation/add-designation.component';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ApprovalRequestFormComponent } from '../approval-request-form/approval-request-form.component';
 @Component({
   selector: 'app-role-mapping-list',
   templateUrl: './role-mapping-list.component.html',
@@ -263,34 +264,37 @@ export class RoleMappingListComponent {
         console.log('Changes saved!');
         // Refresh data or show a toast here
         console.log(this.sharedService.cbpPlanFinalObj)
-        if (this.sharedService.cbpPlanFinalObj && this.sharedService.cbpPlanFinalObj.ministry && this.sharedService.cbpPlanFinalObj.ministry.id) {
+        
+        if (this.sharedService.cbpPlanFinalObj && this.sharedService.cbpPlanFinalObj.ministry && this.sharedService.cbpPlanFinalObj.ministry.identifier) {
           if (this.sharedService.cbpPlanFinalObj.departments) {
-            this.sharedService.getRoleMappingByStateCenter(this.sharedService.cbpPlanFinalObj.ministry.id).subscribe((res) => {
+            this.loading = true
+            this.sharedService.getRoleMappingByStateCenter(this.sharedService.cbpPlanFinalObj.ministry.identifier).subscribe((res) => {
               console.log('res', res)
-              this.dataSource = new MatTableDataSource(res)
-              this.dataSource.paginator = this.paginator;
-              this.originalData = res;
-              console.log('this.dataSource', this.dataSource)
+              this.selection.clear();
+              this.loadRoleMappingList()
+              this.loading = false
             })
           } else {
-            this.sharedService.getRoleMappingByStateCenterAndDepartment(this.sharedService.cbpPlanFinalObj.ministry.id, this.sharedService.cbpPlanFinalObj.departments).subscribe((res) => {
+            this.loading = true
+            this.sharedService.getRoleMappingByStateCenterAndDepartment(this.sharedService.cbpPlanFinalObj.ministry.identifier, this.sharedService.cbpPlanFinalObj.departments).subscribe((res) => {
               console.log('res', res)
-              this.dataSource = new MatTableDataSource(res)
-              this.dataSource.paginator = this.paginator;
-              this.originalData = res;
+              this.selection.clear();
+             this.loadRoleMappingList()
               console.log('this.dataSource', this.dataSource)
+              this.loading = false
             })
           }
 
 
-        } else if (this.sharedService.cbpPlanFinalObj && this.sharedService.cbpPlanFinalObj.ministry && this.sharedService.cbpPlanFinalObj.ministry.id && this.sharedService.cbpPlanFinalObj.departments) {
+        } else if (this.sharedService.cbpPlanFinalObj && this.sharedService.cbpPlanFinalObj.ministry && this.sharedService.cbpPlanFinalObj.ministry.identifier && this.sharedService.cbpPlanFinalObj.departments) {
           {
-            this.sharedService.getRoleMappingByStateCenterAndDepartment(this.sharedService.cbpPlanFinalObj.ministry.id, this.sharedService.cbpPlanFinalObj.departments).subscribe((res) => {
+            this.loading = true
+            this.sharedService.getRoleMappingByStateCenterAndDepartment(this.sharedService.cbpPlanFinalObj.ministry.identifier, this.sharedService.cbpPlanFinalObj.departments).subscribe((res) => {
               console.log('res', res)
-              this.dataSource = new MatTableDataSource(res)
-              this.dataSource.paginator = this.paginator;
-              this.originalData = res;
+              this.selection.clear();
+             this.loadRoleMappingList()
               console.log('this.dataSource', this.dataSource)
+              this.loading = false
             })
           }
         }
@@ -601,7 +605,7 @@ export class RoleMappingListComponent {
               }, 1000)
               this.originalData = res;
               this.masterData = res;
-              
+
               console.log('this.dataSource', this.dataSource)
             },
             error: () => {
@@ -712,6 +716,8 @@ export class RoleMappingListComponent {
   }
 
   toggleRow(row: any) {
+    if (!row?.cbp_plans?.length) return;
+
     this.selection.toggle(row);
     console.log('Selected rows:', this.selection.selected);
   }
@@ -787,6 +793,34 @@ export class RoleMappingListComponent {
       this.dataSource.paginator = this.paginator;
     });
 
+  }
+
+  sendForApprovalForm() {
+    console.log('this.selection--', this.selection.selected)
+    if (this.selection.selected.length) {
+      const dialogRef = this.dialog.open(ApprovalRequestFormComponent, {
+        width: '600px',
+        data: this.selection.selected,
+        panelClass: 'view-cbp-plan-popup',
+        minHeight: '300px',          // Set minimum height
+        maxHeight: '80vh',           // Prevent it from going beyond viewport
+        disableClose: true // Optional: prevent closing with outside click
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // if (result === 'saved') {
+        //   console.log('Changes saved!');
+        //   // Refresh data or show a toast here
+
+        // }
+        this.refreshRoleMappingData();
+      });
+    }
+
+  }
+
+  hasSelectableRows() {
+    return this.dataSource?.data?.some((row: any) => row?.cbp_plans?.length > 0);
   }
 
 
