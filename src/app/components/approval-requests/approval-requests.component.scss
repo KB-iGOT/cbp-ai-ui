@@ -1,3 +1,9 @@
+.upload-container {
+    background: transparent;
+    min-height: 100vh;
+    padding: 24px 10px;
+    margin: 0 30px 0 60px;
+}
 .header {
     display: flex;
     flex-direction: row;
@@ -10,9 +16,6 @@
 }
 
 .mat-card-container {
-    background: transparent;
-    padding: 25px;
-    margin: 25px 0;
 }
 
 :host .search {
@@ -293,7 +296,7 @@ text-underline-position: from-font;
       display: flex;
     align-items: center;
     flex-direction: row;
-    width: 70%;
+    width: 100%;
     gap:10px;
         background: #e3ecfa;
     padding: 10px;

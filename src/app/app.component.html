@@ -20,12 +20,14 @@
         </div>
 
         <div class="right-container mt-4" style="justify-content: space-between;">
-            <div class="how-to-use-chip" (click)="openHelp()"><mat-icon>video_library</mat-icon>How to use</div>
+            <div class="how-to-use-chip" (click)="openHelp()">
+                <mat-icon>video_library</mat-icon>How to use
+            </div>
             <ng-container *ngIf="loginSuccess">
                 <div class="cursor-pointer" (click)="routeToDashboard()">
                     <div class="dashboard-pill">
-                        <div><mat-icon class="vertical-middle">dashboard</mat-icon></div>
-                        <div>Dashboard</div>
+                        <mat-icon class="vertical-middle">dashboard</mat-icon>
+                        Dashboard
                     </div>
 
                 </div>

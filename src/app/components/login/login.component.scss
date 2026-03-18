@@ -769,7 +769,7 @@ h1,
   margin-top: 0;
   margin-bottom: 1rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.25;
   color: #fff;
   font-size: 22px;
 }
@@ -821,7 +821,7 @@ h1,
 }
 
 .blue-link {
-  color:#1B4CA1;
+  color: #1B4CA1;
   font-weight: 700;
 }
 
@@ -835,5 +835,13 @@ h1,
 }
 
 .list li {
-  color:#999;
+  color: #999;
+}
+
+.sub-text {
+  font-size: 1rem !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: .5em .5em 0 .5em !important;
 }
