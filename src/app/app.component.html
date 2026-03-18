@@ -21,7 +21,8 @@
 
         <div class="right-container mt-4" style="justify-content: space-between;">
             <div class="how-to-use-chip" (click)="openHelp()">
-                <mat-icon>video_library</mat-icon>How to use
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-play h-4 w-4"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                <span class="ml-2">How to use</span>
             </div>
             <ng-container *ngIf="loginSuccess">
                 <div class="cursor-pointer" (click)="routeToDashboard()">

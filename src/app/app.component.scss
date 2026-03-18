@@ -534,7 +534,7 @@ line-height: normal;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 75px;
+    height: 82px;
     //margin-bottom: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     background: #fff;
@@ -554,7 +554,7 @@ line-height: normal;
 }
 
 .h-50 {
-    height: 90% !important;
+    height: 100% !important;
 }
 
 .mb-1 {
@@ -677,6 +677,9 @@ width: 100%;
     font-weight: 400;
     border: 1px solid #ccc;
     font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .how-to-use-chip mat-icon{

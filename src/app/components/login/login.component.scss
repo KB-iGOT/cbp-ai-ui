@@ -86,10 +86,11 @@
 .label {
   color: var(--Body-Text-Body-Color, #212529);
   font-family: Lato;
-  font-size: 14px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 150%;
+  margin-bottom: 8px;
   /* 21px */
 }
 
@@ -679,7 +680,7 @@
 
 .feature-card {
   background: rgba(255, 255, 255, 0.1);
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
   display: flex;
@@ -802,9 +803,10 @@ h1,
 }
 
 .sign0in {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   margin-top: 8px;
+  color: #999;
 }
 
 .login-wrapper {
@@ -829,7 +831,8 @@ h1,
 
 .blue-link {
   color: #1B4CA1;
-  font-weight: 700;
+  font-weight: normal;
+  font-size: 14px;
 }
 
 .mt-10 {
@@ -843,6 +846,7 @@ h1,
 
 .list li {
   color: #999;
+  font-size: 14px;
 }
 
 .sub-text {
@@ -854,8 +858,20 @@ h1,
 }
 
 .powered-text {
-  margin-bottom: 20px;
+  margin-bottom: 70px;
   margin-top: auto;
   font-size: 14px;
   opacity: 0.8;
+}
+
+.mb-2 {
+  margin-bottom: 40px !important;
+}
+
+.feature-title {
+  line-height: 1;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 8px;
+
 }
