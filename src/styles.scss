@@ -49,9 +49,11 @@ body {
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #F4F8FF;;
-    margin: 0;
+    margin-bottom: 0px;
     padding: 0;
     color: #374957;
+    height: 100vh;
+    overflow: hidden;
 }
 
 a {

@@ -8,7 +8,7 @@ interface Step {
   content: any[];
   imageSrc: string[];
   acknowledge?: string;
-  caption?:string
+  caption?: string[]
 }
 
 
@@ -55,8 +55,8 @@ export class HelpSidebarComponent {
         'Click Login to access the dashboard.'
       ],
       imageSrc: ['1.png'],
-      acknowledge: 'Acknowledge usage terms and confirm document compliance before logging in.',
-      caption: 'Login Screen'
+      acknowledge: '💡 Acknowledge usage terms and confirm document compliance before logging in.',
+      caption: ['Login Screen']
     },
     {
       title: 'Select Ministry / Department',
@@ -75,189 +75,257 @@ export class HelpSidebarComponent {
           text: 'Click "Manage Documents" to proceed.'
         }
       ],
-    
+      caption: ['Select Ministry/Department Screen'],
+
 
       imageSrc: ['2.png']
     },
-{
-  title: 'Manage Relevant Documents',
-    open: false,
+    {
+      title: 'Manage Relevant Documents',
+      open: false,
       content: [
-        'Upload official policy documents.',
-        'Ensure files are searchable PDFs.',
-        'File size must be below 25 MB.'
+        'Upload CBP Summaries, Work Allocation Orders, guidelines.',
+        'Max 10 PDF files, each under 25 MB.',
+        'View or download AI-generated document summaries.'
       ],
-        imageSrc: ['3.png', '3_1.png']
-},
-{
-  title: 'Generate CBP — Initial Draft',
-    open: false,
+      imageSrc: ['3.png', '3_1.png'],
+      caption: ['Document Library', 'Upload Document Modal'],
+      acknowledge: '⚠️ Only upload official, publicly available text-searchable PDFs.'
+    },
+    {
+      title: 'Generate CBP — Initial Draft',
+      open: false,
       content: [
-        'Use AI to generate an initial CBP draft.',
-        'Review suggested competencies carefully.'
+        'System extracts all designations from uploaded documents.',
+        'Maps roles and competencies using theKCM framework.',
+        'Displays Initial Draft CBP for review.'
       ],
-        imageSrc: ['4.png']
-},
-{
-  title: 'Manage Designation Hierarchy',
-    open: false,
+      imageSrc: ['4.png'],
+      caption: ['Generated CBP - Initial Draft View'],
+      acknowledge: '🤖 AI drafts are a starting point — always validate with subject-matter experts.'
+    },
+    {
+      title: 'Manage Designation Hierarchy',
+      open: false,
       content: [
-        'Check competency alignment with KCM framework.',
-        'Remove irrelevant suggestions.'
+        'Click the Profile icon (top-right corner).',
+        'Select "Update Designation Hierarchy"',
+        'Rearrange the hierarchy via dropdown as required.'
       ],
-        imageSrc: ['5.png', '5_1.png']
-},
-{
-  title: 'Edit the CBP',
-    open: false,
+      imageSrc: ['5.png', '5_1.png'],
+      caption: ['Update Designation Hierarchy panel']
+    },
+    { 
+      title: 'Edit the CBP',
+      open: false,
       content: [
-        'Modify competency levels and descriptions.',
-        'Add department-specific requirements.'
+        'Use built-in editor for Manual Edits— designations, responsibilities, wings/divisions.',
+        'Edit Domain Competencies to align with KCM.',
+        'Click Save CBP when done.'
       ],
-        imageSrc: ['6.png', '6_1.png']
-},
-{
-  title: 'Add New Designations',
-    open: false,
+      imageSrc: ['6.png', '6_1.png'],
+      caption: ['Edit Role Mapping Modal']
+    },
+    {
+      title: 'Add New Designations',
+      open: false,
       content: [
-        'Ensure all competencies match Karmayogi Competency Model.'
+        'Manually add any designations the AI may have missed.',
+        'Enter roles, responsibilities & details for each.',
+        'Save after each addition.'
       ],
-        imageSrc: ['7.png']
-},
-{
-  title: 'Generate Course Recommendations',
-    open: false,
+      imageSrc: ['7.png'],
+      caption: ['Add New Designation Modal']
+    },
+    {
+      title: 'Generate Course Recommendations',
+      open: false,
       content: [
-        'Run analysis to identify capability gaps.'
+        'Click "Generate Course Recommendation".',
+        'Filter by Competencies, Ratings, Language, Duration, Provider.',
+        'Select courses via checkbox, click "Save Courses".'
       ],
-        imageSrc: ['8.png', '8_1.png']
-},
-{
-  title: 'Suggest Additional Course from iGOT',
-    open: false,
+      imageSrc: ['8.png', '8_1.png'],
+      caption: ['Action menu — Generate Course Recommendation option', 'Course Recommendation modal — filters & course cards']
+    },
+    {
+      title: 'Suggest Additional Course from iGOT',
+      open: false,
       content: [
-        'Download generated CBP and supporting reports.'
+        'Use this step to manually suggest courses from the iGOT platform that were not recommended by AI.',
+        'Use the search bar to type the name of a course available on iGOT — results will appear as you type.',
+        'Select the desired course from the search results to add it as a manual suggestion for the relevant designation.',
+        'Click "Save"to confirm and add the course to the CBP catalogue.'
       ],
-        imageSrc: ['9.png']
-},
-{
-  title: 'View & Download Course List',
-    open: false,
+      acknowledge:'💡 Tip: Use this to fill competency gaps where AI suggestions may not cover niche or department-specific iGOT courses.',
+      imageSrc: ['9.png'],
+      caption: ['📸  Suggest Courses from iGOT — Search & Select Modal']
+    },
+    {
+      title: 'View & Download Course List',
+      open: false,
       content: [
-        'Submit CBP draft for Competent Authority review.'
+        'Click the ⋮ Action menu next to any designation row and select "View Course Recommendation".',
+        'A modal shows the designations course card with AI Recommended – iGOTtag, linked competencies, provider, and relevancy score.',
+        'Remove any course using the 🗑 Delete icon at the bottom of the card.',
+        'Click "Download" to export the course recommendation list as a PDF.'
       ],
-        imageSrc: ['10.png', '10_1.png']
-},
-{
-  title: 'Download Combined CBP & Courses',
-    open: false,
+      imageSrc: ['10.png', '10_1.png'],
+      caption: [' 📸 Action Menu — View Course Recommendation option', '📸 View Course Recommendation — Course card with competencies & relevancy score']
+    },
+    {
+      title: 'Download Combined CBP & Courses',
+      open: false,
       content: [
-        'Incorporate feedback and finalise document.'
+        'Click "View Final CBP" button (top-right) to open the Final ACBP modal.',
+        'The modal displays a summary with stat cards — Total, Behavioral, Functional, and Domain Competencies.',
+        'Scroll to review the Detailed Competency Framework by Designation with Roles & Responsibilities per role.',
+        'Use the language dropdown (e.g., English ) to switch the CBP language before downloading.',
+        'Click "Download as Excel" or "Download as PDF"to export the combined CBP.'
       ],
-        imageSrc: ['11.png']
-},
-{
-  title: 'Download in Multiple Languages',
-    open: false,
+      imageSrc: ['11.png'],
+      caption: ['📸  View Final ACBP — Summary stats, competency framework & download options']
+    },
+    {
+      title: 'Download in Multiple Languages',
+      open: false,
       content: [
-        'Map competencies to MyiGOT learning resources.'
+        'Click "View Final CBP"to open the Final ACBP modal.',
+        'Click the Language dropdown (default: English) — a searchable list appears with languages including Hindi, Telugu, Kannada, Marathi, Tamil, Gujarati, and more.',
+        'Select your desired language — the CBP content will be rendered in that language before download',
+        'Click "Download as PDF" or "Download as Excel" to save the multilingual CBP.'
+
+
       ],
-        imageSrc: ['12.png']
-}
+      imageSrc: ['12.png'],
+      caption: ['📸 Language dropdown — select from 8+ regional languages including Hindi, Telugu, Kannada & more']
+    }
   ];
 
-dos = [
-  'Keep only official publicly, available PDFs under 25 MB.',
-  'Use only your designated login credentials.',
-  'Acknowledge usage terms before logging in.',
-  'Review and edit all AI-generated CBP drafts.',
-  'Combine AI recommendations with manual additions',
-  'Align all competencies with KCM framework.',
-  'Download and securely store finalised CBP and reports.'
-];
+  dos = [
+    'Keep only official publicly, available PDFs under 25 MB.',
+    'Use only your designated login credentials.',
+    'Acknowledge usage terms before logging in.',
+    'Review and edit all AI-generated CBP drafts.',
+    'Combine AI recommendations with manual additions',
+    'Align all competencies with KCM framework.',
+    'Download and securely store finalised CBP and reports.'
+  ];
 
-donts = [
-  'Do not upload confidential or classified documents.',
-  'Do not adopt AI outputs without Competent authority review.',
-  'Do not add competencies outside KCM without approval.',
-  'Do not share login credentials with others.',
-  'Do not upload oversized or non-text-searchable files.'
-];
+  donts = [
+    'Do not upload confidential or classified documents.',
+    'Do not adopt AI outputs without Competent authority review.',
+    'Do not add competencies outside KCM without approval.',
+    'Do not share login credentials with others.',
+    'Do not upload oversized or non-text-searchable files.'
+  ];
 
-nextSteps = [
-  'Collect all necessary documents — official guidelines, implementation toolkits, annual reports, and Work Allocation Orders.',
-  'Generate, review and edit department-wise CBP to create the finalised version with Competent Authority sign-off.',
-  'Actionise the CBP — create and assign designation-wise MyiGOT training plans for available courses.',
-  'Plan development of new courses to address identified competency gap areas.'
-];
+  nextSteps = [
+    'Collect all necessary documents — official guidelines, implementation toolkits, annual reports, and Work Allocation Orders.',
+    'Generate, review and edit department-wise CBP to create the finalised version with Competent Authority sign-off.',
+    'Actionise the CBP — create and assign designation-wise MyiGOT training plans for available courses.',
+    'Plan development of new courses to address identified competency gap areas.'
+  ];
 
-downloadPdf() {
+  downloadPdf() {
 
-  const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdf = new jsPDF('p', 'mm', 'a4');
 
-  const pageWidth = 210;
-  const pageHeight = 297;
-  const margin = 20;
-  const lineHeight = 7;
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 20;
+    const lineHeight = 7;
 
 
 
-  pdf.rect(0, 0, pageWidth, 30, 'F');
+    pdf.rect(0, 0, pageWidth, 30, 'F');
 
-  pdf.setTextColor(255, 255, 255);
-  pdf.setFont('helvetica', 'bold');
-  pdf.setFontSize(18);
-  pdf.text('How to Use', margin, 14);
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(18);
+    pdf.text('How to Use', margin, 14);
 
-  pdf.setFontSize(11);
-  pdf.setFont('helvetica', 'normal');
-  pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, 21);
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, 21);
 
-  /* reset text color */
+    /* reset text color */
 
-  pdf.setTextColor(0, 0, 0);
+    pdf.setTextColor(0, 0, 0);
 
-  /* start content BELOW header */
+    /* start content BELOW header */
 
-  let y = 40;
-  const checkPage = (spaceNeeded: number) => {
-    if (y + spaceNeeded > pageHeight - margin) {
-      pdf.addPage();
-      y = 20;
+    let y = 40;
+    const checkPage = (spaceNeeded: number) => {
+      if (y + spaceNeeded > pageHeight - margin) {
+        pdf.addPage();
+        y = 20;
+      }
     }
-  }
 
-  /* HEADER */
+    /* HEADER */
 
-  pdf.setFont('helvetica', 'bold');
-  pdf.setFontSize(18);
-  pdf.text('How to Use', margin, y);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(18);
+    pdf.text('How to Use', margin, y);
 
-  y += 8;
+    y += 8;
 
-  pdf.setFontSize(11);
-  pdf.setFont('helvetica', 'normal');
-  pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, y);
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, y);
 
-  y += 15;
+    y += 15;
 
 
-  /* STEPS */
+    /* STEPS */
 
-  this.steps.forEach((step: any, index: number) => {
+    this.steps.forEach((step: any, index: number) => {
 
-    checkPage(15);
+      checkPage(15);
+
+      pdf.setFontSize(15);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`STEP ${index + 1}: ${step.title}`, margin, y);
+
+      y += 8;
+
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+
+      step.content.forEach((item: any) => {
+
+        const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
+
+        checkPage(lines.length * lineHeight);
+
+        pdf.text(lines, margin, y);
+
+        y += lines.length * lineHeight;
+
+      });
+
+      y += 5;
+
+    });
+
+
+    /* DO's */
+
+    checkPage(20);
+
+
 
     pdf.setFontSize(15);
     pdf.setFont('helvetica', 'bold');
-    pdf.text(`STEP ${index + 1}: ${step.title}`, margin, y);
+    pdf.text('DOs', margin, y);
 
     y += 8;
 
     pdf.setFontSize(12);
     pdf.setFont('helvetica', 'normal');
 
-    step.content.forEach((item: any) => {
+    this.dos.forEach((item: any) => {
 
       const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
 
@@ -269,96 +337,64 @@ downloadPdf() {
 
     });
 
-    y += 5;
 
-  });
+    /* DON'Ts */
 
+    y += 8;
 
-  /* DO's */
+    checkPage(20);
 
-  checkPage(20);
+    pdf.setFontSize(15);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(`DON'Ts`, margin, y);
 
+    y += 8;
 
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'normal');
 
-  pdf.setFontSize(15);
-  pdf.setFont('helvetica', 'bold');
-  pdf.text('DOs', margin, y);
+    this.donts.forEach((item: any) => {
 
-  y += 8;
+      const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
 
-  pdf.setFontSize(12);
-  pdf.setFont('helvetica', 'normal');
+      checkPage(lines.length * lineHeight);
 
-  this.dos.forEach((item: any) => {
+      pdf.text(lines, margin, y);
 
-    const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
+      y += lines.length * lineHeight;
 
-    checkPage(lines.length * lineHeight);
-
-    pdf.text(lines, margin, y);
-
-    y += lines.length * lineHeight;
-
-  });
+    });
 
 
-  /* DON'Ts */
+    /* NEXT STEPS */
 
-  y += 8;
+    y += 10;
 
-  checkPage(20);
+    checkPage(20);
 
-  pdf.setFontSize(15);
-  pdf.setFont('helvetica', 'bold');
-  pdf.text(`DON'Ts`, margin, y);
+    pdf.setFontSize(15);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Next Steps', margin, y);
 
-  y += 8;
+    y += 8;
 
-  pdf.setFontSize(12);
-  pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'normal');
 
-  this.donts.forEach((item: any) => {
+    this.nextSteps.forEach((item: any, index: number) => {
 
-    const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
+      const lines = pdf.splitTextToSize(`${index + 1}. ${item}`, pageWidth - margin * 2);
 
-    checkPage(lines.length * lineHeight);
+      checkPage(lines.length * lineHeight);
 
-    pdf.text(lines, margin, y);
+      pdf.text(lines, margin, y);
 
-    y += lines.length * lineHeight;
+      y += lines.length * lineHeight;
 
-  });
+    });
 
+    pdf.save('iGOT-AI-CBP-Help-Guide.pdf');
 
-  /* NEXT STEPS */
-
-  y += 10;
-
-  checkPage(20);
-
-  pdf.setFontSize(15);
-  pdf.setFont('helvetica', 'bold');
-  pdf.text('Next Steps', margin, y);
-
-  y += 8;
-
-  pdf.setFontSize(12);
-  pdf.setFont('helvetica', 'normal');
-
-  this.nextSteps.forEach((item: any, index: number) => {
-
-    const lines = pdf.splitTextToSize(`${index + 1}. ${item}`, pageWidth - margin * 2);
-
-    checkPage(lines.length * lineHeight);
-
-    pdf.text(lines, margin, y);
-
-    y += lines.length * lineHeight;
-
-  });
-
-  pdf.save('iGOT-AI-CBP-Help-Guide.pdf');
-
-}
+  }
 
 }

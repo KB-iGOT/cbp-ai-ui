@@ -4,8 +4,15 @@
 
   <!-- HEADER -->
   <div class="ph">
-
+     <div class="ph-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="10" cy="10" r="8"></circle>
+          <path d="M7.5 7.5a2.5 2.5 0 0 1 4.9.8c0 1.6-2.4 2.1-2.4 3.7"></path>
+          <circle cx="10" cy="14.5" r=".6" fill="currentColor" stroke="none"></circle>
+        </svg>
+      </div>
     <div class="ph-text">
+     
       <div class="ph-title">How to Use</div>
       <div class="ph-sub">iGOT-AI CBP Tool · Step-by-Step Guide</div>
     </div>
@@ -98,8 +105,15 @@
 
           </ng-container>
 
-          <div class="tipbar">
-            💡 Acknowledge usage terms and confirm document compliance before logging in.
+          <div class="tipbar" *ngIf="step?.acknowledge">
+             {{step?.acknowledge}}
+          </div>
+
+          <div *ngIf="step?.caption?.length">
+            <div class="ss-caption"  *ngFor="let ic of step?.caption">
+              {{ic}}
+            </div>
+            
           </div>
 
           <div class="snapshot" *ngFor="let item of step.imageSrc">
