@@ -57,9 +57,10 @@
                         <!-- Centre / State -->
                         <mat-form-field appearance="fill"
                             style="background: white; border-radius: 25px; padding: 0 12px;border: 1px solid #ccc;">
-                            <mat-select panelClass="select-with-search" placeholder="Select Department" [disabled]="!isSuperAdmin" multiple
-                                formControlName="departments" style="border-radius: 25px; background: white;"
-                                (selectionChange)="onDepartmentChange()" (openedChange)="onOpenedDepartment($event)">
+                            <mat-select panelClass="select-with-search" placeholder="Select Department"
+                                [disabled]="!isSuperAdmin" multiple formControlName="departments"
+                                style="border-radius: 25px; background: white;" (selectionChange)="onDepartmentChange()"
+                                (openedChange)="onOpenedDepartment($event)">
                                 <div class="search-wrapper" *ngIf="departmentPanelOpen">
                                     <input type="text" placeholder="Search..." (input)="filterDepartmentData($event)"
                                         class="search-input" (keydown.space)="$event.stopPropagation()"
@@ -74,11 +75,12 @@
 
                     <!-- Date Range -->
                     <div>
-                        <label>Date Range</label>
-                        <mat-form-field appearance="outline" >
+                        <label>Date Range </label>
+                        <mat-form-field appearance="outline">
 
-                            <input matInput ngxDaterangepickerMd formControlName="dateRange"
-                                placeholder="Select date range" [autoApply]="true" [linkedCalendars]="true"/>
+                            <input matInput ngxDaterangepickerMd formControlName="dateRange" style="margin:10px"
+                                placeholder="Select date range" [autoApply]="true" [linkedCalendars]="true"
+                                [locale]="{ format: 'DD MMM YYYY' }" />
                         </mat-form-field>
                     </div>
 
@@ -204,7 +206,8 @@
                     <div>
                         <p class="card-title">Course Recommendations Saved</p>
                         <h2>{{this.dashboardData?.saved_recommended_courses_count}}</h2>
-                        <p class="card-subtitle">{{this.dashboardData?.saved_recommended_courses_count}} of 8500 recommendations</p>
+                        <p class="card-subtitle">{{this.dashboardData?.saved_recommended_courses_count}} of 8500
+                            recommendations</p>
                     </div>
                     <mat-icon class="icon teal">save</mat-icon>
                 </div>
@@ -280,7 +283,7 @@
             </div>
         </div>
 
-          <!-- OVERVIEW METRICS -->
+        <!-- OVERVIEW METRICS -->
         <h2 class="section-title">
             <mat-icon>dashboard</mat-icon>
             Users and Role Mapping Metrics
@@ -320,7 +323,7 @@
             </mat-card>
 
             <mat-card class="metric-card">
-                 <div class="card-content">
+                <div class="card-content">
                     <div>
                         <p class="card-title">Unique Role Mappings</p>
                         <h2>{{this.dashboardData?.unique_role_mappings}}</h2>

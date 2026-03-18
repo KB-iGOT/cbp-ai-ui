@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import moment from 'moment';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -13,8 +14,8 @@ export class DashboardComponent implements OnInit {
   userProfile: any
   isSuperAdmin = false
   selected: any = {
-    startDate: dayjs().subtract(3, 'month'),
-    endDate: dayjs()
+    startDate: moment().subtract(3, 'month'),
+    endDate: moment()
   };
   filtersForm!: FormGroup;
   ministriesList = [
@@ -60,7 +61,7 @@ export class DashboardComponent implements OnInit {
       centreState: [''],
       ministries: [[]],
       departments: [[]],
-      dateRange: [{ startDate: dayjs(), endDate: dayjs() }]
+      dateRange: [{ startDate: moment().subtract(3, 'month'), endDate: moment() }]
     });
 
     if (this.cbpFinalObj) {
@@ -95,8 +96,8 @@ export class DashboardComponent implements OnInit {
     let dateRangePayload = null;
     if (val.dateRange && val.dateRange.startDate && val.dateRange.endDate) {
       dateRangePayload = {
-        from: dayjs(val.dateRange.startDate).format('YYYY-MM-DD'),
-        to: dayjs(val.dateRange.endDate).format('YYYY-MM-DD')
+        from: moment(val.dateRange.startDate).format('YYYY-MM-DD'),
+        to: moment(val.dateRange.endDate).format('YYYY-MM-DD')
       };
     }
     let payload = {
