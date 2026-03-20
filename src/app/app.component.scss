@@ -653,17 +653,24 @@ width: 100%;
     gap: 8px;
     border-radius: 64px;
     border: 1px solid #ccc;
-    padding: 2px 10px;
+    padding: 4px 10px;
     align-items: center;
     justify-content: center;
     background-color: #f4f8ff;
     font-size: 14px;
     color: #000;
+    font-weight: 400;
 
+}
+
+.dashboard-pill mat-icon {
+     height: 20px !important;
+    width: 20px !important;
 }
 
 .vertical-middle {
     vertical-align: middle;
+   
 }
 
 .how-to-use-chip {
@@ -696,4 +703,8 @@ width: 100%;
 .dashboard-pill:hover {
     background: #1B4CA1;
     color: #fff;
+}
+
+.mat-mdc-menu-item .mat-icon {
+    margin-right: 8px;
 }

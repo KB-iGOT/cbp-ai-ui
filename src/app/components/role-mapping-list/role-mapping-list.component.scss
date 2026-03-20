@@ -47,7 +47,7 @@ font-weight: 700;
 line-height: 150%; /* 21px */
 }
 
-::ng-deep mat-form-field {
+:host ::ng-deep input.mat-form-field {
     background-color: white !important;
     border-radius: 25px !important;
     padding-left: 12px;
@@ -56,21 +56,21 @@ line-height: 150%; /* 21px */
     width: 100%;
   }
   
-  ::ng-deep mat-select {
+:host ::ng-deep mat-select {
     border-radius: 25px !important;
     background-color: white !important;
   }
   
-  ::ng-deep .mat-select-panel {
+:host ::ng-deep .mat-select-panel {
     background-color: white !important;
     // border-radius: 25px !important;
   }
   
-  ::ng-deep .mat-select-panel .mat-option {
+:host ::ng-deep .mat-select-panel .mat-option {
     border-radius: 0 !important;  /* Options with no border-radius */
   }
   
-  ::ng-deep mat-form-field .mat-form-field-underline {
+:host ::ng-deep mat-form-field .mat-form-field-underline {
     display: none !important;
   }
   

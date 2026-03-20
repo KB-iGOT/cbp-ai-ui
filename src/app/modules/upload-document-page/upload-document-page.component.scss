@@ -1,3 +1,10 @@
+.upload-container {
+    background: transparent;
+    min-height: 100vh;
+    padding: 24px 0px;
+    margin: 0 30px 0 50px;
+}
+
 .header {
     display: flex;
     flex-direction: row;
@@ -11,8 +18,8 @@
 
 .mat-card-container {
     background: transparent;
-    padding: 25px;
-    margin: 25px 0;
+    // padding: 25px;
+    // margin: 25px 0;
 }
 
 .search {
@@ -287,4 +294,28 @@ text-underline-position: from-font;
     padding: 4px 6px;
     color: white;
     border-radius: 20px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mt-1 {
+    margin-top: 1px;
+}
+
+.border-1 {
+    border-top: 1px solid #ccc;
 }

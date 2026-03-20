@@ -1,8 +1,8 @@
 .upload-container {
     background: transparent;
     min-height: 100vh;
-    padding: 24px 10px;
-    margin: 0 30px 0 60px;
+    padding: 24px 0px;
+    margin: 0 30px 0 50px;
 }
 .header {
     display: flex;
@@ -121,6 +121,14 @@
 
 .mt-10 {
     margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
 }
 
 .cursor-pointer {
@@ -350,8 +358,6 @@ text-underline-position: from-font;
 
 /* Apply border and rounded corners to the whole form field */
 :host ::ng-deep .mat-form-field-appearance-outline {
-  border-radius: 25px; /* Apply rounded corners to the whole outline */
-  border: 1px solid #ccc; /* Add border to the entire form field */
 }
 
 :host ::ng-deep .mat-form-field-focused .mat-form-field-appearance-outline {

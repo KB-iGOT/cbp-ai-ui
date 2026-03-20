@@ -1,12 +1,12 @@
 <div class="upload-container">
     <div class="header">
-        <div class="sub-heading mt-10 cursor-pointer">
+        <div class="sub-heading mt-10 mb-10 ml-10 cursor-pointer">
             <p (click)="routeToInitial()"><mat-icon style="vertical-align: middle;">arrow_back</mat-icon><span
                     class="pl-10">Back to Role Mapping Generation</span></p>
         </div>
 
     </div>
-    <mat-card class="mat-card-container" [formGroup]="roleMappingForm">
+    <mat-card class="mat-card-container mt-20" [formGroup]="roleMappingForm">
         <div class="header">
             <div class="sub-heading">
                 <p>Approval Requests</p>
@@ -223,7 +223,8 @@
         </div>
         <!-- Pagination -->
         <div class="mt-1">
-            <mat-paginator class="custom-pagination" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+            <!-- <mat-paginator class="custom-pagination" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator> -->
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
         </div>
 
 
