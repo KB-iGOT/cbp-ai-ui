@@ -1195,3 +1195,129 @@ border: none;
       border: 1px solid #ccc;
     }
   }
+
+
+
+/* Panel container */
+:host ::ng-deep .mat-select-panel.search-panel {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  box-sizing: border-box;
+}
+
+/* Sticky search */
+::ng-deep .search-panel .sticky-search-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff; /* IMPORTANT: avoid overlap transparency */
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Search input full width */
+:host ::ng-deep .search-panel .search-input-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Fix input */
+:host ::ng-deep .search-panel .search-input {
+  width: 100%;
+  height: 32px;
+  padding: 6px 10px;
+}
+
+/* Fix options spacing */
+:host ::ng-deep .search-panel .mat-option {
+  padding: 8px 16px !important;
+}
+
+/* Fix checkbox alignment */
+:host ::ng-deep .search-panel .mat-pseudo-checkbox {
+  margin-right: 8px;
+}
+
+/* Fix NO DATA (remove checkbox look) */
+:host ::ng-deep .search-panel .no-data-option {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #f44336;
+}
+
+::ng-deep .search-panel .no-data-option .mat-pseudo-checkbox {
+  display: none !important;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center; /* keeps icon vertically stable */
+}
+
+.search-input {
+  width: 100%;
+  padding-right: 40px;
+  height: 40px;              /* FIXED HEIGHT */
+  line-height: 40px;         /* align text properly */
+  box-sizing: border-box;
+}
+
+.clear-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  height: 100%;              /* match parent height */
+}
+
+.clear-icon:hover {
+  color: #000;
+}
+
+:host ::ng-deep .search-panel .mat-option:first-child {
+  margin-top: 0; /* ensure no push */
+}
+
+:host ::ng-deep .mat-notched-outline {
+  border-radius: 25px !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline 
+.mat-form-field-outline {
+  border-radius: 25px !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline 
+.mat-form-field-outline-start,
+:host ::ng-deep .mat-form-field-appearance-outline 
+.mat-form-field-outline-end {
+  border-width: 1px !important;
+  min-width: 0 !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: transparent !important; /* removes outline color */
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: transparent !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+ // border: 1px solid rgba(0,0,0,0.16);
+  border-radius: 25px;
+  height: 30px;
+  align-items: center;
+  padding: 0 16px;
+  background: #fff;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex {
+ // border-color: #1B4CA1;
+}

@@ -67,8 +67,17 @@ export class DashboardComponent implements OnInit {
     if (this.cbpFinalObj) {
       let event = {value:this.cbpFinalObj?.ministry?.sbOrgType}
       let ministryEvent = {value: this.cbpFinalObj?.ministry?.identifier}
+
       this.onMinistryTypeChange(event)
       this.onMinistryChange(ministryEvent)
+      setTimeout(()=>{
+        this.filtersForm.patchValue({
+        centreState: this.selectedMinistryType,
+        ministries: [this.cbpFinalObj?.ministry?.identifier],
+        departments: [this.cbpFinalObj?.departments]
+      });
+      },1000)
+      
       
     }
 
@@ -213,6 +222,11 @@ export class DashboardComponent implements OnInit {
     await this.getMinistryData()
     this.ministryData = []
     if (event?.value === 'state') {
+      this.filtersForm.patchValue({
+        centreState: this.selectedMinistryType,
+        ministries: [],
+        departments: []
+      });
       this.ministryFullData.forEach((item) => {
         if (item?.type === 'state') {
           this.ministryData.push(item)
@@ -224,11 +238,12 @@ export class DashboardComponent implements OnInit {
           this.ministryData.push(item)
         }
       })
+      
     }
     this.filtersForm.patchValue({
-        centreState: this.cbpFinalObj?.ministry?.sbOrgType,
-        ministries: [this.cbpFinalObj?.ministry?.identifier],
-        departments: [this.cbpFinalObj?.departments]
+        centreState: this.selectedMinistryType,
+        ministries: [],
+        departments: []
       });
   }
 

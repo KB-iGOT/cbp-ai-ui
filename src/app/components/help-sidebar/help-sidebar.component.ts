@@ -227,174 +227,131 @@ export class HelpSidebarComponent {
     'Plan development of new courses to address identified competency gap areas.'
   ];
 
-  downloadPdf() {
+ downloadPdf() {
+  const pdf = new jsPDF('p', 'mm', 'a4');
 
-    const pdf = new jsPDF('p', 'mm', 'a4');
+  const pageWidth = 210;
+  const pageHeight = 297;
+  const margin = 20;
+  const lineHeight = 7;
 
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const margin = 20;
-    const lineHeight = 7;
+  let y = 20;
 
+  
 
-
-    pdf.rect(0, 0, pageWidth, 30, 'F');
-
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(18);
-    pdf.text('How to Use', margin, 14);
-
-    pdf.setFontSize(11);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, 21);
-
-    /* reset text color */
-
-    pdf.setTextColor(0, 0, 0);
-
-    /* start content BELOW header */
-
-    let y = 40;
-    const checkPage = (spaceNeeded: number) => {
-      if (y + spaceNeeded > pageHeight - margin) {
-        pdf.addPage();
-        y = 20;
-      }
+  const checkPage = (spaceNeeded: number) => {
+    if (y + spaceNeeded > pageHeight - margin) {
+      pdf.addPage();
+      y = 20;
     }
+  };
 
-    /* HEADER */
+  const addText = (text: string, isBold = false, size = 12) => {
+    pdf.setFont('helvetica', isBold ? 'bold' : 'normal');
+    pdf.setFontSize(size);
 
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(18);
-    pdf.text('How to Use', margin, y);
+    const lines = pdf.splitTextToSize(text, pageWidth - margin * 2);
 
-    y += 8;
+    checkPage(lines.length * lineHeight);
 
-    pdf.setFontSize(11);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, y);
+    pdf.text(lines, margin, y);
+    y += lines.length * lineHeight;
+  };
 
-    y += 15;
+  const addImage = (imgPath: string) => {
+    return new Promise<void>((resolve) => {
+      const img = new Image();
+      img.src = imgPath;
 
+      img.onload = () => {
+        const imgWidth = pageWidth - margin * 2;
+        const ratio = img.height / img.width;
+        const imgHeight = imgWidth * ratio;
 
-    /* STEPS */
+        checkPage(imgHeight + 5);
 
-    this.steps.forEach((step: any, index: number) => {
+        pdf.addImage(img, 'PNG', margin, y, imgWidth, imgHeight);
+        y += imgHeight + 5;
+
+        resolve();
+      };
+
+      img.onerror = () => resolve(); // skip if fails
+    });
+  };
+
+  /* HEADER BACKGROUND */
+pdf.setFillColor(0, 0, 0); // black
+pdf.rect(0, 0, pageWidth, 30, 'F'); // full width header
+
+/* HEADER TEXT */
+pdf.setTextColor(255, 255, 255); // white
+pdf.setFont('helvetica', 'bold');
+pdf.setFontSize(18);
+pdf.text('How to Use', margin, 12);
+
+pdf.setFontSize(11);
+pdf.setFont('helvetica', 'normal');
+pdf.text('iGOT-AI CBP Tool · Step-by-Step Guide', margin, 20);
+
+/* RESET TEXT COLOR */
+pdf.setTextColor(0, 0, 0);
+  y += 25;
+
+  /* STEPS */
+  const processSteps = async () => {
+    for (let i = 0; i < this.steps.length; i++) {
+      const step = this.steps[i];
 
       checkPage(15);
+      addText(`STEP ${i + 1}: ${step.title}`, true, 14);
 
-      pdf.setFontSize(15);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`STEP ${index + 1}: ${step.title}`, margin, y);
+      /* CONTENT */
+      for (let item of step.content) {
+        if (typeof item === 'string') {
+          addText(`• ${item}`);
+        } else {
+          if (item.label) {
+            addText(item.label, true, 12);
+          }
+          if (item.text) {
+            addText(item.text, false, 12);
+          }
+        }
+      }
 
-      y += 8;
+    
 
-      pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
-
-      step.content.forEach((item: any) => {
-
-        const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
-
-        checkPage(lines.length * lineHeight);
-
-        pdf.text(lines, margin, y);
-
-        y += lines.length * lineHeight;
-
-      });
+      /* IMAGES */
+      if (step.imageSrc?.length) {
+        for (let img of step.imageSrc) {
+          await addImage(`assets/help-steps/${img}`);
+        }
+      }
 
       y += 5;
+    }
 
-    });
-
-
-    /* DO's */
-
-    checkPage(20);
-
-
-
-    pdf.setFontSize(15);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('DOs', margin, y);
-
-    y += 8;
-
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'normal');
-
-    this.dos.forEach((item: any) => {
-
-      const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
-
-      checkPage(lines.length * lineHeight);
-
-      pdf.text(lines, margin, y);
-
-      y += lines.length * lineHeight;
-
-    });
-
+    /* DOs */
+    addText('DOs', true, 15);
+    this.dos.forEach((item: string) => addText(`• ${item}`));
 
     /* DON'Ts */
-
-    y += 8;
-
-    checkPage(20);
-
-    pdf.setFontSize(15);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`DON'Ts`, margin, y);
-
-    y += 8;
-
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'normal');
-
-    this.donts.forEach((item: any) => {
-
-      const lines = pdf.splitTextToSize(`• ${item}`, pageWidth - margin * 2);
-
-      checkPage(lines.length * lineHeight);
-
-      pdf.text(lines, margin, y);
-
-      y += lines.length * lineHeight;
-
-    });
-
+    y += 5;
+    addText(`DON'Ts`, true, 15);
+    this.donts.forEach((item: string) => addText(`• ${item}`));
 
     /* NEXT STEPS */
-
-    y += 10;
-
-    checkPage(20);
-
-    pdf.setFontSize(15);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('Next Steps', margin, y);
-
-    y += 8;
-
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'normal');
-
-    this.nextSteps.forEach((item: any, index: number) => {
-
-      const lines = pdf.splitTextToSize(`${index + 1}. ${item}`, pageWidth - margin * 2);
-
-      checkPage(lines.length * lineHeight);
-
-      pdf.text(lines, margin, y);
-
-      y += lines.length * lineHeight;
-
+    y += 5;
+    addText('Next Steps', true, 15);
+    this.nextSteps.forEach((item: string, i: number) => {
+      addText(`${i + 1}. ${item}`);
     });
 
     pdf.save('iGOT-AI-CBP-Help-Guide.pdf');
+  };
 
-  }
+  processSteps();
+}
 
 }

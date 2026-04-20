@@ -47,7 +47,7 @@ font-weight: 700;
 line-height: 150%; /* 21px */
 }
 
-::ng-deep mat-form-field {
+:host ::ng-deep mat-form-field {
     background-color: white !important;
     border-radius: 25px !important;
     padding-left: 12px;
@@ -56,27 +56,27 @@ line-height: 150%; /* 21px */
     width: 100%;
   }
   
-  ::ng-deep mat-select {
+  :host ::ng-deep mat-select {
     border-radius: 25px !important;
     background-color: white !important;
   }
   
-  ::ng-deep .mat-select-panel {
+  :host ::ng-deep .mat-select-panel {
     background-color: white !important;
     // border-radius: 25px !important;
   }
   
-  ::ng-deep .mat-select-panel .mat-option {
+  :host ::ng-deep .mat-select-panel .mat-option {
     border-radius: 0 !important;  /* Options with no border-radius */
   }
   
-  ::ng-deep mat-form-field .mat-form-field-underline {
+  :host ::ng-deep mat-form-field .mat-form-field-underline {
     display: none !important;
   }
   
 
   
-  ::ng-deep mat-select .mat-select-placeholder {
+  :host ::ng-deep mat-select .mat-select-placeholder {
     color: rgba(0, 0, 0, 0.40);
     font-family: Lato;
     font-size: 14px;
@@ -85,7 +85,7 @@ line-height: 150%; /* 21px */
     line-height: normal;
   }
 
-  ::ng-deep mat-select .mat-select-value-text {
+  :host ::ng-deep mat-select .mat-select-value-text {
     color: rgba(0, 0, 0, 1);
     
     font-family: Lato;
@@ -97,7 +97,7 @@ line-height: 150%; /* 21px */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   }
-  ::ng-deep mat-select .mat-select-value {
+  :host ::ng-deep mat-select .mat-select-value {
     display: flex !important;
     align-items: center !important; /* Vertically center */
     height: 100% !important;
@@ -339,7 +339,7 @@ line-height: normal;
     padding: 0 5px;
 }
 
-::ng-deep .mat-radio-checked .mat-radio-inner-circle {
+:host ::ng-deep .mat-radio-checked .mat-radio-inner-circle {
     background: #1B4CA1 !important;
 }
 
@@ -366,7 +366,7 @@ line-height: normal;
     margin-left: 8px;
   }
 
-  ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  :host ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
     background: #1B4CA1 !important;
 }
 
@@ -796,7 +796,7 @@ border: none;
 
 
 
-::ng-deep .mat-select-panel.search-panel .search-input {
+:host ::ng-deep .mat-select-panel.search-panel .search-input {
   flex: 1 1 auto;
   width: 100%;
   padding: 8px 10px;
@@ -808,12 +808,12 @@ border: none;
   box-sizing: border-box;
 }
 
-::ng-deep .mat-select-panel.search-panel .search-input:focus {
+:host ::ng-deep .mat-select-panel.search-panel .search-input:focus {
   border-color: #0074b6;
   box-shadow: 0 0 0 3px rgba(0,116,182,0.06);
 }
 
-::ng-deep .mat-select-panel.search-panel .clear-button {
+:host ::ng-deep .mat-select-panel.search-panel .clear-button {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -823,7 +823,7 @@ border: none;
   line-height: 1;
 }
 
-::ng-deep .mat-select-panel.search-panel .loading-indicator {
+:host ::ng-deep .mat-select-panel.search-panel .loading-indicator {
   padding: 10px 12px;
   text-align: center;
   color: #666;
@@ -831,18 +831,18 @@ border: none;
 }
 
 /* Ensure options don't get hidden behind sticky search and align option text with search input */
-::ng-deep .mat-select-panel.search-panel .mat-option {
+:host ::ng-deep .mat-select-panel.search-panel .mat-option {
   padding-top: 10px;
   padding-left: 16px;
 }
 
 /* Align disabled no-result message to the option padding and remove extra margins */
-::ng-deep .mat-select-panel.search-panel mat-option[disabled] {
+:host ::ng-deep .mat-select-panel.search-panel mat-option[disabled] {
   padding: 8px 16px !important;
 }
 
 /* Align other select panels (group) to match the same width/padding as designation */
-::ng-deep .mat-select-panel.align-panel {
+:host ::ng-deep .mat-select-panel.align-panel {
   padding: 0 !important;
   box-sizing: border-box;
   margin-left: 0 !important;
@@ -850,12 +850,12 @@ border: none;
   max-width: 340px !important;
 }
 
-::ng-deep .mat-select-panel.align-panel .mat-option {
+:host ::ng-deep .mat-select-panel.align-panel .mat-option {
   padding-left: 16px;
 }
 
-::ng-deep .mat-select-panel.search-panel mat-option[disabled] .mat-error,
-::ng-deep .mat-select-panel.search-panel .mat-error {
+:host ::ng-deep .mat-select-panel.search-panel mat-option[disabled] .mat-error,
+:host ::ng-deep .mat-select-panel.search-panel .mat-error {
   margin: 0 !important;
   padding: 0 !important;
   font-size: 14px !important;
@@ -863,42 +863,42 @@ border: none;
   color: #f44336; /* match mat-error color */
 }
 
-::ng-deep .mat-form-field {
+:host ::ng-deep .mat-form-field {
   width: 100%;
 }
 
-::ng-deep .mat-text-field-wrapper {
+:host ::ng-deep .mat-text-field-wrapper {
   background: white;
   border-radius: 25px !important;
   height: 42px;
 }
 
-::ng-deep .mat-notched-outline {
+:host ::ng-deep .mat-notched-outline {
   border-radius: 25px !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline 
+:host ::ng-deep .mat-form-field-appearance-outline 
 .mat-form-field-outline {
   border-radius: 25px !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline 
+:host ::ng-deep .mat-form-field-appearance-outline 
 .mat-form-field-outline-start,
-::ng-deep .mat-form-field-appearance-outline 
+:host ::ng-deep .mat-form-field-appearance-outline 
 .mat-form-field-outline-end {
   border-width: 1px !important;
   min-width: 0 !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: transparent !important; /* removes outline color */
 }
 
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+:host ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
   color: transparent !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
  // border: 1px solid rgba(0,0,0,0.16);
   border-radius: 25px;
   height: 42px;
@@ -907,12 +907,98 @@ border: none;
   background: #fff;
 }
 
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex {
+:host ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex {
  // border-color: #1B4CA1;
 }
 
-::ng-deep .mat-select-panel {
+:host ::ng-deep .mat-select-panel {
   border: 1px solid rgba(0,0,0,0.16);
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Panel container */
+:host ::ng-deep .mat-select-panel.search-panel {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  box-sizing: border-box;
+}
+
+/* Sticky search */
+::ng-deep .search-panel .sticky-search-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff; /* IMPORTANT: avoid overlap transparency */
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Search input full width */
+:host ::ng-deep .search-panel .search-input-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Fix input */
+:host ::ng-deep .search-panel .search-input {
+  width: 100%;
+  height: 32px;
+  padding: 6px 10px;
+}
+
+/* Fix options spacing */
+:host ::ng-deep .search-panel .mat-option {
+  padding: 8px 16px !important;
+}
+
+/* Fix checkbox alignment */
+:host ::ng-deep .search-panel .mat-pseudo-checkbox {
+  margin-right: 8px;
+}
+
+/* Fix NO DATA (remove checkbox look) */
+:host ::ng-deep .search-panel .no-data-option {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #f44336;
+}
+
+::ng-deep .search-panel .no-data-option .mat-pseudo-checkbox {
+  display: none !important;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center; /* keeps icon vertically stable */
+}
+
+.search-input {
+  width: 100%;
+  padding-right: 40px;
+  height: 40px;              /* FIXED HEIGHT */
+  line-height: 40px;         /* align text properly */
+  box-sizing: border-box;
+}
+
+.clear-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  height: 100%;              /* match parent height */
+}
+
+.clear-icon:hover {
+  color: #000;
+}
+
+:host ::ng-deep .search-panel .mat-option:first-child {
+  margin-top: 0; /* ensure no push */
 }

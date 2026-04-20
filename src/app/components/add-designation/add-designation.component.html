@@ -26,15 +26,15 @@
                             <!-- Sticky search input container -->
                             <div class="sticky-search-container" (click)="$event.stopPropagation()">
                                 <div class="search-input-wrapper">
-                                    <input type="text" placeholder="Search designation"
+                                    <input type="text" placeholder="Search designation" style="width:100%"
                                         formControlName="searchDesignation" class="search-input"
                                         (keydown)="$event.stopPropagation()"
                                         (keydown.enter)="$event.preventDefault(); $event.stopPropagation()"
                                         (keyup)="designationSearch($event)" autocomplete="off">
-                                    <button *ngIf="searchDesignationControl?.value" type="button" class="clear-button"
+                                    <div *ngIf="searchDesignationControl?.value" type="button" class="clear-icon"
                                         (click)="searchDesignationControl.setValue('')">
-                                        ✕ Clear Search
-                                    </button>
+                                        <mat-icon>close</mat-icon>
+                                </div>
                                 </div>
                             </div>
                             <!-- Options list -->
@@ -46,9 +46,10 @@
                                 Load More...
                             </div>
                             <!-- No results message -->
-                            <mat-option *ngIf="(masterData?.designation )?.length === 0" disabled>
-                                <!-- No matches found -->
-                                <div class="mat-error txt-size">Designation Not Found.</div>
+                            <mat-option *ngIf="(masterData?.designation)?.length === 0" disabled class="no-data-option">
+
+                                Designation Not Found.
+
                             </mat-option>
                         </mat-select>
                         <!-- <mat-error class="text-xs"

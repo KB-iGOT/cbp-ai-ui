@@ -28,14 +28,14 @@
     >
 
     <p *ngIf="totalFileCount < MAX_FILES">
-      Click to select files or drag and drop
+      Click to select files
     </p>
 
     <p *ngIf="totalFileCount >= MAX_FILES" class="error-text">
       Maximum 10 documents allowed
     </p>
 
-    <p><strong>Note:</strong> <small>PDF Files Only</small></p>
+    <p><strong>Note:</strong> <small>PDF Files Only (Max:25 MB)</small></p>
   </div>
 
   <!-- Selected Files List -->

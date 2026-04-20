@@ -22,8 +22,8 @@ export class RoleMappingListComponent {
   @Input() formData: any = {}
   searchText = ''
   selectedValue = ''
+  //'select'
   displayedColumns: string[] = [
-    'select',
     'designation_name',
     'role_responsibilities',
     'activities',
