@@ -1,8 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import { HeaderComponent } from 'src/app/components/header/header.component';
-import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PipeDurationTransformModule } from '../components/pipes/pipe-duration-transform/pipe-duration-transform.module';
@@ -13,7 +11,6 @@ import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PipeFilterRoundInteger } from '../pipes/round-integer.pipe';
 import { FileSaverModule } from 'ngx-filesaver';
-import { PipePublicURLModule } from './../../../pipe-public-URL/pipe-public-URL.module';
 import { CommoncomponentsModule } from './commoncomponents/commoncomponents.module';
 import { MatCardModule } from '@angular/material/card';
 export function getPopoverConfig(): PopoverConfig {
@@ -28,8 +25,6 @@ export function getPopoverConfig(): PopoverConfig {
 
 @NgModule({
   declarations: [
-    HeaderComponent,
-    FooterComponent,
     PipeFilterByProp,
     PipeFilterRoundInteger,
   ],
@@ -44,16 +39,12 @@ export function getPopoverConfig(): PopoverConfig {
     FormsModule,
     SkeletonLoaderModule,
     FileSaverModule,
-    PipePublicURLModule,
     CommoncomponentsModule
   ],
   exports: [
-    HeaderComponent,
-    FooterComponent,
     PipeFilterByProp,
     PipeFilterRoundInteger,
     SkeletonLoaderModule,
-    PipePublicURLModule,
     FileSaverModule,
   ],
   providers: [

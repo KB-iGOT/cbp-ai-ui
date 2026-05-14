@@ -132,7 +132,7 @@ export class InitialScreenComponent {
   }
 
   goToUploadDocument() {
-    this.router.navigate(['/upload-documents']);
+    this.router.navigate(['/ai/upload-documents']);
   }
 
   

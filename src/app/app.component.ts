@@ -1,12 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { HEADER_DATA } from './modules/shared/constant/app.constant';
-import { EventService } from './modules/shared/services/event.service';
 import { SharedService } from './modules/shared/services/shared.service';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table'
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
+// import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
 import { Router } from '@angular/router';
-import { UpdateDesignationHierarchyComponent } from './components/update-designation-hierarchy/update-designation-hierarchy.component';
 import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-root',
@@ -57,11 +55,10 @@ export class AppComponent {
   openUpdateDesignationHierarchyDrawer = false
   roleMappingGenerated = false
   showHelpDrawer = false
-  @ViewChild(RoleMappingGenerationComponent)
-  roleMappingChild!: RoleMappingGenerationComponent;
+  // @ViewChild(RoleMappingGenerationComponent)
+  // roleMappingChild!: RoleMappingGenerationComponent;
   constructor(
     private dialog: MatDialog,
-    private eventSvc: EventService,
     public sharedService: SharedService,
     private router: Router,
     public snackBar: MatSnackBar) {
@@ -72,6 +69,7 @@ export class AppComponent {
   ngOnInit() {
     this.sharedService.loginSuccess.subscribe((data: any) => {
       this.loginSuccess = data
+      this.router.navigate(['/ai/initial']);
     })
     this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
     this.sharedService.checkRoleMappingFormValidation.subscribe((data: any) => {
@@ -90,10 +88,8 @@ export class AppComponent {
     })
     this.loginSuccess = this.sharedService.checkIfLogin()
     if (this.loginSuccess) {
-
       this.userEmail = localStorage.getItem('userEmail')
       this.userProfile = JSON.parse(localStorage.getItem('userProfile'))
-      console.log('userProfile--',this.userProfile)
     }
     
     if (this.cbpFinalObj && this.cbpFinalObj?.ministry && (this.cbpFinalObj?.ministry?.sbOrgType === 'ministry' || this.cbpFinalObj?.ministry?.sbOrgType === 'state') &&
@@ -147,9 +143,9 @@ export class AppComponent {
     this.loginSuccess = false
     this.nextStep = 'initial'
     localStorage.clear()
-    if (this.roleMappingChild) {
-      this.roleMappingChild.roleMappingForm.reset();
-    }
+    // if (this.roleMappingChild) {
+    //   this.roleMappingChild.roleMappingForm.reset();
+    // }
     this.sharedService.logout().subscribe({
       next: (res) => {
         this.sharedService.loginSuccess.next(false)
@@ -174,12 +170,12 @@ export class AppComponent {
 
   goToUploadDocument() {
 
-    this.router.navigate(['/upload-documents']);
+    this.router.navigate(['/ai/upload-documents']);
 
   }
 
   routeToMain() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/ai/']);
   }
 
   openUpdateDesignationHierarchy() {
@@ -209,11 +205,11 @@ export class AppComponent {
   }
 
   openApproveRequests() {
-    this.router.navigate(['/approve-requests']);
+    this.router.navigate(['/ai/approve-requests']);
   }
 
   routeToDashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/ai/dashboard']);
   }
 
   get showDesignationHierarchy() {

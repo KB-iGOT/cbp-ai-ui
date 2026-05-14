@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { PublicHomeComponent } from "./modules/public-home/components/public-home/public-home.component";
-import { UploadDocumentPageComponent } from './modules/upload-document-page/upload-document-page.component';
-import { InitialScreenComponent } from './modules/initial-screen/initial-screen.component';
-import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
-import { RoleMappingListComponent } from './components/role-mapping-list/role-mapping-list.component';
-import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ReviewRequestComponent } from './components/review-request/review-request.component';
+import { LoginComponent } from './components/login/login.component';
+import { InitialScreenComponent } from '@sunbird-cb/cbp-ai';
+//import { PublicHomeComponent } from "./modules/public-home/components/public-home/public-home.component";
+// import { UploadDocumentPageComponent } from './modules/upload-document-page/upload-document-page.component';
+// import { InitialScreenComponent } from './modules/initial-screen/initial-screen.component';
+// import { RoleMappingGenerationComponent } from './components/role-mapping-generation/role-mapping-generation.component';
+// import { RoleMappingListComponent } from './components/role-mapping-list/role-mapping-list.component';
+// import { ApprovalRequestsComponent } from './components/approval-requests/approval-requests.component';
+// import { DashboardComponent } from './components/dashboard/dashboard.component';
+// import { ReviewRequestComponent } from './components/review-request/review-request.component';
 const routerOptions: any = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
@@ -18,22 +20,14 @@ const routerOptions: any = {
 };
 
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'upload-documents', component: UploadDocumentPageComponent },
-  { path: 'approve-requests', component: ApprovalRequestsComponent },
+  {
+    path: 'ai',
+    loadChildren: () =>
+      import('@sunbird-cb/cbp-ai').then(m => m.AiCbpModule)
+  },
   {
     path: '',
-    component: InitialScreenComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'list',
-    component: RoleMappingListComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'initial',
-    component: RoleMappingGenerationComponent,
+    component: LoginComponent,
     pathMatch: 'full'
   },
   {
@@ -41,11 +35,7 @@ const routes: Routes = [
     component: InitialScreenComponent,
     pathMatch: 'full'
   },
-  {
-     path: 'review-request/:request_id',
-    component: ReviewRequestComponent,
-    pathMatch: 'full'
-  },
+ 
 ];
 
 @NgModule({

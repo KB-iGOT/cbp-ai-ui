@@ -48,7 +48,8 @@
             "buildOptimizer": true,
             "sourceMap": true,
             "optimization": true,
-            "namedChunks": true
+            "namedChunks": true,
+            "preserveSymlinks": true
           },
           "configurations": {
             "production": {
