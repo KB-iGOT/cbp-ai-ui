@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedService } from 'src/app/modules/shared/services/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -68,6 +70,7 @@ export class LoginComponent {
           duration: 3000,
           panelClass: ['snackbar-error']
         });
+        this.router.navigate(['/ai/initial']);
       }
     })
 

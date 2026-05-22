@@ -175,7 +175,7 @@ export class AppComponent {
   }
 
   routeToMain() {
-    this.router.navigate(['/ai/']);
+    this.router.navigate(['/ai/initial']);
   }
 
   openUpdateDesignationHierarchy() {
