@@ -42,37 +42,81 @@ export class LoginComponent {
       password: password
     }
 
-    this.sharedService.performLogin(req).subscribe({
-      next: (_res) => {
-        this.loading = false
-        if(_res && _res.access_token) {
-          localStorage.setItem('loginData', JSON.stringify(_res))
-          localStorage.setItem('userEmail',username)
-          this.success.emit(true)
-          this.sharedService.loginSuccess.next(true)
-          this.snackBar.open('Login Successful!', 'X', {
-            duration: 3000,
-            panelClass: ['snackbar-success']
-          });
-        } else {
-          this.sharedService.loginSuccess.next(false)
-          this.snackBar.open('Invalid username or password', 'X', {
-            duration: 3000,
-            panelClass: ['snackbar-error']
-          });
-        }
-      },
-      error: (error) => {
-        this.loading = false
-        this.sharedService.loginSuccess.next(false)
-        console.error('Login error:', error);
-        this.snackBar.open('Invalid username or password', 'X', {
-          duration: 3000,
-          panelClass: ['snackbar-error']
-        });
-        this.router.navigate(['/ai/initial']);
-      }
-    })
+  this.sharedService.performLogin(req).subscribe({
+  next: (_res) => {
+    this.loading = false;
+
+    if (_res && _res.access_token) {
+
+      localStorage.setItem('loginData', JSON.stringify(_res));
+      localStorage.setItem('userEmail', username);
+
+      this.success.emit(true);
+      this.sharedService.loginSuccess.next(true);
+
+      this.snackBar.open('Login Successful!', 'X', {
+        duration: 3000,
+        panelClass: ['snackbar-success']
+      });
+
+    } else {
+
+      this.sharedService.loginSuccess.next(false);
+
+      this.snackBar.open('Invalid username or password', 'X', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+
+      this.router.navigate(['/logout']);
+    }
+  },
+
+  error: (error) => {
+    this.loading = false;
+    this.sharedService.loginSuccess.next(false);
+
+    console.error('Login error:', error);
+
+    if (error.status === 401) {
+
+      this.snackBar.open('Unauthorized! Invalid username or password', 'X', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+
+      this.router.navigate(['/logout']);
+       setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 500)
+        alert(0)
+
+    } else if (error.status === 500) {
+
+      this.snackBar.open('Server error. Please try again later.', 'X', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+      this.router.navigate(['/logout']);
+       setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 500)
+        alert(1)
+
+    } else {
+
+      this.snackBar.open('Unauthorized! Invalid username or password', 'X', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+      this.router.navigate(['/logout']);
+       setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 500)
+        alert(2)
+    }
+  }
+});
 
     
   }
