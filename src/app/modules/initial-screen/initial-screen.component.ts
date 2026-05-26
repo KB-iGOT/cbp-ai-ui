@@ -117,12 +117,18 @@ export class InitialScreenComponent {
     localStorage.clear()    
     this.sharedService.logout().subscribe({
       next: (res) => {
+        this.sharedService.loginSuccess.next(false)
+        this.router.navigate(['/logout']);
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 500)
         this.snackBar.open('You are logout successfully', 'X', {
           duration: 3000,
           panelClass: ['snackbar-success']
         });
       },
       error: (error) => {
+        this.sharedService.loginSuccess.next(false)
         this.snackBar.open(error?.error?.detail, 'X', {
           duration: 3000,
           panelClass: ['snackbar-error']
