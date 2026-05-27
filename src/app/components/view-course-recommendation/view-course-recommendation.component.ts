@@ -443,4 +443,13 @@ deleteCard(item: any, index: number) {
     }
   });
 }
+
+redirectToCoure(item) {
+  if(item?.public_link) {
+      window.open(item?.public_link, '_blank')
+    } else {
+      let url = `https://portal.igotkarmayogi.gov.in/app/toc/${item?.identifier}/overview?`
+    window.open(url, '_blank')
+    }
+}
 }

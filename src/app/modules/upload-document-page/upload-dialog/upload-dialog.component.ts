@@ -20,7 +20,7 @@ export class UploadDialogComponent {
   cbpFinalObj: any = {};
   loading = false;
   uploadedFileData: any = {};
-
+  selectedDocumentType = ''
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
     public sharedService: SharedService,
