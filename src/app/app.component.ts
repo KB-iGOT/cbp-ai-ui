@@ -141,12 +141,7 @@ export class AppComponent {
 
   logout() {
     this.loginSuccess = false
-    this.nextStep = 'initial'
-    localStorage.clear()
-    // if (this.roleMappingChild) {
-    //   this.roleMappingChild.roleMappingForm.reset();
-    // }
-    this.sharedService.logout().subscribe({
+     this.sharedService.logout().subscribe({
       next: (res) => {
         this.sharedService.loginSuccess.next(false)
         this.router.navigate(['/logout']);
@@ -166,6 +161,13 @@ export class AppComponent {
         });
       }
     });
+    
+    this.nextStep = 'initial'
+    localStorage.clear()
+    // if (this.roleMappingChild) {
+    //   this.roleMappingChild.roleMappingForm.reset();
+    // }
+   
   }
 
   goToUploadDocument() {

@@ -89,7 +89,6 @@ export class LoginComponent {
        setTimeout(() => {
           this.router.navigate(['/']);
         }, 500)
-        alert(0)
 
     } else if (error.status === 500) {
 
@@ -101,7 +100,6 @@ export class LoginComponent {
        setTimeout(() => {
           this.router.navigate(['/']);
         }, 500)
-        alert(1)
 
     } else {
 
@@ -113,7 +111,6 @@ export class LoginComponent {
        setTimeout(() => {
           this.router.navigate(['/']);
         }, 500)
-        alert(2)
     }
   }
 });

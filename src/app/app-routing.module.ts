@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { InitialScreenComponent } from '@sunbird-cb/cbp-ai';
+// import { InitialScreenComponent } from '@sunbird-cb/cbp-ai';
 //import { PublicHomeComponent } from "./modules/public-home/components/public-home/public-home.component";
 // import { UploadDocumentPageComponent } from './modules/upload-document-page/upload-document-page.component';
 // import { InitialScreenComponent } from './modules/initial-screen/initial-screen.component';
@@ -32,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'logout',
-    component: InitialScreenComponent,
+    component: LoginComponent,
     pathMatch: 'full'
   },
  
