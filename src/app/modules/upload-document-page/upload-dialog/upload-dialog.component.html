@@ -12,6 +12,39 @@
   </mat-form-field> -->
 
   <!-- Upload Box -->
+    <!-- Document Type Select -->
+  <mat-form-field
+  appearance="outline"
+  class="document-select">
+
+
+   <mat-label>
+                                        {{ selectedDocumentType ? '' : 'Document Type' }}
+                                      </mat-label>
+                                  
+
+  <mat-select [(ngModel)]="selectedDocumentType" required>
+
+    <mat-option value="Work Allocation Order">
+      Work Allocation Order
+    </mat-option>
+
+    <mat-option value="Annual Reports">
+      Annual Reports
+    </mat-option>
+
+    <mat-option value="Other Document">
+      Other Document
+    </mat-option>
+
+  </mat-select>
+
+  <mat-error *ngIf="!selectedDocumentType">
+    Document type is required
+  </mat-error>
+
+</mat-form-field>
+
   <div
     class="file-upload-box"
     style="margin-top: 30px;"
@@ -63,7 +96,7 @@
     mat-raised-button
     color="primary"
     (click)="upload()"
-    [disabled]="selectedFiles.length === 0"
+    [disabled]="selectedFiles.length === 0 || !selectedDocumentType"
   >
     Upload
   </button>

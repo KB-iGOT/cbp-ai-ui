@@ -140,8 +140,8 @@
                         </div>
                     </div>
                     <div class="course-title mt-4">
-                        <div>
-                            <div *ngIf="item?.course">{{item?.course}}</div>
+                        <div class="cursor-pointer">
+                            <div *ngIf="item?.course" (click)="redirectToCoure(item)">{{item?.course}}</div>
                             <!-- <div *ngIf="item?.name">{{item?.name}}</div> -->
                         </div>
                     </div>

@@ -372,10 +372,18 @@ export class SharedService {
 
   getRoleMappingByStateCenterAndDepartment(state_center_id, department_id) {
     const headers = this.headers
-    return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}/department/${department_id}?load_cbp_plans=true`, { headers })
+    if(typeof department_id === 'string') {
+      return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}/department/${department_id}?load_cbp_plans=true`, { headers })
       .pipe(map((response: any) => {
         return response
       }))
+    } else {
+      return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_ROLE_MAPPING_BY_STATE_CENTER}/${state_center_id}?load_cbp_plans=true`, { headers })
+      .pipe(map((response: any) => {
+        return response
+      }))
+    }
+    
   }
 
   updateRoleMapping(role_mapping_id, reqBody) {

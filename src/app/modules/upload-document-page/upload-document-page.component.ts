@@ -72,6 +72,7 @@ export class UploadDocumentPageComponent {
   loginUserOrgIds = []
   originalMinistryData = []
   cbpPlanFinalObj:any
+  showSampleDialogFlag = false
   constructor(public dialog: MatDialog, public sharedService: SharedService, 
     public snackBar: MatSnackBar,
     private fb: FormBuilder,
@@ -401,6 +402,18 @@ export class UploadDocumentPageComponent {
 
     routeToInitial() {
       this.router.navigate(['/initial']);
+    }
+
+    showSampleDialog() {
+      this.showSampleDialogFlag = true
+    }
+
+    downloadSampleDocx() {
+
+    }
+
+    downloadSamplePdf(){
+
     }
 
 }

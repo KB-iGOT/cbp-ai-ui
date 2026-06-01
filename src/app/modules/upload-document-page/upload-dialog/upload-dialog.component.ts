@@ -20,7 +20,7 @@ export class UploadDialogComponent {
   cbpFinalObj: any = {};
   loading = false;
   uploadedFileData: any = {};
-
+  selectedDocumentType = ''
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
     public sharedService: SharedService,
@@ -157,7 +157,10 @@ export class UploadDialogComponent {
       'department_id',
       this.cbpFinalObj?.departments || ''
     );
-  
+      formData.append(
+      'document_type',
+      this.selectedDocumentType || ''
+    );
     // Append multiple files with SAME key "files"
     this.selectedFiles.forEach((file: File) => {
       formData.append('files', file, file.name);
@@ -204,7 +207,7 @@ export class UploadDialogComponent {
   
     let completedFiles = 0;
   
-    const pollingRequests = files.map(file =>
+    const pollingRequests = files.map((file : any) =>
       interval(5000).pipe(
         startWith(0), // trigger immediately
         switchMap(() => this.sharedService.triggerFileSummary(file.file_id)), // must return { summary_status }

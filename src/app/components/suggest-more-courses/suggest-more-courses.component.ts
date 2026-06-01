@@ -393,4 +393,13 @@ export class SuggestMoreCoursesComponent implements OnInit{
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/career/careers1.png'; // replace with your default image path
   }
+
+  redirectToCoure(item) {
+  if(item?.public_link) {
+      window.open(item?.public_link, '_blank')
+    } else {
+      let url = `https://portal.igotkarmayogi.gov.in/app/toc/${item?.identifier}/overview?`
+    window.open(url, '_blank')
+    }
+}
 }
