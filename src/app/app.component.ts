@@ -69,7 +69,14 @@ export class AppComponent {
   ngOnInit() {
     this.sharedService.loginSuccess.subscribe((data: any) => {
       this.loginSuccess = data
-      this.router.navigate(['/ai/initial']);
+      if(data) {
+         this.userEmail = localStorage.getItem('userEmail')
+        this.userProfile = JSON.parse(localStorage.getItem('userProfile'))
+        this.router.navigate(['/ai/initial']);
+      } else {
+        this.router.navigate(['/']);
+      }
+      
     })
     this.cbpFinalObj = this.sharedService.getCBPPlanLocalStorage()
     this.sharedService.checkRoleMappingFormValidation.subscribe((data: any) => {
@@ -102,6 +109,8 @@ export class AppComponent {
       this.disableUploadDocument = false
       this.disableUploadDocumentOriginal = false
     }
+
+    
     console.log('this.nextStep', this.nextStep)
     console.log('this.sharedService.cb', this.sharedService.cbpPlanFinalObj)
   }
@@ -141,17 +150,18 @@ export class AppComponent {
 
   logout() {
     this.loginSuccess = false
-     this.sharedService.logout().subscribe({
-      next: (res) => {
-        this.sharedService.loginSuccess.next(false)
-        this.router.navigate(['/logout']);
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 500)
+    this.router.navigate(['/']);
+        // setTimeout(() => {
+        //   this.router.navigate(['/']);
+        // }, 500)
         this.snackBar.open('You are logout successfully', 'X', {
           duration: 3000,
           panelClass: ['snackbar-success']
         });
+     this.sharedService.logout().subscribe({
+      next: (res) => {
+        this.sharedService.loginSuccess.next(false)
+        
       },
       error: (error) => {
         this.sharedService.loginSuccess.next(false)
@@ -162,9 +172,8 @@ export class AppComponent {
       }
     });
     
-    this.nextStep = 'initial'
+    // this.nextStep = 'initial'
     localStorage.clear()
-    window.location.reload()
     // if (this.roleMappingChild) {
     //   this.roleMappingChild.roleMappingForm.reset();
     // }

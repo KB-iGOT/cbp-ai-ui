@@ -30,6 +30,16 @@ export class LoginComponent {
     });
   }
 
+   getUserProfileData() {
+    this.sharedService.getUserProfile().subscribe((data) => {
+      console.log('data--', data)
+      localStorage.setItem('userProfile', JSON.stringify(data))
+      this.success.emit(true);
+      this.sharedService.loginSuccess.next(true);
+      
+    })
+  }
+
   onLogin(): void {
     this.loading = true
     const { username, password } = this.loginForm.value;
@@ -47,12 +57,15 @@ export class LoginComponent {
     this.loading = false;
 
     if (_res && _res.access_token) {
-
+      
       localStorage.setItem('loginData', JSON.stringify(_res));
       localStorage.setItem('userEmail', username);
-
-      this.success.emit(true);
-      this.sharedService.loginSuccess.next(true);
+      this.getUserProfileData()
+      
+      
+        
+      
+      
 
       this.snackBar.open('Login Successful!', 'X', {
         duration: 3000,

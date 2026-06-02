@@ -146,6 +146,6 @@ export class AuthInterceptor implements HttpInterceptor {
     // Force reload to ensure fresh state
     // Adding a timestamp to prevent cached page loads
     const timestamp = new Date().getTime();
-    window.location.href = window.location.origin + window.location.pathname + '?logout=' + timestamp + window.location.hash;
+    window.location.href = window.location.origin + '/?t=' + timestamp;
   }
 }

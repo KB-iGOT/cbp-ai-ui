@@ -566,6 +566,7 @@ export class SharedService {
   }
 
   getUserCourse(role_mapping_id) {
+  
     const headers = this.headers
     return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_USER_COURSES}/${role_mapping_id}`, { headers })
       .pipe(map((response: any) => {
@@ -613,6 +614,11 @@ export class SharedService {
   }
 
   getUserProfile() {
+    const storageData: any = JSON.parse(localStorage.getItem('loginData'))
+    console.log('storageData--', storageData)
+    this.headers = new HttpHeaders({
+      'Authorization': `Bearer ${storageData?.access_token}`
+    });
     const headers = this.headers
     return this.http.get<any>(`${this.baseUrl}${API_END_POINTS.GET_USER_PROFILE}`, { headers })
       .pipe(map((response: any) => {
