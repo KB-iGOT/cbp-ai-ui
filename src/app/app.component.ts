@@ -164,6 +164,7 @@ export class AppComponent {
     
     this.nextStep = 'initial'
     localStorage.clear()
+    window.location.reload()
     // if (this.roleMappingChild) {
     //   this.roleMappingChild.roleMappingForm.reset();
     // }
