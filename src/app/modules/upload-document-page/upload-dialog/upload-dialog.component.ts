@@ -172,7 +172,7 @@ export class UploadDialogComponent {
 
     this.sharedService.uploadDocument(formData).subscribe({
       next: (res) => {
-        if (res && res.status === 'failed') {
+        if (res && res.status === 'complete') {
           this.loading = false;
           this.uploadedFileData = res;
           this.triggerFileSummary();

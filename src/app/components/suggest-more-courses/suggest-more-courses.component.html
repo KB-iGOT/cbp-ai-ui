@@ -81,7 +81,7 @@
                     </div>
               
                     <div class="sub-heading mt-2 cursor-pointer" (click)="redirectToCoure(item)">
-                      <p>{{ item?.name }}</p>
+                      <p>{{ item?.name }} <img  height="18px" width="18px" src="assets/icons/redirect.png" (click)="redirectToCoure(item)"></p>
                     </div>
                     <div class="mt-2 desc">
                       <p>{{ item?.description | slice: 0:200 }}</p>

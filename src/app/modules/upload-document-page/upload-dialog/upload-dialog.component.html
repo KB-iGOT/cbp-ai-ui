@@ -12,53 +12,40 @@
   </mat-form-field> -->
 
   <!-- Upload Box -->
-    <!-- Document Type Select -->
-  <mat-form-field
-  appearance="outline"
-  class="document-select">
+  <!-- Document Type Select -->
+  <mat-form-field appearance="outline" class="document-select">
 
 
-   <mat-label>
-                                        {{ selectedDocumentType ? '' : 'Document Type' }}
-                                      </mat-label>
-                                  
+    <mat-label>
+      {{ selectedDocumentType ? '' : 'Document Type' }}
+    </mat-label>
 
-  <mat-select [(ngModel)]="selectedDocumentType" required>
 
-    <mat-option value="Work Allocation Order">
-      Work Allocation Order
-    </mat-option>
+    <mat-select [(ngModel)]="selectedDocumentType" required>
 
-    <mat-option value="Annual Reports">
-      Annual Reports
-    </mat-option>
+      <mat-option value="Work Allocation Order">
+        Work Allocation Order
+      </mat-option>
 
-    <mat-option value="Other Document">
-      Other Document
-    </mat-option>
+      <mat-option value="Annual Reports">
+        Annual Reports
+      </mat-option>
 
-  </mat-select>
+      <mat-option value="Other Document">
+        Other Document
+      </mat-option>
 
-  <mat-error *ngIf="!selectedDocumentType">
-    Document type is required
-  </mat-error>
+    </mat-select>
 
-</mat-form-field>
+    <mat-error *ngIf="!selectedDocumentType" style="margin-top: 15px;">
+      Document type is required
+    </mat-error>
 
-  <div
-    class="file-upload-box"
-    style="margin-top: 30px;"
-    [class.disabled]="totalFileCount >= MAX_FILES"
-    (click)="totalFileCount < MAX_FILES && fileInput.click()"
-  >
-    <input
-      type="file"
-      #fileInput
-      hidden
-      multiple
-      accept=".pdf,.doc,.docx"
-      (change)="onFileSelected($event)"
-    >
+  </mat-form-field>
+
+  <div class="file-upload-box" style="margin-top: 30px;" [class.disabled]="totalFileCount >= MAX_FILES"
+    (click)="totalFileCount < MAX_FILES && fileInput.click()">
+    <input type="file" #fileInput hidden multiple accept=".pdf,.doc,.docx" (change)="onFileSelected($event)">
 
     <p *ngIf="totalFileCount < MAX_FILES">
       Click to select files or drag and drop
@@ -92,12 +79,8 @@
 <mat-dialog-actions align="center" style="margin: 20px 0;">
   <button mat-button mat-dialog-close>Cancel</button>
 
-  <button class="primary-btn cursor-pointer"
-    mat-raised-button
-    color="primary"
-    (click)="upload()"
-    [disabled]="selectedFiles.length === 0 || !selectedDocumentType"
-  >
+  <button [ngClass]="selectedFiles.length === 0 || !selectedDocumentType ? 'primary-btn-disabled':'primary-btn'"  class="cursor-pointer" mat-raised-button color="primary" (click)="upload()"
+    [disabled]="selectedFiles.length === 0 || !selectedDocumentType">
     Upload
   </button>
 </mat-dialog-actions>

@@ -115,6 +115,7 @@ export class InitialScreenComponent {
     this.loginSuccess = false
     this.nextStep = 'initial'
     localStorage.clear()    
+    window.location.reload();
     this.sharedService.logout().subscribe({
       next: (res) => {
         this.snackBar.open('You are logout successfully', 'X', {
