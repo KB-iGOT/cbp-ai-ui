@@ -221,7 +221,7 @@
                     </form>
                 </div>
             </div>
-            <div class="mt-4">
+            <div class="mt-4" *ngIf="suggestedCourses?.length > 0">
                 <div class="results-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <mat-checkbox [checked]="false" (change)="selectAllCourses($event)">Select All
