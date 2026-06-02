@@ -447,23 +447,23 @@ export class SharedService {
   getIGOTSuggestedCourses(reqBody) {
     // Use the reqBody parameter passed from the component
     // If no reqBody is provided, use default structure
-    let req = reqBody || {
-      "request": {
-        "filters": {
-          "primaryCategory": ["Course"],
-          "status": ["Live"],
-          "courseCategory": ["Course"]
-        },
-        "fields": ["posterImage", "description", "name"],
-        "limit": 12,
-        "offset": 0
-      }
-    };
+    // let req =  {
+    //   "request": {
+    //     "filters": {
+    //       "primaryCategory": ["Course"],
+    //       "status": ["Live"],
+    //       "courseCategory": ["Course"]
+    //     },
+    //     "fields": ["name", "description", "identifier", "duration", "organisation", "posterImage", "mimeType", "artifactUrl", "creatorLogo", "competencies_v6", "avgRating","language", "organisation"],
+    //     "limit": 12,
+    //     "offset": 0
+    //   }
+    // };
 
-    console.log('getIGOTSuggestedCourses final request:', JSON.stringify(req, null, 2));
+    console.log('getIGOTSuggestedCourses final request:', JSON.stringify(reqBody, null, 2));
 
     const headers = this.headers
-    return this.http.post<any>(`https://portal.igotkarmayogi.gov.in/api/content/v1/search`, req, { headers })
+    return this.http.post<any>(`https://portal.igotkarmayogi.gov.in/api/content/v1/search`, reqBody, { headers })
       .pipe(map((response: any) => {
         return response
       }))
