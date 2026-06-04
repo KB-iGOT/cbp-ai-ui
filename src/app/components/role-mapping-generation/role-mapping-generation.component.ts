@@ -432,7 +432,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
       if (changedFields.includes('additionalDetails') && this.roleMappingForm.value.additionalDetails?.trim() || (file && file.size > 0)) {
         const dialogRef = this.dialog.open(DeleteRoleMappingPopupComponent, {
           width: '400px',
-          data: '',
+          data: {documents: this.documents},
           panelClass: 'view-cbp-plan-popup',
           minHeight: '300px',          // Set minimum height
           maxHeight: '80vh',           // Prevent it from going beyond viewport
@@ -815,7 +815,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
           this.destroy$.complete();
           const dialogRef = this.dialog.open(DeleteRoleMappingPopupComponent, {
             width: '400px',
-            data: '',
+            data: {documents: this.documents},
             panelClass: 'view-cbp-plan-popup',
             minHeight: '300px',          // Set minimum height
             maxHeight: '80vh',           // Prevent it from going beyond viewport

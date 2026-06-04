@@ -171,14 +171,14 @@
             
             
             </div>
-            <div class="mt-2" *ngIf="documents?.length > 0">
+            <!-- <div class="mt-2" *ngIf="documents?.length > 0">
                 <p *ngIf="workAllocationOrderDocumentMissing"><span style="font-size: .875rem;font-weight: bold;">Note: </span>
                 <span class="error">Please upload the Work Allocation Order document to generate the Capacity Building Plan (CBP)</span>
-            </p>
-            </div>
+            </p> -->
+            <!-- </div> -->
             <div class="mt-4" >
-                <input [disabled]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1 || workAllocationOrderDocumentMissing"
-                    [ngClass]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1  || workAllocationOrderDocumentMissing? 'btn-disable':'btn-active'" 
+                <input [disabled]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1 "
+                    [ngClass]="roleMappingForm?.invalid || (roleMappingForm.get('ministryType')?.value === 'state' && !roleMappingForm.get('departments')?.value) || loading || documents?.length < 1  ? 'btn-disable':'btn-active'" 
                     type="button" 
                     [value]="loading ? 'Generating CBP...' : 'Generate CBP'"
                     (click)="onGenerateRoleMapping()" />
