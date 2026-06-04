@@ -23,7 +23,7 @@ export class DeleteRoleMappingPopupComponent {
     this.isViewCourse = this.data?.from === 'viewCourse';
     this.isFromGenerateCourse = this.data?.from === 'generateCourseRecommendations';
     console.log('this.data', this.data)
-    if (this.documents && this.documents.length) {
+    if (this.documents && this.documents?.length) {
       let wAOCount = 0
       this.documents.forEach((item) => {
         if (item?.document_type === 'Work Allocation Order') {
