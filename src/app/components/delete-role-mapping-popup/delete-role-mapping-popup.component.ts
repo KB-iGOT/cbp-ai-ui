@@ -10,6 +10,7 @@ import { SharedService } from 'src/app/modules/shared/services/shared.service';
 export class DeleteRoleMappingPopupComponent {
   planData:any;
   isViewCourse = false;
+  isFromGenerateCourse = false;
 
   constructor(
     public dialogRef: MatDialogRef<DeleteRoleMappingPopupComponent>,
@@ -18,6 +19,7 @@ export class DeleteRoleMappingPopupComponent {
   ) {
     this.planData = data
     this.isViewCourse = this.data?.from === 'viewCourse';
+    this.isFromGenerateCourse = this.data?.from === 'generateCourseRecommendations';
   }
   confirmDelete() {
     this.dialogRef.close('saved');

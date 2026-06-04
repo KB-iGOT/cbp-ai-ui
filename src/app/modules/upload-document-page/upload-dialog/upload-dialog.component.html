@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Upload Document</h2>
+<h2 mat-dialog-title style="color:#000;font-weight: 600;">Upload Document</h2>
 
 <mat-dialog-content>
 
@@ -13,11 +13,12 @@
 
   <!-- Upload Box -->
   <!-- Document Type Select -->
+  <label class="document-type-label" style="color:#000;margin-top: 10px;"><strong>Document Type</strong>&nbsp;<span class="error">*</span></label>
   <mat-form-field appearance="outline" class="document-select">
 
 
     <mat-label>
-      {{ selectedDocumentType ? '' : 'Document Type' }}
+      {{ selectedDocumentType ? '' : 'Select Document Type' }}
     </mat-label>
 
 
@@ -37,7 +38,7 @@
 
     </mat-select>
 
-    <mat-error *ngIf="!selectedDocumentType" style="margin-top: 15px;">
+    <mat-error *ngIf="!selectedDocumentType" style="margin-top: 16px;color:#ff0000;">
       Document type is required
     </mat-error>
 
@@ -55,7 +56,7 @@
       Maximum 10 documents allowed
     </p>
 
-    <p><strong>Note:</strong> <small>PDF Files Only</small></p>
+    <p><strong>Note:</strong> PDF Files Only. Maximum file size:<strong>25 MB.</strong></p>
   </div>
 
   <!-- Selected Files List -->
@@ -73,13 +74,14 @@
 </mat-dialog-content>
 
 <div class="disclaimer-text">
-  <p>Disclaimer: Please do not upload any confidential documents.</p>
+  <p><strong>Disclaimer:</strong> Please do not upload any confidential documents.</p>
 </div>
 
-<mat-dialog-actions align="center" style="margin: 20px 0;">
+<mat-dialog-actions align="end" style="margin: 20px 20px;">
   <button mat-button mat-dialog-close>Cancel</button>
 
-  <button [ngClass]="selectedFiles.length === 0 || !selectedDocumentType ? 'primary-btn-disabled':'primary-btn'"  class="cursor-pointer" mat-raised-button color="primary" (click)="upload()"
+  <button [ngClass]="selectedFiles.length === 0 || !selectedDocumentType ? 'primary-btn-disabled':'primary-btn'"
+    class="cursor-pointer" mat-raised-button color="primary" (click)="upload()"
     [disabled]="selectedFiles.length === 0 || !selectedDocumentType">
     Upload
   </button>
