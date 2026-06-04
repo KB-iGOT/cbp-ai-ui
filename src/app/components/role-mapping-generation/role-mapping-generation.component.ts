@@ -99,6 +99,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
   documents = []
   disableUploadDocument = true
   disableUploadDocumentOriginal = true
+  workAllocationOrderDocumentMissing = false
   private destroy$ = new Subject<void>();
   constructor(
     private eventSvc: EventService,
@@ -200,8 +201,22 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
 
     this.sharedService.getUploadedDocuments(reqBody).subscribe((res) => {
       if (res && res?.items && res?.items?.length) {
+        let wAOCount = 0
         this.apiLoading = false
         this.documents = res?.items
+        this.documents.forEach((item)=>{
+          if(item?.document_type === 'Work Allocation Order') {
+            wAOCount =wAOCount+1
+          }
+        })
+
+        if(wAOCount < 1) {
+          this.workAllocationOrderDocumentMissing = true
+        } else {
+          this.workAllocationOrderDocumentMissing = false
+        }
+        
+        console.log('this.documents--', this.documents)
       } else {
         this.documents = []
         this.apiLoading = false
