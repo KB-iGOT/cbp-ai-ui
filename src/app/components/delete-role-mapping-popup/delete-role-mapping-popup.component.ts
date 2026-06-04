@@ -36,6 +36,9 @@ export class DeleteRoleMappingPopupComponent {
       } else {
         this.workAllocationOrderDocumentMissing = false
       }
+    } 
+    if (this.planData.role_mapping_exisiting && this.documents.length === 0) {
+      this.workAllocationOrderDocumentMissing = true
     }
   }
   confirmDelete() {
