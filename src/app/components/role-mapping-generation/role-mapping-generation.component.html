@@ -164,9 +164,9 @@
                     <p>Disclaimer: Please do not upload any confidential documents. </p>
                 </div>
             </div> -->
-            <div class="mt-2" *ngIf="documents?.length < 1 && !(roleMappingForm?.invalid)">
+            <div class="mt-2" *ngIf="documents?.length < 1 && !(roleMappingForm?.invalid) || showWorkAllocationOrderDocumentMissing">
             <p><span style="font-size: .875rem;font-weight: bold;">Note: </span>
-                <span class="error">Please Upload atleast 1 Document.</span>
+                <span class="error">Please upload the Work Allocation Order document to generate the Capacity Building Plan (CBP)</span>
             </p>
             
             

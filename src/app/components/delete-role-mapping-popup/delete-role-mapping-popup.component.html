@@ -54,7 +54,10 @@
             CBP is already available ,
 
             <span *ngIf="!workAllocationOrderDocumentMissing">Do you want to Regenerate the Capacity building plan ?</span>
-            <span *ngIf="workAllocationOrderDocumentMissing">Please upload the Work Allocation Order document to regenerate the Capacity Building Plan (CBP)</span>
+           
+          </div>
+          <div>
+             <span style="text-align: center;" *ngIf="workAllocationOrderDocumentMissing" class="error">Please upload the Work Allocation Order document to regenerate the Capacity Building Plan (CBP)</span>
           </div>
           <div class="mt-2" *ngIf="isFromGenerateCourse">
             Course recommendations are already available ,

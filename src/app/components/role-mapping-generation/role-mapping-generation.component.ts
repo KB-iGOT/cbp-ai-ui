@@ -100,6 +100,7 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
   disableUploadDocument = true
   disableUploadDocumentOriginal = true
   workAllocationOrderDocumentMissing = false
+  showWorkAllocationOrderDocumentMissing = false
   private destroy$ = new Subject<void>();
   constructor(
     private eventSvc: EventService,
@@ -809,13 +810,15 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
       )
       .subscribe(data => {
         console.log('role mapping data--', data)
+        
         if (this.firstApiResponse?.is_existing) {
+          this.showWorkAllocationOrderDocumentMissing = false
           this.apiLoading = false;
           this.destroy$.next();   // 🛑 stop polling
           this.destroy$.complete();
           const dialogRef = this.dialog.open(DeleteRoleMappingPopupComponent, {
             width: '400px',
-            data: {documents: this.documents},
+            data: {documents: this.documents, role_mapping_exisiting: true},
             panelClass: 'view-cbp-plan-popup',
             minHeight: '300px',          // Set minimum height
             maxHeight: '80vh',           // Prevent it from going beyond viewport
@@ -872,8 +875,15 @@ export class RoleMappingGenerationComponent implements OnInit, OnChanges, OnDest
               this.loading = false
             }
           });
+        } else if (this.workAllocationOrderDocumentMissing) {
+          this.destroy$.next();
+          this.loading = false
+          this.apiLoading = false
+          this.showWorkAllocationOrderDocumentMissing = true
+          return;
         }
         else if (data?.status === 'COMPLETED') {
+          this.showWorkAllocationOrderDocumentMissing = false
           
           this.loading = false;
 
