@@ -45,7 +45,7 @@ export class UploadDocumentPageComponent {
 
   ]
   searchText = '';
-  displayedColumns: string[] = ['name', 'summary_status',  'date', 'actions'];
+  displayedColumns: string[] = ['name','document_type', 'summary_status',  'date', 'actions'];
   cbpFinalObj:any= {}
   departmentData:any = []
   documents = [

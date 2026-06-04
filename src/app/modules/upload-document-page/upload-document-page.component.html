@@ -100,6 +100,17 @@
                 </td>
             </ng-container>
 
+            <!-- Document Column -->
+            <ng-container matColumnDef="document_type">
+                <th mat-header-cell *matHeaderCellDef> Document Type</th>
+                <td mat-cell *matCellDef="let doc" style="width: 15%;">
+                    <div>
+                        <div class="doc-title" *ngIf="doc.document_type">{{ doc.document_type }}</div>
+                        <div class="doc-title" *ngIf="!doc.document_type">N/A</div>
+                    </div>
+                </td>
+            </ng-container>
+
             <!-- Summary Status Column -->
             <ng-container matColumnDef="summary_status">
                 <th mat-header-cell *matHeaderCellDef> Summary Status </th>
@@ -140,7 +151,7 @@
                         <mat-icon>visibility</mat-icon>
                     </button>
 
-                    <button style="margin-left: 15px;" *ngIf="doc.summary_status === 'COMPLETED'" mat-icon-button
+                    <button style="margin-left: 15px;"  mat-icon-button
                         color="warn" (click)="deleteDocument(doc)" matTooltip="Delete">
                         <mat-icon>delete</mat-icon>
                     </button>
@@ -206,7 +217,7 @@
         </div>
 
         <div class="doc-content">
-          <div class="doc-title">Sample Document Structure</div>
+          <div class="doc-title">Sample Work Allocation order structure</div>
 
           <div class="doc-subtitle">
             .docx · Editable template
@@ -236,7 +247,7 @@
         </div>
 
         <div class="doc-content">
-          <div class="doc-title">Sample Document Structure</div>
+          <div class="doc-title">Sample work allocation order document</div>
 
           <div class="doc-subtitle">
             .pdf · Reference format
