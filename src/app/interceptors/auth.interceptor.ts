@@ -146,6 +146,6 @@ export class AuthInterceptor implements HttpInterceptor {
     // Force reload to ensure fresh state
     // Adding a timestamp to prevent cached page loads
     const timestamp = new Date().getTime();
-    window.location.href = window.location.origin + '/?t=' + timestamp;
+    window.location.href = window.location.origin +'/training-pla-ai/?t=' + timestamp;
   }
 }

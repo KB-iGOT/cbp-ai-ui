@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
+import { InitResolver } from './resolver/init-resolver.sevice';
 // import { InitialScreenComponent } from '@sunbird-cb/cbp-ai';
 //import { PublicHomeComponent } from "./modules/public-home/components/public-home/public-home.component";
 // import { UploadDocumentPageComponent } from './modules/upload-document-page/upload-document-page.component';
@@ -23,7 +24,10 @@ const routes: Routes = [
   {
     path: 'ai',
     loadChildren: () =>
-      import('@sunbird-cb/cbp-ai').then(m => m.AiCbpModule)
+      import('@sunbird-cb/cbp-ai').then(m => m.AiCbpModule),
+    resolve: {
+            initData: InitResolver
+        },
   },
   {
     path: '',
