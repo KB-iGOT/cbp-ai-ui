@@ -87,7 +87,7 @@ export class AuthInterceptor implements HttpInterceptor {
         'Session expired. Please refresh the page to login again.', 
         'Refresh Page', 
         {
-          duration: 10000, // Longer duration with action button
+          duration: 5000, // Longer duration with action button
           panelClass: ['session-expired-snackbar'],
           horizontalPosition: 'center',
           verticalPosition: 'top'
@@ -118,7 +118,7 @@ export class AuthInterceptor implements HttpInterceptor {
           snackBarRef.dismiss();
           this.performLogoutRefresh();
         }
-      }, 10000);
+      }, 5000);
       
     } catch (error) {
       console.error('Error in handleSessionExpired:', error);

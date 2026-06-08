@@ -94,7 +94,7 @@ export class LoginComponent {
     if (error.status === 401) {
 
       this.snackBar.open('Unauthorized! Invalid username or password', 'X', {
-        duration: 3000,
+        duration: 8000,
         panelClass: ['snackbar-error']
       });
 
@@ -106,7 +106,7 @@ export class LoginComponent {
     } else if (error.status === 500) {
 
       this.snackBar.open('Server error. Please try again later.', 'X', {
-        duration: 3000,
+        duration: 8000,
         panelClass: ['snackbar-error']
       });
       this.router.navigate(['/logout']);
@@ -117,7 +117,7 @@ export class LoginComponent {
     } else {
 
       this.snackBar.open('Unauthorized! Invalid username or password', 'X', {
-        duration: 3000,
+        duration: 8000,
         panelClass: ['snackbar-error']
       });
       this.router.navigate(['/logout']);
