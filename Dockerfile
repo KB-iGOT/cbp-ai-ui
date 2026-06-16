@@ -10,7 +10,8 @@
   # Copy the rest of the source and build
   COPY . .
   RUN npm run build
-   
+  RUN ls -al
+  RUN cd dist && ls -al
    
   # ---------- Stage 2: Serve with Apache ----------
   FROM httpd:alpine
