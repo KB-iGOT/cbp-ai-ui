@@ -28,6 +28,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private shouldHandleUnauthorized(req: HttpRequest<any>): boolean {
     const currentTime = Date.now();
+    const requestUrl = req.url.toLowerCase();
+    if (requestUrl.includes('/auth/login') || requestUrl.includes('/auth/logout')) {
+      return false;
+    }
     
     // Prevent multiple session expired alerts
     if (AuthInterceptor.sessionExpiredCount >= this.MAX_SESSION_EXPIRED_ALERTS) {
@@ -101,14 +105,6 @@ export class AuthInterceptor implements HttpInterceptor {
         console.log('User clicked refresh, reloading page');
         userActed = true;
         this.performLogoutRefresh();
-      });
-      
-      // Handle when snackbar is dismissed
-      snackBarRef.afterDismissed().subscribe(() => {
-        if (!userActed) {
-          console.log('Snackbar dismissed, auto-refreshing page');
-          this.performLogoutRefresh();
-        }
       });
       
       // Auto-refresh after 10 seconds as fallback
