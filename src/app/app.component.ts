@@ -230,7 +230,16 @@ export class AppComponent {
 }
 
 openHelp() {
-  this.showHelpDrawer = true
+   const link = document.createElement('a');
+  link.href = '../assets/help-steps/AI-CBP-Tool-How-to-Use-Guide.pdf';
+  link.download = 'User_Guide.pdf';         
+  link.target = '_blank';                  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // Open help drawer
+  // this.showHelpDrawer = true;
 }
 
 closeHelpDrawer() {
