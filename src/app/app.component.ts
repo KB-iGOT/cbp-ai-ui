@@ -231,7 +231,7 @@ export class AppComponent {
 
 openHelp() {
    const link = document.createElement('a');
-  link.href = '../assets/help-steps/AI-CBP-Tool-How-to-Use-Guide.pdf';
+  link.href = '../training-pla-ai/assets/help-steps/AI-CBP-Tool-How-to-Use-Guide.pdf';
   link.download = 'User_Guide.pdf';         
   link.target = '_blank';                  
   document.body.appendChild(link);
